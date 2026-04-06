@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oak Street Capital — Deal Pipeline</title>
+<script src="/config.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0F0F0F;
+    --card: #1A1A1A;
+    --border: #2A2A2A;
+    --accent: #BADA55;
+    --accent-dim: rgba(186,218,85,0.15);
+    --accent-glow: rgba(186,218,85,0.35);
+    --text: #F0F0F0;
+    --muted: #888888;
+    --danger: #E05252;
+    --success: #52C07A;
+    --warn: #E09B3A;
+    --font-display: 'Cormorant Garamond', Georgia, serif;
+    --font-body: 'DM Sans', system-ui, sans-serif;
+    --radius: 6px;
+    --radius-lg: 10px;
+  }
+
+  html { font-size: 15px; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-weight: 400;
+    line-height: 1.5;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* ── Layout ── */
+  .container {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  /* ── Top Bar ── */
+  .topbar {
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 0 32px;
+  }
+
+  .topbar-inner {
+    max-width: 1440px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    height: 64px;
+  }
+
+  .topbar-brand {
+    flex-shrink: 0;
+  }
+
+  .topbar-brand .wordmark {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: 0.02em;
+    line-height: 1;
+  }
+
+  .topbar-brand .subtitle {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+
+  .topbar-divider {
+    width: 1px;
+    height: 32px;
+    background: var(--border);
+    flex-shrink: 0;
+  }
+
+  .topbar-budget {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+
+  .budget-label {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+  }
+
+  .budget-count {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    white-space: nowrap;
+  }
+
+  .budget-bar-wrap {
+    width: 120px;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .budget-bar-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 2px;
+    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .topbar-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .topbar-clock {
+    font-size: 12px;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .refresh-indicator {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .refresh-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--muted);
+    transition: background 0.3s;
+  }
+
+  .refresh-dot.fresh {
+    background: var(--accent);
+    animation: pulse-dot 2s ease-in-out;
+  }
+
+  @keyframes pulse-dot {
+    0%   { box-shadow: 0 0 0 0 var(--accent-glow); }
+    50%  { box-shadow: 0 0 0 6px transparent; }
+    100% { box-shadow: 0 0 0 0 transparent; }
+  }
+
+  /* ── Page Content ── */
+  .page-body {
+    padding: 36px 32px 64px;
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+
+  /* ── Section Headers ── */
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 20px;
+    margin-top: 48px;
+  }
+
+  .section-header:first-child {
+    margin-top: 0;
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: 0.01em;
+  }
+
+  .section-count {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* ── Deal Cards Grid ── */
+  .deals-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 20px;
+  }
+
+  .deal-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .deal-card:hover {
+    border-color: #3A3A3A;
+    transform: translateY(-1px);
+  }
+
+  .deal-card.status-active {
+    border-top: 2px solid var(--accent);
+  }
+
+  .deal-card.status-sent {
+    border-top: 2px solid var(--success);
+  }
+
+  .deal-card.status-no_memo {
+    border-top: 2px solid var(--warn);
+  }
+
+  .deal-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .deal-name {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.2;
+    flex: 1;
+  }
+
+  .status-pill {
+    flex-shrink: 0;
+    padding: 3px 9px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .pill-ready    { background: rgba(136,136,136,0.15); color: var(--muted); border: 1px solid #3A3A3A; }
+  .pill-active   { background: var(--accent-dim); color: var(--accent); border: 1px solid rgba(186,218,85,0.4); }
+  .pill-sent     { background: rgba(82,192,122,0.12); color: var(--success); border: 1px solid rgba(82,192,122,0.4); }
+  .pill-no_memo  { background: rgba(224,155,58,0.12); color: var(--warn); border: 1px solid rgba(224,155,58,0.4); }
+
+  .deal-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  .deal-badge {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    padding: 2px 8px;
+    border-radius: 3px;
+  }
+
+  .deal-location {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .deal-raise {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 16px;
+  }
+
+  .deal-raise span {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--muted);
+    margin-left: 4px;
+  }
+
+  .deal-stats-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .deal-stat-box {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 10px 12px;
+  }
+
+  .deal-stat-label {
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 3px;
+  }
+
+  .deal-stat-value {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+    transition: color 0.3s;
+  }
+
+  .deal-stat-value.highlight {
+    color: var(--accent);
+  }
+
+  .deal-stat-sub {
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 1px;
+  }
+
+  .deal-progress {
+    margin-bottom: 14px;
+  }
+
+  .deal-progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 5px;
+  }
+
+  .deal-progress-bar {
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .deal-progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 2px;
+    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .deal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 4px;
+  }
+
+  .deal-sent-info {
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .deal-sent-info strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .deal-memo-link {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: opacity 0.15s;
+  }
+
+  .deal-memo-link:hover {
+    opacity: 0.8;
+    text-decoration: none;
+  }
+
+  .deal-memo-link svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  /* ── Empty state for deals ── */
+  .empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 32px;
+    color: var(--muted);
+  }
+
+  .empty-state-icon {
+    font-size: 40px;
+    margin-bottom: 12px;
+    opacity: 0.3;
+  }
+
+  .empty-state p {
+    font-size: 14px;
+  }
+
+  /* ── Campaign Stats Table ── */
+  .table-wrap {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  thead {
+    background: rgba(255,255,255,0.03);
+    border-bottom: 1px solid var(--border);
+  }
+
+  thead th {
+    padding: 12px 18px;
+    text-align: left;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+
+  tbody tr:last-child {
+    border-bottom: none;
+  }
+
+  tbody tr:hover {
+    background: rgba(255,255,255,0.025);
+  }
+
+  tbody td {
+    padding: 14px 18px;
+    vertical-align: middle;
+  }
+
+  .td-deal-name {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .td-number {
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .td-rate {
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+  }
+
+  .td-rate.good  { color: var(--accent); }
+  .td-rate.ok    { color: var(--warn); }
+  .td-rate.poor  { color: var(--muted); }
+
+  .td-muted {
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  .table-empty {
+    text-align: center;
+    padding: 40px;
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  /* ── Activity Feed ── */
+  .activity-panel {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .activity-feed {
+    max-height: 460px;
+    overflow-y: auto;
+  }
+
+  .activity-feed::-webkit-scrollbar { width: 4px; }
+  .activity-feed::-webkit-scrollbar-track { background: transparent; }
+  .activity-feed::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .activity-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+    animation: slide-in 0.3s ease-out;
+  }
+
+  .activity-item:last-child {
+    border-bottom: none;
+  }
+
+  .activity-item:hover {
+    background: rgba(255,255,255,0.025);
+  }
+
+  @keyframes slide-in {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .activity-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border);
+    flex-shrink: 0;
+    margin-top: 5px;
+    transition: background 0.3s;
+  }
+
+  .activity-dot.new {
+    background: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-dim);
+    animation: pulse-activity 2s infinite;
+  }
+
+  @keyframes pulse-activity {
+    0%, 100% { box-shadow: 0 0 0 3px var(--accent-dim); }
+    50%       { box-shadow: 0 0 0 6px transparent; }
+  }
+
+  .activity-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .activity-main {
+    font-size: 13px;
+    color: var(--text);
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .activity-main .contact-name {
+    color: var(--text);
+  }
+
+  .activity-main .deal-name-ref {
+    color: var(--accent);
+    font-weight: 400;
+  }
+
+  .activity-sub {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .activity-time {
+    font-size: 11px;
+    color: var(--muted);
+    flex-shrink: 0;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    align-self: center;
+  }
+
+  .activity-empty {
+    text-align: center;
+    padding: 48px 32px;
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  /* ── Health Stats Bar ── */
+  .health-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .health-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+  }
+
+  .health-label {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+  }
+
+  .health-value {
+    font-size: 36px;
+    font-family: var(--font-display);
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1;
+    margin-bottom: 6px;
+    transition: color 0.3s;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .health-value.accent { color: var(--accent); }
+
+  .health-desc {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* ── Two-column layout for bottom panels ── */
+  .bottom-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 20px;
+    align-items: start;
+  }
+
+  /* ── Loading shimmer ── */
+  .shimmer {
+    background: linear-gradient(90deg, var(--card) 25%, #232323 50%, var(--card) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 4px;
+    height: 14px;
+  }
+
+  @keyframes shimmer {
+    0%   { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 900px) {
+    .bottom-grid { grid-template-columns: 1fr; }
+    .health-grid { grid-template-columns: 1fr 1fr; }
+    .deals-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 600px) {
+    .topbar-inner { gap: 16px; }
+    .page-body { padding: 24px 16px 48px; }
+    .container { padding: 0 16px; }
+    .topbar { padding: 0 16px; }
+    .health-grid { grid-template-columns: 1fr; }
+    .topbar-budget { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Top Bar ── -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="topbar-brand">
+      <div class="wordmark">Oak Street Capital</div>
+      <div class="subtitle">Deal Pipeline</div>
+    </div>
+
+    <div class="topbar-divider"></div>
+
+    <div class="topbar-budget">
+      <span class="budget-label">Today</span>
+      <span class="budget-count" id="budget-text">— / 100 sent</span>
+      <div class="budget-bar-wrap">
+        <div class="budget-bar-fill" id="budget-bar" style="width: 0%"></div>
+      </div>
+    </div>
+
+    <div class="topbar-right">
+      <div class="topbar-clock" id="clock"></div>
+      <div class="refresh-indicator">
+        <div class="refresh-dot" id="refresh-dot"></div>
+        <span id="refresh-label">live</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ── Page Body ── -->
+<div class="page-body">
+
+  <!-- Deal Cards -->
+  <div class="section-header">
+    <h2 class="section-title">Deal Pipeline</h2>
+    <span class="section-count" id="deals-count"></span>
+  </div>
+  <div class="deals-grid" id="deals-grid">
+    <div class="empty-state">
+      <div class="shimmer" style="width:200px;margin:0 auto 12px;"></div>
+      <div class="shimmer" style="width:140px;margin:0 auto;"></div>
+    </div>
+  </div>
+
+  <!-- Health Stats -->
+  <div class="section-header">
+    <h2 class="section-title">Contact Database</h2>
+  </div>
+  <div class="health-grid" id="health-grid">
+    <div class="health-card">
+      <div class="health-label">Total Contacts in Pipeline</div>
+      <div class="health-value" id="h-total-contacts">—</div>
+      <div class="health-desc">Unique investors across all campaigns</div>
+    </div>
+    <div class="health-card">
+      <div class="health-label">Deals with Active Outreach</div>
+      <div class="health-value accent" id="h-active-deals">—</div>
+      <div class="health-desc">Sent or actively running</div>
+    </div>
+    <div class="health-card">
+      <div class="health-label">Emails Sent Today</div>
+      <div class="health-value" id="h-today-sent">—</div>
+      <div class="health-desc" id="h-today-desc">of 100 daily limit</div>
+    </div>
+  </div>
+
+  <!-- Bottom Grid: Table + Activity -->
+  <div class="bottom-grid" style="margin-top: 48px;">
+
+    <!-- Campaign Stats Table -->
+    <div>
+      <div class="section-header" style="margin-top:0;">
+        <h2 class="section-title">Campaign Stats</h2>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Deal</th>
+              <th>Sent</th>
+              <th>Viewed Memo</th>
+              <th>View Rate</th>
+              <th>Last Activity</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="stats-tbody">
+            <tr><td colspan="6" class="table-empty">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Live Activity Feed -->
+    <div>
+      <div class="section-header" style="margin-top:0;">
+        <h2 class="section-title">Live Activity</h2>
+        <span class="section-count" id="activity-count"></span>
+      </div>
+      <div class="activity-panel">
+        <div class="activity-feed" id="activity-feed">
+          <div class="activity-empty">Loading activity…</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ── Utilities ────────────────────────────────────────────────────────────────
+
+function esc(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function statusPillClass(status) {
+  const map = { READY: 'pill-ready', ACTIVE: 'pill-active', SENT: 'pill-sent', NO_MEMO: 'pill-no_memo' };
+  return map[status] || 'pill-ready';
+}
+
+function statusLabel(status) {
+  const map = { READY: 'Ready', ACTIVE: 'Active', SENT: 'Sent', NO_MEMO: 'No Memo' };
+  return map[status] || status;
+}
+
+function cardClass(status) {
+  return 'status-' + status.toLowerCase();
+}
+
+function formatNumber(n) {
+  return Number(n).toLocaleString();
+}
+
+// ── Clock ────────────────────────────────────────────────────────────────────
+
+function updateClock() {
+  const now = new Date();
+  const opts = {
+    weekday: 'short', month: 'short', day: 'numeric',
+    hour: '2-digit', minute: '2-digit', second: '2-digit',
+    hour12: true
+  };
+  document.getElementById('clock').textContent = now.toLocaleString('en-US', opts);
+}
+
+setInterval(updateClock, 1000);
+updateClock();
+
+// ── Deal Cards ────────────────────────────────────────────────────────────────
+
+function renderDeals(deals) {
+  const grid = document.getElementById('deals-grid');
+  const countEl = document.getElementById('deals-count');
+
+  if (!deals || deals.length === 0) {
+    grid.innerHTML = `<div class="empty-state">
+      <div class="empty-state-icon">◇</div>
+      <p>No deals found in deals/</p>
+    </div>`;
+    countEl.textContent = '';
+    return;
+  }
+
+  countEl.textContent = deals.length + ' deal' + (deals.length !== 1 ? 's' : '');
+
+  grid.innerHTML = deals.map(d => {
+    const sentPct = d.total_matched > 0
+      ? Math.min(100, Math.round((d.sent_count / d.total_matched) * 100))
+      : 0;
+
+    const memoLink = d.memo_url
+      ? `<a class="deal-memo-link" href="${esc(d.memo_url)}" target="_blank" rel="noopener">
+           View Memo
+           <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5">
+             <path d="M2 2h8v8M10 2 2 10"/>
+           </svg>
+         </a>`
+      : `<span style="font-size:11px;color:var(--muted);">No memo</span>`;
+
+    const sentInfo = d.sent_count > 0
+      ? `<span class="deal-sent-info"><strong>${formatNumber(d.sent_count)}</strong> sent${d.sent_at ? ' · ' + d.sent_at : ''}</span>`
+      : `<span class="deal-sent-info" style="color:var(--muted);">Not sent yet</span>`;
+
+    const progressBlock = d.total_matched > 0
+      ? `<div class="deal-progress">
+           <div class="deal-progress-label">
+             <span>Send Progress</span>
+             <span>${formatNumber(d.sent_count)} / ${formatNumber(d.total_matched)} matched</span>
+           </div>
+           <div class="deal-progress-bar">
+             <div class="deal-progress-fill" style="width:${sentPct}%"></div>
+           </div>
+         </div>`
+      : '';
+
+    const viewHighlight = d.total_views > 0 ? ' highlight' : '';
+
+    return `<div class="deal-card ${cardClass(d.status)}">
+      <div class="deal-card-header">
+        <div class="deal-name">${esc(d.name)}</div>
+        <span class="status-pill ${statusPillClass(d.status)}">${statusLabel(d.status)}</span>
+      </div>
+
+      <div class="deal-meta">
+        ${d.asset_type ? `<span class="deal-badge">${esc(d.asset_type)}</span>` : ''}
+        ${d.location ? `<span class="deal-location">${esc(d.location)}</span>` : ''}
+      </div>
+
+      <div class="deal-raise">${esc(d.raise_target)}<span>raise target</span></div>
+
+      <div class="deal-stats-row">
+        <div class="deal-stat-box">
+          <div class="deal-stat-label">Memo Views</div>
+          <div class="deal-stat-value${viewHighlight}">${formatNumber(d.total_views)}</div>
+          <div class="deal-stat-sub">total opens</div>
+        </div>
+        <div class="deal-stat-box">
+          <div class="deal-stat-label">Unique Investors</div>
+          <div class="deal-stat-value${viewHighlight}">${formatNumber(d.unique_viewers)}</div>
+          <div class="deal-stat-sub">distinct viewers</div>
+        </div>
+      </div>
+
+      ${progressBlock}
+
+      <div class="deal-footer">
+        ${sentInfo}
+        ${memoLink}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── Campaign Stats Table ──────────────────────────────────────────────────────
+
+function renderStatsTable(deals) {
+  const tbody = document.getElementById('stats-tbody');
+  const sent = deals.filter(d => d.sent_count > 0 || d.status === 'SENT' || d.status === 'ACTIVE');
+
+  if (sent.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="6" class="table-empty">No campaigns sent yet</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = sent.map(d => {
+    let rateClass = 'poor';
+    if (d.view_rate >= 20) rateClass = 'good';
+    else if (d.view_rate >= 10) rateClass = 'ok';
+
+    return `<tr>
+      <td class="td-deal-name">${esc(d.name)}</td>
+      <td class="td-number">${formatNumber(d.sent_count)}</td>
+      <td class="td-number">${formatNumber(d.unique_viewers)}</td>
+      <td class="td-rate ${rateClass}">${d.view_rate > 0 ? d.view_rate + '%' : '—'}</td>
+      <td class="td-muted">${d.last_activity || '—'}</td>
+      <td><span class="status-pill ${statusPillClass(d.status)}">${statusLabel(d.status)}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+// ── Activity Feed ─────────────────────────────────────────────────────────────
+
+// Track rendered event timestamps to animate only truly new events
+let _seenTimestamps = new Set();
+
+function renderActivity(events) {
+  const feed = document.getElementById('activity-feed');
+  const countEl = document.getElementById('activity-count');
+
+  if (!events || events.length === 0) {
+    feed.innerHTML = `<div class="activity-empty">No memo views recorded yet.</div>`;
+    countEl.textContent = '';
+    return;
+  }
+
+  // Only show 20 in the feed
+  const visible = events.slice(0, 20);
+  countEl.textContent = events.length + ' total';
+
+  const newTimestamps = new Set(visible.map(e => e.timestamp));
+
+  feed.innerHTML = visible.map(e => {
+    const isNew = e.is_new && !_seenTimestamps.has(e.timestamp);
+    const dotClass = isNew ? 'new' : '';
+    const identifier = e.contact_name || e.contact_email || 'Unknown investor';
+    const repeatBadge = e.is_repeat
+      ? `<span style="font-size:10px;color:var(--muted);margin-left:6px;">repeat</span>`
+      : '';
+
+    return `<div class="activity-item">
+      <div class="activity-dot ${dotClass}"></div>
+      <div class="activity-content">
+        <div class="activity-main">
+          <span class="contact-name">${esc(identifier)}</span>
+          viewed
+          <span class="deal-name-ref">${esc(e.deal_slug)}</span>
+          ${repeatBadge}
+        </div>
+        <div class="activity-sub">${esc(e.contact_email || '')}</div>
+      </div>
+      <div class="activity-time">${esc(e.ts_display)}</div>
+    </div>`;
+  }).join('');
+
+  _seenTimestamps = newTimestamps;
+}
+
+// ── Health Stats ──────────────────────────────────────────────────────────────
+
+function renderHealth(data) {
+  const totalEl = document.getElementById('h-total-contacts');
+  const activeEl = document.getElementById('h-active-deals');
+  const todayEl  = document.getElementById('h-today-sent');
+  const descEl   = document.getElementById('h-today-desc');
+  const budgetText = document.getElementById('budget-text');
+  const budgetBar  = document.getElementById('budget-bar');
+
+  animateNumber(totalEl, data.total_contacts);
+  animateNumber(activeEl, data.active_deals);
+  animateNumber(todayEl, data.daily_sent);
+
+  const pct = Math.min(100, Math.round((data.daily_sent / data.daily_limit) * 100));
+  descEl.textContent = `of ${formatNumber(data.daily_limit)} daily limit`;
+  budgetText.textContent = `${formatNumber(data.daily_sent)} / ${formatNumber(data.daily_limit)} sent today`;
+  budgetBar.style.width = pct + '%';
+
+  // Color the today-sent value based on usage
+  if (pct >= 90) todayEl.style.color = 'var(--danger)';
+  else if (pct >= 70) todayEl.style.color = 'var(--warn)';
+  else todayEl.style.color = '';
+}
+
+// ── Number Animation ──────────────────────────────────────────────────────────
+
+function animateNumber(el, target) {
+  const start = parseInt(el.textContent.replace(/[^0-9]/g, ''), 10) || 0;
+  const end = parseInt(target, 10) || 0;
+  if (start === end) return;
+  const duration = 600;
+  const startTime = performance.now();
+  function step(now) {
+    const elapsed = now - startTime;
+    const progress = Math.min(1, elapsed / duration);
+    const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+    const current = Math.round(start + (end - start) * eased);
+    el.textContent = formatNumber(current);
+    if (progress < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+// ── Refresh Indicator ─────────────────────────────────────────────────────────
+
+function flashRefresh() {
+  const dot = document.getElementById('refresh-dot');
+  const label = document.getElementById('refresh-label');
+  dot.classList.add('fresh');
+  label.textContent = 'updated';
+  setTimeout(() => {
+    dot.classList.remove('fresh');
+    label.textContent = 'live';
+  }, 3000);
+}
+
+// ── Polling ───────────────────────────────────────────────────────────────────
+
+async function fetchStats() {
+  try {
+    const res = await fetch((window.OSC_API_BASE||'') + '/api/stats');
+    if (!res.ok) return;
+    const data = await res.json();
+    renderDeals(data.deals || []);
+    renderStatsTable(data.deals || []);
+    renderHealth(data);
+    flashRefresh();
+  } catch (e) {
+    console.warn('Stats fetch failed:', e);
+  }
+}
+
+async function fetchActivity() {
+  try {
+    const res = await fetch((window.OSC_API_BASE||'') + '/api/activity');
+    if (!res.ok) return;
+    const events = await res.json();
+    renderActivity(events);
+  } catch (e) {
+    console.warn('Activity fetch failed:', e);
+  }
+}
+
+async function refreshAll() {
+  await Promise.all([fetchStats(), fetchActivity()]);
+}
+
+// Initial load
+refreshAll();
+
+// Poll every 30 seconds
+setInterval(refreshAll, 30000);
+</script>
+</body>
+</html>
