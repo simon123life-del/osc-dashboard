@@ -675,6 +675,16 @@
     align-items: start;
   }
 
+  /* ── Scrollable deals section ── */
+  .deals-scroll {
+    max-height: 560px;
+    overflow-y: auto;
+    padding-right: 4px;
+  }
+  .deals-scroll::-webkit-scrollbar { width: 4px; }
+  .deals-scroll::-webkit-scrollbar-track { background: transparent; }
+  .deals-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
   /* ── Loading shimmer ── */
   .shimmer {
     background: linear-gradient(90deg, var(--card) 25%, #232323 50%, var(--card) 75%);
@@ -739,16 +749,26 @@
 <!-- ── Page Body ── -->
 <div class="page-body">
 
-  <!-- Deal Cards -->
+  <!-- Campaigns Table (top) -->
   <div class="section-header">
-    <h2 class="section-title">Deal Pipeline</h2>
-    <span class="section-count" id="deals-count"></span>
+    <h2 class="section-title">Campaigns</h2>
   </div>
-  <div class="deals-grid" id="deals-grid">
-    <div class="empty-state">
-      <div class="shimmer" style="width:200px;margin:0 auto 12px;"></div>
-      <div class="shimmer" style="width:140px;margin:0 auto;"></div>
-    </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Deal</th>
+          <th>Sent</th>
+          <th>Viewed Memo</th>
+          <th>View Rate</th>
+          <th>Last Activity</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="stats-tbody">
+        <tr><td colspan="6" class="table-empty">Loading…</td></tr>
+      </tbody>
+    </table>
   </div>
 
   <!-- Health Stats -->
@@ -773,47 +793,63 @@
     </div>
   </div>
 
-  <!-- Bottom Grid: Table + Activity -->
-  <div class="bottom-grid" style="margin-top: 48px;">
-
-    <!-- Campaign Stats Table -->
-    <div>
-      <div class="section-header" style="margin-top:0;">
-        <h2 class="section-title">Campaign Stats</h2>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Deal</th>
-              <th>Sent</th>
-              <th>Viewed Memo</th>
-              <th>View Rate</th>
-              <th>Last Activity</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody id="stats-tbody">
-            <tr><td colspan="6" class="table-empty">Loading…</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- Live Activity Feed -->
-    <div>
-      <div class="section-header" style="margin-top:0;">
-        <h2 class="section-title">Live Activity</h2>
-        <span class="section-count" id="activity-count"></span>
-      </div>
-      <div class="activity-panel">
-        <div class="activity-feed" id="activity-feed">
-          <div class="activity-empty">Loading activity…</div>
-        </div>
-      </div>
-    </div>
-
+  <!-- Deal Pipeline (scrollable) -->
+  <div class="section-header">
+    <h2 class="section-title">Deal Pipeline</h2>
+    <span class="section-count" id="deals-count"></span>
   </div>
+  <div class="deals-scroll">
+    <div class="deals-grid" id="deals-grid">
+      <div class="empty-state">
+        <div class="shimmer" style="width:200px;margin:0 auto 12px;"></div>
+        <div class="shimmer" style="width:140px;margin:0 auto;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recipients Table -->
+  <div class="section-header">
+    <h2 class="section-title">Recipients</h2>
+    <span class="section-count" id="recipients-count"></span>
+  </div>
+  <div style="margin-bottom:12px;display:flex;align-items:center;gap:12px;">
+    <input id="recipients-search" type="text" placeholder="Search by name, email, or company…"
+      style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:8px 14px;font-size:13px;color:var(--text);font-family:var(--font-body);width:320px;outline:none;"
+      oninput="filterRecipients(this.value)">
+    <select id="recipients-filter" onchange="filterRecipients(document.getElementById('recipients-search').value)"
+      style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:8px 12px;font-size:13px;color:var(--text);font-family:var(--font-body);outline:none;">
+      <option value="">All campaigns</option>
+    </select>
+  </div>
+  <div class="table-wrap" style="max-height:480px;overflow-y:auto;">
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Company</th>
+          <th>Campaign</th>
+          <th>Sent</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="recipients-tbody">
+        <tr><td colspan="6" class="table-empty">Loading…</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Live Activity Feed (full width) -->
+  <div class="section-header">
+    <h2 class="section-title">Live Activity</h2>
+    <span class="section-count" id="activity-count"></span>
+  </div>
+  <div class="activity-panel">
+    <div class="activity-feed" id="activity-feed">
+      <div class="activity-empty">Loading activity…</div>
+    </div>
+  </div>
+
 </div>
 
 <script>
@@ -961,8 +997,12 @@ function renderStatsTable(deals) {
     if (d.view_rate >= 20) rateClass = 'good';
     else if (d.view_rate >= 10) rateClass = 'ok';
 
+    const typeBadge = d.campaign_type === 'nurture'
+      ? `<span style="font-size:9px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);background:rgba(255,255,255,0.04);border:1px solid var(--border);padding:1px 6px;border-radius:3px;margin-left:8px;">Nurture</span>`
+      : '';
+
     return `<tr>
-      <td class="td-deal-name">${esc(d.name)}</td>
+      <td class="td-deal-name">${esc(d.name)}${typeBadge}</td>
       <td class="td-number">${formatNumber(d.sent_count)}</td>
       <td class="td-number">${formatNumber(d.unique_viewers)}</td>
       <td class="td-rate ${rateClass}">${d.view_rate > 0 ? d.view_rate + '%' : '—'}</td>
@@ -1083,8 +1123,9 @@ async function fetchStats() {
     const res = await fetch((window.OSC_API_BASE||'') + '/api/stats');
     if (!res.ok) return;
     const data = await res.json();
-    renderDeals(data.deals || []);
-    renderStatsTable(data.deals || []);
+    const allCampaigns = data.deals || [];
+    renderDeals(allCampaigns.filter(d => d.campaign_type !== 'nurture'));
+    renderStatsTable(allCampaigns);
     renderHealth(data);
     flashRefresh();
   } catch (e) {
@@ -1103,8 +1144,73 @@ async function fetchActivity() {
   }
 }
 
+// ── Recipients ────────────────────────────────────────────────────────────────
+
+let _allRecipients = [];
+
+function renderRecipients(rows) {
+  const tbody = document.getElementById('recipients-tbody');
+  const countEl = document.getElementById('recipients-count');
+  const filterEl = document.getElementById('recipients-filter');
+
+  const slugs = [...new Set(rows.map(r => r.slug))];
+  const existing = [...filterEl.options].map(o => o.value);
+  slugs.forEach(slug => {
+    if (!existing.includes(slug)) {
+      const opt = document.createElement('option');
+      opt.value = slug;
+      opt.textContent = rows.find(r => r.slug === slug)?.campaign || slug;
+      filterEl.appendChild(opt);
+    }
+  });
+
+  countEl.textContent = rows.length.toLocaleString() + ' total';
+
+  if (!rows.length) {
+    tbody.innerHTML = `<tr><td colspan="6" class="table-empty">No emails sent yet</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = rows.slice(0, 500).map(r => {
+    const statusColor = r.status === 'sent' ? 'var(--success)' : r.status === 'personalization_failed' ? 'var(--warn)' : 'var(--muted)';
+    return `<tr>
+      <td style="font-weight:500;color:var(--text);">${esc(r.name || '—')}</td>
+      <td class="td-muted">${esc(r.email || '—')}</td>
+      <td class="td-muted">${esc(r.company || '—')}</td>
+      <td><span style="font-size:10px;color:var(--muted);background:rgba(255,255,255,0.04);border:1px solid var(--border);padding:1px 6px;border-radius:3px;">${esc(r.campaign || r.slug)}</span></td>
+      <td class="td-muted" style="white-space:nowrap;">${esc(r.ts_display || '—')}</td>
+      <td><span style="font-size:11px;font-weight:600;color:${statusColor};">${esc(r.status || '—')}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+function filterRecipients(query) {
+  const slug = document.getElementById('recipients-filter').value;
+  const q = (query || '').toLowerCase();
+  let filtered = _allRecipients;
+  if (slug) filtered = filtered.filter(r => r.slug === slug);
+  if (q) filtered = filtered.filter(r =>
+    (r.name||'').toLowerCase().includes(q) ||
+    (r.email||'').toLowerCase().includes(q) ||
+    (r.company||'').toLowerCase().includes(q)
+  );
+  renderRecipients(filtered);
+  document.getElementById('recipients-count').textContent = filtered.length.toLocaleString() + ' shown';
+}
+
+async function fetchRecipients() {
+  try {
+    const res = await fetch((window.OSC_API_BASE||'') + '/api/recipients');
+    if (!res.ok) return;
+    _allRecipients = await res.json();
+    renderRecipients(_allRecipients);
+  } catch (e) {
+    console.warn('Recipients fetch failed:', e);
+  }
+}
+
 async function refreshAll() {
-  await Promise.all([fetchStats(), fetchActivity()]);
+  await Promise.all([fetchStats(), fetchActivity(), fetchRecipients()]);
 }
 
 // Initial load
