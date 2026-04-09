@@ -1,4 +1,4 @@
-const { ghlGet, tsDisplay } = require('./_ghl');
+const { ghlGet } = require('./_ghl');
 
 module.exports = async function handler(req, res) {
   const GHL_API_KEY = process.env.GHL_API_KEY;
@@ -9,42 +9,51 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    // Fetch the 50 most recently active email conversations
     const data = await ghlGet('/conversations/search', {
       locationId: GHL_LOCATION_ID,
       limit: 50,
-      sort: 'last_message_date',
-      sortDir: 'desc',
-      type: 'Email',
     }, GHL_API_KEY);
 
     const conversations = data.conversations || [];
     const now = Date.now();
 
-    const activity = conversations.map(c => {
-      const ts = c.lastMessageDate || c.dateUpdated || c.dateAdded || null;
-      const d = ts ? new Date(ts) : null;
-      const ageMin = d ? Math.floor((now - d.getTime()) / 60000) : null;
+    const activity = conversations
+      .filter(c => c.lastMessageDate) // only ones with activity
+      .map(c => {
+        // lastMessageDate comes back as epoch ms
+        const ts = typeof c.lastMessageDate === 'number'
+          ? c.lastMessageDate
+          : new Date(c.lastMessageDate).getTime();
 
-      return {
-        timestamp: ts || '',
-        ts_display: tsDisplay(ts),
-        contact_name: c.contactName || c.fullName || c.firstName || '',
-        contact_email: c.email || c.contactEmail || '',
-        deal_slug: c.lastMessageBody
-          ? c.lastMessageBody.slice(0, 40).replace(/\s+/g, ' ')
-          : 'email',
-        is_repeat: false,
-        is_new: ageMin !== null && ageMin < 60,
-        age_minutes: ageMin,
-      };
-    });
+        const d = new Date(ts);
+        const ageMin = Math.floor((now - ts) / 60000);
+
+        // Derive campaign from contact's tags
+        const tags = c.tags || [];
+        const outreachTag = tags.find(t => t.startsWith('deal_outreach_'));
+        const dealSlug = outreachTag ? outreachTag.replace('deal_outreach_', '') : '';
+
+        const tsDisplay = isNaN(d)
+          ? '—'
+          : `${d.getMonth() + 1}/${d.getDate()} ${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`;
+
+        return {
+          timestamp: new Date(ts).toISOString(),
+          ts_display: tsDisplay,
+          contact_name: c.contactName || c.fullName || '',
+          contact_email: c.email || '',
+          deal_slug: dealSlug,
+          is_repeat: false,
+          is_new: ageMin < 60,
+          age_minutes: ageMin,
+        };
+      });
 
     // Sort newest first
     activity.sort((a, b) => b.timestamp.localeCompare(a.timestamp));
 
     res.setHeader('Cache-Control', 's-maxage=30, stale-while-revalidate=120');
-    return res.json(activity);
+    return res.json(activity.slice(0, 50));
   } catch (err) {
     console.error('activity error:', err.message);
     return res.status(500).json({ error: err.message });

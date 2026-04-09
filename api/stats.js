@@ -31,23 +31,32 @@ module.exports = async function handler(req, res) {
 
   try {
     const dealStats = await Promise.all(DEALS.map(async (deal) => {
-      const tag = `deal_outreach_${deal.slug}`;
-      const { total, contacts } = await fetchContactsByTag(tag, GHL_LOCATION_ID, GHL_API_KEY, { pageLimit: 100 });
+      const outreachTag = `deal_outreach_${deal.slug}`;
+      const viewedTag   = `deal_viewed_${deal.slug}`;
 
-      // Use the most recently updated contact's date as "last activity"
+      // Fetch both in parallel
+      const [outreach, viewed] = await Promise.all([
+        fetchContactsByTag(outreachTag, GHL_LOCATION_ID, GHL_API_KEY, { pageLimit: 100 }),
+        fetchContactsByTag(viewedTag,   GHL_LOCATION_ID, GHL_API_KEY, { pageLimit: 100 }),
+      ]);
+
+      // Most recently updated outreach contact = last send date
       let lastActivity = null;
       let sentAt = null;
-      if (contacts.length > 0) {
-        const sorted = contacts.slice().sort((a, b) =>
+      if (outreach.contacts.length > 0) {
+        const sorted = outreach.contacts.slice().sort((a, b) =>
           new Date(b.dateUpdated || b.dateAdded || 0) - new Date(a.dateUpdated || a.dateAdded || 0)
         );
-        const latest = sorted[0];
-        const d = new Date(latest.dateUpdated || latest.dateAdded);
+        const d = new Date(sorted[0].dateUpdated || sorted[0].dateAdded);
         if (!isNaN(d)) {
           lastActivity = `${d.getMonth() + 1}/${d.getDate()}`;
           sentAt = `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
         }
       }
+
+      const sentCount    = outreach.total;
+      const uniqueViewers = viewed.total;
+      const viewRate     = sentCount > 0 ? Math.round((uniqueViewers / sentCount) * 100) : 0;
 
       return {
         name: deal.name,
@@ -57,19 +66,19 @@ module.exports = async function handler(req, res) {
         location: deal.location || null,
         raise_target: deal.raise_target || null,
         memo_url: deal.memo_url || null,
-        sent_count: total,
-        total_matched: total,
-        total_views: 0,
-        unique_viewers: 0,
-        view_rate: 0,
+        sent_count: sentCount,
+        total_matched: sentCount,
+        total_views: uniqueViewers,   // GHL tags are unique per contact
+        unique_viewers: uniqueViewers,
+        view_rate: viewRate,
         last_activity: lastActivity,
         sent_at: sentAt,
-        status: total > 0 ? 'SENT' : 'PENDING',
+        status: sentCount > 0 ? 'SENT' : 'PENDING',
       };
     }));
 
     const totalContacts = dealStats.reduce((sum, d) => sum + d.sent_count, 0);
-    const activeDeals = dealStats.filter(d => d.status === 'SENT').length;
+    const activeDeals   = dealStats.filter(d => d.status === 'SENT').length;
 
     res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
     return res.json({
