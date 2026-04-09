@@ -1,4 +1,2 @@
-// Set this to your Mac Mini's public Tailscale Funnel URL
-// e.g. https://bryces-mac-mini.tail1234.ts.net
-// Leave empty to use same-origin (when accessing via Tailscale LAN)
-window.OSC_API_BASE = "https://bryces-mac-mini.tailfa4ceb.ts.net";
+// API base — empty means same-origin (Vercel serverless functions in /api/)
+window.OSC_API_BASE = "";
