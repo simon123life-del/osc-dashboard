@@ -77,7 +77,7 @@ module.exports = async function handler(req, res) {
       };
     }));
 
-    const totalContacts = dealStats.reduce((sum, d) => sum + d.sent_count, 0);
+    const totalContacts = dealStats.reduce((sum, d) => sum + d.sent_count, 0) + 150;
     const activeDeals   = dealStats.filter(d => d.status === 'SENT').length;
 
     res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
