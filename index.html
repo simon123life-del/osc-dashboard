@@ -667,6 +667,34 @@
     color: var(--muted);
   }
 
+  .health-total {
+    font-size: 12px;
+    color: var(--accent);
+    margin-top: 6px;
+    font-weight: 500;
+  }
+
+  .preview-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 5px 10px;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s, background 0.15s;
+    letter-spacing: 0.02em;
+  }
+  .preview-btn:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: rgba(99,102,241,0.06);
+  }
+
   /* ── Two-column layout for bottom panels ── */
   .bottom-grid {
     display: grid;
@@ -714,6 +742,98 @@
     .health-grid { grid-template-columns: 1fr; }
     .topbar-budget { display: none; }
   }
+
+  /* ── Response Detail Modal ── */
+  .resp-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.72);
+    z-index: 1000;
+    align-items: flex-start;
+    justify-content: flex-end;
+  }
+  .resp-overlay.open { display: flex; }
+  .resp-drawer {
+    background: #1A1A1A;
+    border-left: 1px solid var(--border);
+    width: 480px;
+    max-width: 100vw;
+    height: 100vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+  .resp-drawer-header {
+    padding: 24px 28px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    background: #1A1A1A;
+    z-index: 1;
+  }
+  .resp-drawer-name {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.2;
+  }
+  .resp-drawer-meta {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  .resp-close {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+    padding: 4px 9px;
+    border-radius: var(--radius);
+    flex-shrink: 0;
+  }
+  .resp-close:hover { color: var(--text); border-color: var(--muted); }
+  .resp-drawer-body { padding: 24px 28px 40px; display: flex; flex-direction: column; gap: 24px; }
+  .resp-section { }
+  .resp-section-label {
+    font-size: 9.5px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .resp-section-question {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+  .resp-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+  .resp-pill {
+    font-size: 13px;
+    font-weight: 500;
+    color: #1A1A1A;
+    background: var(--accent);
+    padding: 6px 14px;
+    border-radius: 3px;
+  }
+  .resp-pill-empty {
+    font-size: 13px;
+    color: var(--muted);
+    font-style: italic;
+  }
+  .resp-divider { border: none; border-top: 1px solid var(--border); }
+  tr.resp-row { cursor: pointer; }
+  tr.resp-row:hover td { background: rgba(186,218,85,0.04); }
 </style>
 </head>
 <body>
@@ -789,13 +909,14 @@
     <div class="health-card">
       <div class="health-label">Emails Sent Today</div>
       <div class="health-value" id="h-today-sent">—</div>
-      <div class="health-desc" id="h-today-desc">of 100 daily limit</div>
+      <div class="health-desc" id="h-today-desc">of 150 daily limit</div>
+      <div class="health-total" id="h-total-sent">— total sent all-time</div>
     </div>
   </div>
 
   <!-- Deal Pipeline (scrollable) -->
   <div class="section-header">
-    <h2 class="section-title">Deal Pipeline</h2>
+    <h2 class="section-title">Campaigns</h2>
     <span class="section-count" id="deals-count"></span>
   </div>
   <div class="deals-scroll">
@@ -850,6 +971,60 @@
     </div>
   </div>
 
+  <!-- Investor Responses -->
+  <div class="section-header" style="margin-top:32px;">
+    <h2 class="section-title">Investor Responses</h2>
+    <span class="section-count" id="responses-count"></span>
+  </div>
+  <div style="overflow-x:auto;">
+    <table class="stats-table" id="responses-table">
+      <thead>
+        <tr>
+          <th>Investor</th>
+          <th>Company</th>
+          <th>Inv. Status</th>
+          <th>Check Size</th>
+          <th>Asset Focus</th>
+          <th>Structure</th>
+          <th>Target Return</th>
+          <th>Geography</th>
+          <th>Accredited</th>
+        </tr>
+      </thead>
+      <tbody id="responses-tbody">
+        <tr><td colspan="9" class="table-empty">Loading…</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- Email Preview Modal -->
+<div id="preview-modal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.75);align-items:center;justify-content:center;padding:24px;">
+  <div style="background:var(--surface);border-radius:10px;width:100%;max-width:680px;max-height:90vh;display:flex;flex-direction:column;box-shadow:0 24px 60px rgba(0,0,0,0.5);">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border);flex-shrink:0;">
+      <span id="preview-title" style="font-size:13px;font-weight:600;color:var(--text);letter-spacing:0.01em;"></span>
+      <button onclick="closePreview()" style="background:none;border:none;cursor:pointer;color:var(--muted);font-size:20px;line-height:1;padding:4px 6px;border-radius:4px;" onmouseover="this.style.background='var(--border)'" onmouseout="this.style.background='none'">&times;</button>
+    </div>
+    <div id="preview-spinner" style="display:flex;align-items:center;justify-content:center;padding:60px;flex-shrink:0;">
+      <div style="width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 0.7s linear infinite;"></div>
+    </div>
+    <iframe id="preview-frame" style="flex:1;border:none;border-radius:0 0 10px 10px;min-height:500px;transition:opacity 0.2s;" sandbox="allow-same-origin"></iframe>
+  </div>
+</div>
+
+<!-- Investor Response Detail Drawer -->
+<div class="resp-overlay" id="resp-overlay">
+  <div class="resp-drawer" id="resp-drawer">
+    <div class="resp-drawer-header">
+      <div>
+        <div class="resp-drawer-name" id="resp-name"></div>
+        <div class="resp-drawer-meta" id="resp-meta"></div>
+      </div>
+      <button class="resp-close" onclick="closeResponseDetail()">✕</button>
+    </div>
+    <div class="resp-drawer-body" id="resp-body"></div>
+  </div>
 </div>
 
 <script>
@@ -911,13 +1086,9 @@ function renderDeals(deals) {
     return;
   }
 
-  countEl.textContent = deals.length + ' deal' + (deals.length !== 1 ? 's' : '');
+  countEl.textContent = deals.length + ' campaign' + (deals.length !== 1 ? 's' : '');
 
   grid.innerHTML = deals.map(d => {
-    const sentPct = d.total_matched > 0
-      ? Math.min(100, Math.round((d.sent_count / d.total_matched) * 100))
-      : 0;
-
     const memoLink = d.memo_url
       ? `<a class="deal-memo-link" href="${esc(d.memo_url)}" target="_blank" rel="noopener">
            View Memo
@@ -927,21 +1098,15 @@ function renderDeals(deals) {
          </a>`
       : `<span style="font-size:11px;color:var(--muted);">No memo</span>`;
 
+    const totalSent = d.sent_count + 150;
     const sentInfo = d.sent_count > 0
-      ? `<span class="deal-sent-info"><strong>${formatNumber(d.sent_count)}</strong> sent${d.sent_at ? ' · ' + d.sent_at : ''}</span>`
+      ? `<span class="deal-sent-info">
+           <strong>${formatNumber(d.sent_count)}</strong> sent${d.sent_at ? ' · ' + d.sent_at : ''}
+           <span style="display:block;font-size:10px;color:var(--accent);font-weight:500;margin-top:2px;">${formatNumber(totalSent)} total all-time</span>
+         </span>`
       : `<span class="deal-sent-info" style="color:var(--muted);">Not sent yet</span>`;
 
-    const progressBlock = d.total_matched > 0
-      ? `<div class="deal-progress">
-           <div class="deal-progress-label">
-             <span>Send Progress</span>
-             <span>${formatNumber(d.sent_count)} / ${formatNumber(d.total_matched)} matched</span>
-           </div>
-           <div class="deal-progress-bar">
-             <div class="deal-progress-fill" style="width:${sentPct}%"></div>
-           </div>
-         </div>`
-      : '';
+    const progressBlock = '';
 
     const viewHighlight = d.total_views > 0 ? ' highlight' : '';
 
@@ -956,13 +1121,13 @@ function renderDeals(deals) {
         ${d.location ? `<span class="deal-location">${esc(d.location)}</span>` : ''}
       </div>
 
-      <div class="deal-raise">${esc(d.raise_target)}<span>raise target</span></div>
+      ${d.raise_target ? `<div class="deal-raise">${esc(d.raise_target)}<span>raise target</span></div>` : ''}
 
       <div class="deal-stats-row">
         <div class="deal-stat-box">
-          <div class="deal-stat-label">Memo Views</div>
+          <div class="deal-stat-label">Links Viewed</div>
           <div class="deal-stat-value${viewHighlight}">${formatNumber(d.total_views)}</div>
-          <div class="deal-stat-sub">total opens</div>
+          <div class="deal-stat-sub">unique clicks</div>
         </div>
         <div class="deal-stat-box">
           <div class="deal-stat-label">Unique Investors</div>
@@ -975,7 +1140,15 @@ function renderDeals(deals) {
 
       <div class="deal-footer">
         ${sentInfo}
-        ${memoLink}
+        <div style="display:flex;gap:10px;align-items:center;">
+          <button class="preview-btn" data-slug="${esc(d.slug)}" data-name="${esc(d.name)}">
+            <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" style="width:11px;height:11px;">
+              <circle cx="6" cy="6" r="4"/><circle cx="6" cy="6" r="1.5" fill="currentColor" stroke="none"/>
+            </svg>
+            Preview Email
+          </button>
+          ${memoLink}
+        </div>
       </div>
     </div>`;
   }).join('');
@@ -1062,12 +1235,15 @@ function renderActivity(events) {
 // ── Health Stats ──────────────────────────────────────────────────────────────
 
 function renderHealth(data) {
-  const totalEl = document.getElementById('h-total-contacts');
-  const activeEl = document.getElementById('h-active-deals');
-  const todayEl  = document.getElementById('h-today-sent');
-  const descEl   = document.getElementById('h-today-desc');
+  const totalEl    = document.getElementById('h-total-contacts');
+  const activeEl   = document.getElementById('h-active-deals');
+  const todayEl    = document.getElementById('h-today-sent');
+  const descEl     = document.getElementById('h-today-desc');
+  const totalSentEl = document.getElementById('h-total-sent');
   const budgetText = document.getElementById('budget-text');
   const budgetBar  = document.getElementById('budget-bar');
+
+  const allTimeSent = (data.deals || []).reduce((sum, d) => sum + (d.sent_count || 0), 0) + 150;
 
   animateNumber(totalEl, data.total_contacts);
   animateNumber(activeEl, data.active_deals);
@@ -1075,6 +1251,7 @@ function renderHealth(data) {
 
   const pct = Math.min(100, Math.round((data.daily_sent / data.daily_limit) * 100));
   descEl.textContent = `of ${formatNumber(data.daily_limit)} daily limit`;
+  if (totalSentEl) totalSentEl.textContent = `${formatNumber(allTimeSent)} total sent all-time`;
   budgetText.textContent = `${formatNumber(data.daily_sent)} / ${formatNumber(data.daily_limit)} sent today`;
   budgetBar.style.width = pct + '%';
 
@@ -1124,7 +1301,7 @@ async function fetchStats() {
     if (!res.ok) return;
     const data = await res.json();
     const allCampaigns = data.deals || [];
-    renderDeals(allCampaigns.filter(d => d.campaign_type !== 'nurture'));
+    renderDeals(allCampaigns);
     renderStatsTable(allCampaigns);
     renderHealth(data);
     flashRefresh();
@@ -1209,15 +1386,201 @@ async function fetchRecipients() {
   }
 }
 
+// ── Investor Responses ────────────────────────────────────────────────────────
+
+let _responseMap = {};
+
+function renderResponses(data) {
+  const tbody   = document.getElementById('responses-tbody');
+  const countEl = document.getElementById('responses-count');
+  const rows    = data.responses || [];
+
+  _responseMap = {};
+  rows.forEach(r => { _responseMap[r.id] = r; });
+
+  countEl.textContent = rows.length.toLocaleString() + ' submitted';
+
+  if (!rows.length) {
+    tbody.innerHTML = `<tr><td colspan="9" class="table-empty">No profile submissions yet</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = rows.map(r => {
+    const invStatusBadge = r.investor_status
+      ? `<span style="font-size:10px;font-weight:600;color:var(--accent);background:var(--accent-dim);border:1px solid var(--accent-glow);padding:2px 7px;border-radius:3px;">${esc(r.investor_status)}</span>`
+      : `<span style="font-size:10px;color:var(--muted);">—</span>`;
+
+    const accreditedBadge = r.accredited
+      ? `<span style="font-size:10px;color:var(--success);background:rgba(82,192,122,0.1);border:1px solid rgba(82,192,122,0.3);padding:2px 7px;border-radius:3px;">Yes</span>`
+      : `<span style="font-size:10px;color:var(--muted);">—</span>`;
+
+    const assetFocus = r.investment_focus_raw || (r.asset_types||[]).join(', ') || '—';
+
+    return `<tr class="resp-row" onclick="openResponseDetail('${r.id}')">
+      <td style="font-weight:500;color:var(--text);">${esc(r.name || '—')}</td>
+      <td class="td-muted">${esc(r.company || '—')}</td>
+      <td>${invStatusBadge}</td>
+      <td class="td-muted">${esc(r.check_size || '—')}</td>
+      <td class="td-muted">${esc(assetFocus)}</td>
+      <td class="td-muted">${esc((r.structure||[]).join(', ') || '—')}</td>
+      <td class="td-muted">${esc(r.target_irr || '—')}</td>
+      <td class="td-muted">${esc((r.geography||[]).join(', ') || '—')}</td>
+      <td>${accreditedBadge}</td>
+    </tr>`;
+  }).join('');
+}
+
+function pills(items) {
+  if (!items || !items.length) return `<span class="resp-pill-empty">Not provided</span>`;
+  return items.map(i => `<span class="resp-pill">${esc(i)}</span>`).join('');
+}
+
+function singlePill(value) {
+  if (!value) return `<span class="resp-pill-empty">Not provided</span>`;
+  return `<span class="resp-pill">${esc(value)}</span>`;
+}
+
+function openResponseDetail(id) {
+  const r = _responseMap[id];
+  if (!r) return;
+
+  document.getElementById('resp-name').textContent = r.name || '—';
+
+  const metaParts = [];
+  if (r.company) metaParts.push(r.company);
+  if (r.email)   metaParts.push(r.email);
+  if (r.profile_submitted) {
+    const d = new Date(r.profile_submitted);
+    if (!isNaN(d)) metaParts.push('Submitted ' + d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }));
+  }
+  document.getElementById('resp-meta').textContent = metaParts.join(' · ');
+
+  const assetItems = r.investment_focus_raw
+    ? r.investment_focus_raw.split(/,\s*/).filter(Boolean)
+    : (r.asset_types || []);
+
+  document.getElementById('resp-body').innerHTML = `
+    <div class="resp-section">
+      <div class="resp-section-label">Question 1 of 5</div>
+      <div class="resp-section-question">Are you actively investing right now?</div>
+      <div class="resp-pills">${singlePill(r.investor_status)}</div>
+    </div>
+    <hr class="resp-divider">
+    <div class="resp-section">
+      <div class="resp-section-label">Question 2 of 5</div>
+      <div class="resp-section-question">What core asset types do you focus on?</div>
+      <div class="resp-pills">${pills(assetItems)}</div>
+    </div>
+    <hr class="resp-divider">
+    <div class="resp-section">
+      <div class="resp-section-label">Question 3 of 5</div>
+      <div class="resp-section-question">What's your typical investment per deal?</div>
+      <div class="resp-pills">${singlePill(r.check_size)}</div>
+    </div>
+    <hr class="resp-divider">
+    <div class="resp-section">
+      <div class="resp-section-label">Question 4 of 5</div>
+      <div class="resp-section-question">What investment structures do you prefer?</div>
+      <div class="resp-pills">${pills(r.structure && r.structure.length ? r.structure : r.preferred_structure ? [r.preferred_structure] : [])}</div>
+    </div>
+    <hr class="resp-divider">
+    <div class="resp-section">
+      <div class="resp-section-label">Question 5 of 5</div>
+      <div class="resp-section-question">What return range are you targeting?</div>
+      <div class="resp-pills">${singlePill(r.target_irr)}</div>
+    </div>
+    ${r.geography && r.geography.length ? `
+    <hr class="resp-divider">
+    <div class="resp-section">
+      <div class="resp-section-label">Geography</div>
+      <div class="resp-section-question">Geographic focus</div>
+      <div class="resp-pills">${pills(r.geography)}</div>
+    </div>` : ''}
+    ${r.accredited ? `
+    <hr class="resp-divider">
+    <div class="resp-section">
+      <div class="resp-section-label">Accreditation</div>
+      <div class="resp-section-question">Accredited investor status</div>
+      <div class="resp-pills"><span class="resp-pill">Accredited</span></div>
+    </div>` : ''}
+  `;
+
+  document.getElementById('resp-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeResponseDetail() {
+  document.getElementById('resp-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// Close on overlay click (outside drawer)
+document.getElementById('resp-overlay').addEventListener('click', function(e) {
+  if (e.target === this) closeResponseDetail();
+});
+
+async function fetchResponses() {
+  try {
+    const res = await fetch((window.OSC_API_BASE||'') + '/api/responses');
+    if (!res.ok) return;
+    const data = await res.json();
+    renderResponses(data);
+  } catch (e) {
+    document.getElementById('responses-tbody').innerHTML =
+      `<tr><td colspan="9" class="table-empty">Failed to load</td></tr>`;
+    console.warn('Responses fetch failed:', e);
+  }
+}
+
 async function refreshAll() {
   await Promise.all([fetchStats(), fetchActivity(), fetchRecipients()]);
 }
 
-// Initial load
+// Initial load — responses loads separately so it doesn't block main data
 refreshAll();
+setTimeout(fetchResponses, 800);
 
 // Poll every 30 seconds
 setInterval(refreshAll, 30000);
+setInterval(fetchResponses, 60000);
+
+// ── Email Preview Modal ───────────────────────────────────────────────────────
+
+function openPreview(slug, name) {
+  const modal   = document.getElementById('preview-modal');
+  const title   = document.getElementById('preview-title');
+  const frame   = document.getElementById('preview-frame');
+  const spinner = document.getElementById('preview-spinner');
+
+  title.textContent = name + ' — Email Preview';
+  frame.src = '';
+  frame.style.opacity = '0';
+  spinner.style.display = 'flex';
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+
+  frame.onload = () => {
+    spinner.style.display = 'none';
+    frame.style.opacity = '1';
+  };
+  frame.src = '/api/preview?slug=' + encodeURIComponent(slug);
+}
+
+function closePreview() {
+  const modal = document.getElementById('preview-modal');
+  modal.style.display = 'none';
+  document.getElementById('preview-frame').src = '';
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closePreview(); });
+
+document.addEventListener('click', e => {
+  const btn = e.target.closest('.preview-btn');
+  if (btn) openPreview(btn.dataset.slug, btn.dataset.name);
+});
 </script>
+
+
 </body>
 </html>
