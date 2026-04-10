@@ -920,9 +920,9 @@
     </div>
   </div>
 
-  <!-- Deal Pipeline (scrollable) -->
+  <!-- Campaign Cards -->
   <div class="section-header">
-    <h2 class="section-title">Campaigns</h2>
+    <h2 class="section-title">Campaign Details</h2>
     <span class="section-count" id="deals-count"></span>
   </div>
   <div class="deals-scroll">
@@ -1104,17 +1104,14 @@ function renderDeals(deals) {
          </a>`
       : `<span style="font-size:11px;color:var(--muted);">No memo</span>`;
 
-    const totalSent = d.sent_count + 150;
-    const sentInfo = d.sent_count > 0
+    const emailsSent = d.emails_sent || d.sent_count || 0;
+    const sentInfo = emailsSent > 0
       ? `<span class="deal-sent-info">
-           <strong>${formatNumber(d.sent_count)}</strong> sent${d.sent_at ? ' · ' + d.sent_at : ''}
-           <span style="display:block;font-size:10px;color:var(--accent);font-weight:500;margin-top:2px;">${formatNumber(totalSent)} total all-time</span>
+           <strong>${formatNumber(emailsSent)}</strong> emails sent${d.sent_at ? ' · ' + d.sent_at : ''}
          </span>`
       : `<span class="deal-sent-info" style="color:var(--muted);">Not sent yet</span>`;
 
-    const progressBlock = '';
-
-    const viewHighlight = d.total_views > 0 ? ' highlight' : '';
+    const clickHighlight = (d.unique_clickers || 0) > 0 ? ' highlight' : '';
 
     return `<div class="deal-card ${cardClass(d.status)}">
       <div class="deal-card-header">
@@ -1137,7 +1134,7 @@ function renderDeals(deals) {
         </div>
         <div class="deal-stat-box">
           <div class="deal-stat-label">Link Clicks</div>
-          <div class="deal-stat-value${viewHighlight}">${formatNumber(d.unique_clickers || d.unique_viewers || 0)}</div>
+          <div class="deal-stat-value${clickHighlight}">${formatNumber(d.unique_clickers || 0)}</div>
           <div class="deal-stat-sub">clicked a link · ${d.click_rate || d.view_rate || 0}% click rate</div>
         </div>
         ${d.has_form ? `<div class="deal-stat-box">
@@ -1172,7 +1169,7 @@ function renderStatsTable(deals) {
   const sent = deals.filter(d => d.sent_count > 0 || d.status === 'SENT' || d.status === 'ACTIVE');
 
   if (sent.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="6" class="table-empty">No campaigns sent yet</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="7" class="table-empty">No campaigns sent yet</td></tr>`;
     return;
   }
 
@@ -1207,37 +1204,38 @@ function renderStatsTable(deals) {
 // Track rendered event timestamps to animate only truly new events
 let _seenTimestamps = new Set();
 
-function renderActivity(events) {
+function renderActivity(events, meta) {
   const feed = document.getElementById('activity-feed');
   const countEl = document.getElementById('activity-count');
 
   if (!events || events.length === 0) {
-    feed.innerHTML = `<div class="activity-empty">No link clicks recorded yet.</div>`;
+    feed.innerHTML = `<div class="activity-empty">No link clicks recorded yet. Clicks will appear here in real time as investors open tracked links.</div>`;
     countEl.textContent = '';
     return;
   }
 
-  // Only show 20 in the feed
-  const visible = events.slice(0, 20);
-  countEl.textContent = events.length + ' total';
+  const visible = events.slice(0, 50);
+  const uniqueCount = meta && meta.unique_clickers ? meta.unique_clickers : new Set(events.map(e => e.contact_email).filter(Boolean)).size;
+  countEl.textContent = `${uniqueCount} unique · ${events.length} total clicks`;
 
   const newTimestamps = new Set(visible.map(e => e.timestamp));
 
   feed.innerHTML = visible.map(e => {
     const isNew = e.is_new && !_seenTimestamps.has(e.timestamp);
     const dotClass = isNew ? 'new' : '';
-    const identifier = e.contact_name || e.contact_email || 'Unknown investor';
+    const name = e.contact_name || e.contact_email || 'Unknown investor';
+    const campaignLabel = e.campaign_name || e.deal_slug || '';
     const repeatBadge = e.is_repeat
-      ? `<span style="font-size:10px;color:var(--muted);margin-left:6px;">repeat</span>`
-      : '';
+      ? `<span style="font-size:10px;color:var(--muted);margin-left:6px;border:1px solid var(--border);padding:1px 5px;border-radius:3px;">repeat</span>`
+      : `<span style="font-size:10px;color:var(--success);margin-left:6px;">first click</span>`;
 
     return `<div class="activity-item">
       <div class="activity-dot ${dotClass}"></div>
       <div class="activity-content">
         <div class="activity-main">
-          <span class="contact-name">${esc(identifier)}</span>
-          <span style="color:var(--accent);font-weight:600;">clicked a link</span> in
-          <span class="deal-name-ref">${esc(e.deal_slug)}</span>
+          <span class="contact-name">${esc(name)}</span>
+          <span style="color:var(--muted);font-weight:400;"> clicked a link in </span>
+          <span class="deal-name-ref">${esc(campaignLabel)}</span>
           ${repeatBadge}
         </div>
         <div class="activity-sub">${esc(e.contact_email || '')}</div>
@@ -1334,8 +1332,9 @@ async function fetchActivity() {
   try {
     const res = await fetch((window.OSC_API_BASE||'') + '/api/activity');
     if (!res.ok) return;
-    const events = await res.json();
-    renderActivity(events);
+    const data = await res.json();
+    // API now returns {events, total_events, unique_clickers, first_clicks}
+    renderActivity(data.events || [], data);
   } catch (e) {
     console.warn('Activity fetch failed:', e);
   }

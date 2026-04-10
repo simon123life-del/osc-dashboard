@@ -1,61 +1,61 @@
-const { fetchContactsByTag } = require('./_ghl');
+// activity.js — pulls real click events from the tracker server's /clicks endpoint
+// Tracker lives on the Mac Mini, exposed publicly via Tailscale Funnel
 
-// Campaigns to check for open/click events
-const CAMPAIGNS = [
-  { slug: 'white_rocks',      name: 'White Rocks' },
-  { slug: 'nurture_q2_2026',  name: 'Q2 2026 Nurture' },
-];
+const TRACKER_BASE = process.env.TRACKER_BASE_URL || 'https://bryces-mac-mini.tailfa4ceb.ts.net';
 
 module.exports = async function handler(req, res) {
-  const GHL_API_KEY    = process.env.GHL_API_KEY;
-  const GHL_LOCATION_ID = process.env.GHL_LOCATION_ID;
-
-  if (!GHL_API_KEY || !GHL_LOCATION_ID) {
-    return res.status(500).json({ error: 'GHL credentials not configured' });
-  }
-
   try {
-    // Fetch contacts with deal_viewed_* tags across all campaigns in parallel
-    const campaignViews = await Promise.all(CAMPAIGNS.map(async (campaign) => {
-      const viewedTag = `deal_viewed_${campaign.slug}`;
-      const { contacts } = await fetchContactsByTag(viewedTag, GHL_LOCATION_ID, GHL_API_KEY, {
-        pageLimit: 100,
-        maxContacts: 200,
-      });
-      return contacts.map(c => ({ ...c, _campaign: campaign }));
-    }));
+    const url = `${TRACKER_BASE}/clicks?limit=100`;
+    const response = await fetch(url, { signal: AbortSignal.timeout(8000) });
+
+    if (!response.ok) {
+      throw new Error(`Tracker returned ${response.status}`);
+    }
+
+    const data = await response.json();
+    const events = data.events || [];
 
     const now = Date.now();
-    const events = campaignViews.flat().map(c => {
-      const ts   = c.dateUpdated || c.dateAdded || null;
-      const d    = ts ? new Date(ts) : null;
-      const ageMin = d ? Math.floor((now - d.getTime()) / 60000) : null;
 
-      const tsDisplay = d && !isNaN(d)
-        ? `${d.getMonth() + 1}/${d.getDate()} ${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`
-        : '—';
+    const formatted = events.map(e => {
+      const ts = e.timestamp || '';
+      const d  = ts ? new Date(ts) : null;
+      const ageMin = d && !isNaN(d) ? Math.floor((now - d.getTime()) / 60000) : null;
 
-      const name = [c.firstName, c.lastName].filter(Boolean).join(' ') || c.contactName || '';
+      let tsDisplay = '—';
+      if (d && !isNaN(d)) {
+        tsDisplay = `${d.getMonth() + 1}/${d.getDate()} ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
+      }
 
       return {
-        timestamp:     ts || '',
+        timestamp:     ts,
         ts_display:    tsDisplay,
-        contact_name:  name,
-        contact_email: c.email || '',
-        deal_slug:     c._campaign.slug,
-        is_repeat:     false,
+        contact_name:  e.contact_name  || '',
+        contact_email: e.contact_email || '',
+        deal_slug:     e.deal_slug     || '',
+        campaign_name: e.campaign_name || e.deal_slug || '',
+        is_repeat:     e.is_repeat,
         is_new:        ageMin !== null && ageMin < 60,
         age_minutes:   ageMin,
       };
     });
 
-    // Sort newest first, cap at 50
-    events.sort((a, b) => b.timestamp.localeCompare(a.timestamp));
-
-    res.setHeader('Cache-Control', 's-maxage=30, stale-while-revalidate=120');
-    return res.json(events.slice(0, 50));
+    res.setHeader('Cache-Control', 's-maxage=15, stale-while-revalidate=60');
+    return res.json({
+      events:          formatted,
+      total_events:    data.total_events    || formatted.length,
+      unique_clickers: data.unique_clickers || 0,
+      first_clicks:    data.first_clicks    || 0,
+    });
   } catch (err) {
     console.error('activity error:', err.message);
-    return res.status(500).json({ error: err.message });
+    // Return empty on error — dashboard shows "no clicks yet" rather than crashing
+    return res.json({
+      events: [],
+      total_events: 0,
+      unique_clickers: 0,
+      first_clicks: 0,
+      error: err.message,
+    });
   }
 };
