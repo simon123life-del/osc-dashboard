@@ -877,16 +877,17 @@
     <table>
       <thead>
         <tr>
-          <th>Deal</th>
-          <th>Sent</th>
-          <th>Viewed Memo</th>
-          <th>View Rate</th>
+          <th>Campaign</th>
+          <th>Emails Sent</th>
+          <th>Link Clicks <span style="font-size:9px;font-weight:400;color:#555;text-transform:none;letter-spacing:0;">(clicked a link)</span></th>
+          <th>Click Rate</th>
+          <th>Forms Submitted <span style="font-size:9px;font-weight:400;color:#555;text-transform:none;letter-spacing:0;">(filled the form)</span></th>
           <th>Last Activity</th>
           <th>Status</th>
         </tr>
       </thead>
       <tbody id="stats-tbody">
-        <tr><td colspan="6" class="table-empty">Loading…</td></tr>
+        <tr><td colspan="7" class="table-empty">Loading…</td></tr>
       </tbody>
     </table>
   </div>
@@ -895,22 +896,27 @@
   <div class="section-header">
     <h2 class="section-title">Contact Database</h2>
   </div>
-  <div class="health-grid" id="health-grid">
+  <div class="health-grid" id="health-grid" style="grid-template-columns:repeat(4,1fr);">
     <div class="health-card">
       <div class="health-label">Total Contacts in Pipeline</div>
       <div class="health-value" id="h-total-contacts">—</div>
       <div class="health-desc">Unique investors across all campaigns</div>
     </div>
     <div class="health-card">
-      <div class="health-label">Deals with Active Outreach</div>
-      <div class="health-value accent" id="h-active-deals">—</div>
-      <div class="health-desc">Sent or actively running</div>
-    </div>
-    <div class="health-card">
       <div class="health-label">Emails Sent Today</div>
       <div class="health-value" id="h-today-sent">—</div>
       <div class="health-desc" id="h-today-desc">of 150 daily limit</div>
       <div class="health-total" id="h-total-sent">— total sent all-time</div>
+    </div>
+    <div class="health-card">
+      <div class="health-label">Link Clicks — All Campaigns</div>
+      <div class="health-value accent" id="h-total-clicks">—</div>
+      <div class="health-desc">Investors who clicked a tracked link</div>
+    </div>
+    <div class="health-card">
+      <div class="health-label">Forms Submitted</div>
+      <div class="health-value" id="h-total-forms" style="color:var(--success);">—</div>
+      <div class="health-desc">Investors who filled out the profile form</div>
     </div>
   </div>
 
@@ -1123,17 +1129,22 @@ function renderDeals(deals) {
 
       ${d.raise_target ? `<div class="deal-raise">${esc(d.raise_target)}<span>raise target</span></div>` : ''}
 
-      <div class="deal-stats-row">
+      <div class="deal-stats-row" style="grid-template-columns:${d.has_form ? '1fr 1fr 1fr' : '1fr 1fr'};">
         <div class="deal-stat-box">
-          <div class="deal-stat-label">Links Viewed</div>
-          <div class="deal-stat-value${viewHighlight}">${formatNumber(d.total_views)}</div>
-          <div class="deal-stat-sub">unique clicks</div>
+          <div class="deal-stat-label">Emails Sent</div>
+          <div class="deal-stat-value">${formatNumber(d.emails_sent || d.sent_count || 0)}</div>
+          <div class="deal-stat-sub">delivered to investors</div>
         </div>
         <div class="deal-stat-box">
-          <div class="deal-stat-label">Unique Investors</div>
-          <div class="deal-stat-value${viewHighlight}">${formatNumber(d.unique_viewers)}</div>
-          <div class="deal-stat-sub">distinct viewers</div>
+          <div class="deal-stat-label">Link Clicks</div>
+          <div class="deal-stat-value${viewHighlight}">${formatNumber(d.unique_clickers || d.unique_viewers || 0)}</div>
+          <div class="deal-stat-sub">clicked a link · ${d.click_rate || d.view_rate || 0}% click rate</div>
         </div>
+        ${d.has_form ? `<div class="deal-stat-box">
+          <div class="deal-stat-label">Forms Submitted</div>
+          <div class="deal-stat-value" style="color:${d.form_submissions > 0 ? 'var(--success)' : 'var(--muted)'};">${formatNumber(d.form_submissions || 0)}</div>
+          <div class="deal-stat-sub">filled the profile form${d.unique_clickers > 0 ? ' · ' + (d.conversion_rate || 0) + '% of clickers' : ''}</div>
+        </div>` : ''}
       </div>
 
       ${progressBlock}
@@ -1166,19 +1177,25 @@ function renderStatsTable(deals) {
   }
 
   tbody.innerHTML = sent.map(d => {
+    const clickRate = d.click_rate || d.view_rate || 0;
     let rateClass = 'poor';
-    if (d.view_rate >= 20) rateClass = 'good';
-    else if (d.view_rate >= 10) rateClass = 'ok';
+    if (clickRate >= 20) rateClass = 'good';
+    else if (clickRate >= 10) rateClass = 'ok';
 
     const typeBadge = d.campaign_type === 'nurture'
       ? `<span style="font-size:9px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);background:rgba(255,255,255,0.04);border:1px solid var(--border);padding:1px 6px;border-radius:3px;margin-left:8px;">Nurture</span>`
       : '';
 
+    const formCell = d.has_form
+      ? `<td class="td-number" style="color:${d.form_submissions > 0 ? 'var(--success)' : 'var(--muted)'};">${formatNumber(d.form_submissions || 0)}${d.form_submissions > 0 && d.unique_clickers > 0 ? `<span style="font-size:10px;color:var(--muted);margin-left:6px;">(${d.conversion_rate}% of clickers)</span>` : ''}</td>`
+      : `<td class="td-muted">—</td>`;
+
     return `<tr>
       <td class="td-deal-name">${esc(d.name)}${typeBadge}</td>
-      <td class="td-number">${formatNumber(d.sent_count)}</td>
-      <td class="td-number">${formatNumber(d.unique_viewers)}</td>
-      <td class="td-rate ${rateClass}">${d.view_rate > 0 ? d.view_rate + '%' : '—'}</td>
+      <td class="td-number">${formatNumber(d.emails_sent || d.sent_count || 0)}</td>
+      <td class="td-number">${formatNumber(d.unique_clickers || d.unique_viewers || 0)}</td>
+      <td class="td-rate ${rateClass}">${clickRate > 0 ? clickRate + '%' : '—'}</td>
+      ${formCell}
       <td class="td-muted">${d.last_activity || '—'}</td>
       <td><span class="status-pill ${statusPillClass(d.status)}">${statusLabel(d.status)}</span></td>
     </tr>`;
@@ -1195,7 +1212,7 @@ function renderActivity(events) {
   const countEl = document.getElementById('activity-count');
 
   if (!events || events.length === 0) {
-    feed.innerHTML = `<div class="activity-empty">No memo views recorded yet.</div>`;
+    feed.innerHTML = `<div class="activity-empty">No link clicks recorded yet.</div>`;
     countEl.textContent = '';
     return;
   }
@@ -1219,7 +1236,7 @@ function renderActivity(events) {
       <div class="activity-content">
         <div class="activity-main">
           <span class="contact-name">${esc(identifier)}</span>
-          viewed
+          <span style="color:var(--accent);font-weight:600;">clicked a link</span> in
           <span class="deal-name-ref">${esc(e.deal_slug)}</span>
           ${repeatBadge}
         </div>
@@ -1235,19 +1252,23 @@ function renderActivity(events) {
 // ── Health Stats ──────────────────────────────────────────────────────────────
 
 function renderHealth(data) {
-  const totalEl    = document.getElementById('h-total-contacts');
-  const activeEl   = document.getElementById('h-active-deals');
-  const todayEl    = document.getElementById('h-today-sent');
-  const descEl     = document.getElementById('h-today-desc');
+  const totalEl     = document.getElementById('h-total-contacts');
+  const todayEl     = document.getElementById('h-today-sent');
+  const descEl      = document.getElementById('h-today-desc');
   const totalSentEl = document.getElementById('h-total-sent');
-  const budgetText = document.getElementById('budget-text');
-  const budgetBar  = document.getElementById('budget-bar');
+  const clicksEl    = document.getElementById('h-total-clicks');
+  const formsEl     = document.getElementById('h-total-forms');
+  const budgetText  = document.getElementById('budget-text');
+  const budgetBar   = document.getElementById('budget-bar');
 
-  const allTimeSent = (data.deals || []).reduce((sum, d) => sum + (d.sent_count || 0), 0) + 150;
+  const allTimeSent   = (data.deals || []).reduce((sum, d) => sum + (d.emails_sent || d.sent_count || 0), 0) + 150;
+  const totalClickers = (data.deals || []).reduce((sum, d) => sum + (d.unique_clickers || d.unique_viewers || 0), 0);
+  const totalForms    = data.total_form_submissions || 0;
 
   animateNumber(totalEl, data.total_contacts);
-  animateNumber(activeEl, data.active_deals);
   animateNumber(todayEl, data.daily_sent);
+  animateNumber(clicksEl, totalClickers);
+  animateNumber(formsEl, totalForms);
 
   const pct = Math.min(100, Math.round((data.daily_sent / data.daily_limit) * 100));
   descEl.textContent = `of ${formatNumber(data.daily_limit)} daily limit`;
@@ -1255,7 +1276,6 @@ function renderHealth(data) {
   budgetText.textContent = `${formatNumber(data.daily_sent)} / ${formatNumber(data.daily_limit)} sent today`;
   budgetBar.style.width = pct + '%';
 
-  // Color the today-sent value based on usage
   if (pct >= 90) todayEl.style.color = 'var(--danger)';
   else if (pct >= 70) todayEl.style.color = 'var(--warn)';
   else todayEl.style.color = '';

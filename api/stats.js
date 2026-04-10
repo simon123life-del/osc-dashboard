@@ -2,7 +2,6 @@ const { fetchContactsByTag } = require('./_ghl');
 
 const DAILY_LIMIT = 150;
 
-// Tag that identifies the full campaign list (all eligible contacts)
 const LIST_TAG = '1st import';
 
 const DEALS = [
@@ -14,6 +13,7 @@ const DEALS = [
     location: 'Austin, Texas',
     raise_target: '$30,000,000',
     memo_url: 'https://deals.oakstcap.com/white-rocks',
+    form_tag: null,
   },
   {
     slug: 'nurture_q2_2026',
@@ -23,6 +23,7 @@ const DEALS = [
     location: null,
     raise_target: null,
     memo_url: null,
+    form_tag: 'investor_profiled',  // GHL tag applied when investor submits the profile form
   },
 ];
 
@@ -38,16 +39,23 @@ module.exports = async function handler(req, res) {
     const todayStart = new Date();
     todayStart.setHours(0, 0, 0, 0);
 
-    // Fetch deal stats + total list count in parallel
     const [dealStats, listResult] = await Promise.all([
       Promise.all(DEALS.map(async (deal) => {
         const outreachTag = `deal_outreach_${deal.slug}`;
-        const viewedTag   = `deal_viewed_${deal.slug}`;
+        const clickedTag  = `deal_viewed_${deal.slug}`;
 
-        const [outreach, viewed] = await Promise.all([
+        const fetches = [
           fetchContactsByTag(outreachTag, GHL_LOCATION_ID, GHL_API_KEY),
-          fetchContactsByTag(viewedTag,   GHL_LOCATION_ID, GHL_API_KEY),
-        ]);
+          fetchContactsByTag(clickedTag,  GHL_LOCATION_ID, GHL_API_KEY),
+        ];
+        if (deal.form_tag) {
+          fetches.push(fetchContactsByTag(deal.form_tag, GHL_LOCATION_ID, GHL_API_KEY));
+        }
+
+        const results = await Promise.all(fetches);
+        const outreach = results[0];
+        const clicked  = results[1];
+        const profiled = results[2] || { total: 0 };
 
         // Last send date = most recently updated outreach contact
         let lastActivity = null;
@@ -63,15 +71,16 @@ module.exports = async function handler(req, res) {
           }
         }
 
-        // daily_sent: contacts tagged today (dateUpdated >= today 00:00)
         const sentToday = outreach.contacts.filter(c => {
           const d = new Date(c.dateUpdated || c.dateAdded || 0);
           return d >= todayStart;
         }).length;
 
-        const sentCount     = outreach.total;
-        const uniqueViewers = viewed.total;
-        const viewRate      = sentCount > 0 ? Math.round((uniqueViewers / sentCount) * 100) : 0;
+        const emailsSent     = outreach.total;
+        const uniqueClickers = clicked.total;
+        const formSubmissions = profiled.total;
+        const clickRate      = emailsSent > 0 ? Math.round((uniqueClickers / emailsSent) * 100) : 0;
+        const conversionRate = uniqueClickers > 0 ? Math.round((formSubmissions / uniqueClickers) * 100) : 0;
 
         return {
           name: deal.name,
@@ -81,14 +90,22 @@ module.exports = async function handler(req, res) {
           location: deal.location || null,
           raise_target: deal.raise_target || null,
           memo_url: deal.memo_url || null,
-          sent_count: sentCount,
-          sent_today: sentToday,
-          total_views: uniqueViewers,
-          unique_viewers: uniqueViewers,
-          view_rate: viewRate,
-          last_activity: lastActivity,
-          sent_at: sentAt,
-          status: sentCount > 0 ? 'SENT' : 'PENDING',
+          has_form: !!deal.form_tag,
+          // Explicit, unambiguous metric names
+          emails_sent:       emailsSent,
+          sent_today:        sentToday,
+          unique_clickers:   uniqueClickers,
+          form_submissions:  formSubmissions,
+          click_rate:        clickRate,
+          conversion_rate:   conversionRate,
+          last_activity:     lastActivity,
+          sent_at:           sentAt,
+          status: emailsSent > 0 ? 'SENT' : 'PENDING',
+          // Legacy aliases so existing renderers don't break
+          sent_count:        emailsSent,
+          total_views:       uniqueClickers,
+          unique_viewers:    uniqueClickers,
+          view_rate:         clickRate,
         };
       })),
       fetchContactsByTag(LIST_TAG, GHL_LOCATION_ID, GHL_API_KEY),
@@ -97,6 +114,7 @@ module.exports = async function handler(req, res) {
     const totalContacts = listResult.total;
     const dailySent     = dealStats.reduce((sum, d) => sum + d.sent_today, 0);
     const activeDeals   = dealStats.filter(d => d.status === 'SENT').length;
+    const totalFormSubmissions = dealStats.reduce((sum, d) => sum + (d.form_submissions || 0), 0);
 
     res.setHeader('Cache-Control', 's-maxage=30, stale-while-revalidate=120');
     return res.json({
@@ -105,6 +123,7 @@ module.exports = async function handler(req, res) {
       daily_limit: DAILY_LIMIT,
       total_contacts: totalContacts,
       active_deals: activeDeals,
+      total_form_submissions: totalFormSubmissions,
       generated_at: new Date().toISOString(),
     });
   } catch (err) {
