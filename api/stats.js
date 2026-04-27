@@ -1,4 +1,4 @@
-const { fetchContactsByTag } = require('./_ghl');
+const { fetchContactsByTag, ghlGet } = require('./_ghl');
 
 const DAILY_LIMIT = 500;
 
@@ -106,12 +106,8 @@ module.exports = async function handler(req, res) {
           view_rate:         clickRate,
         };
       })),
-      fetch(`https://services.leadconnectorhq.com/contacts/?locationId=${GHL_LOCATION_ID}&limit=1`, {
-        headers: {
-          Authorization: `Bearer ${GHL_API_KEY}`,
-          Version: '2021-07-28',
-        },
-      }).then(r => r.json()),
+      ghlGet('/contacts/', { locationId: GHL_LOCATION_ID, limit: 1 }, GHL_API_KEY)
+        .catch(() => ({ meta: { total: 0 } })),
     ]);
 
     const totalContacts = totalContactsResult.meta?.total || 0;
