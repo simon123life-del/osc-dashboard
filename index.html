@@ -1577,7 +1577,9 @@ async function fetchResponses() {
 async function loadLeads() {
   const base = window.OSC_API_BASE || '';
   try {
-    const data = await fetch(`${base}/api/leads`).then(r => r.json());
+    const r = await fetch(`${base}/api/leads`);
+    if (!r.ok) throw new Error(`/api/leads returned ${r.status}`);
+    const data = await r.json();
     const leads = data.leads || [];
     const tbody = document.querySelector('#leads-table tbody');
     const countEl = document.getElementById('leads-count');
@@ -1588,19 +1590,21 @@ async function loadLeads() {
     }
     tbody.innerHTML = leads.map(l => `
       <tr>
-        <td>${l.ts_display}</td>
+        <td>${esc(l.ts_display)}</td>
         <td style="font-size:.8em;opacity:.7">${l.type === 'reply' ? '✉️ Reply' : '📋 Form'}</td>
         <td>
-          <div>${l.contact_name || '—'}</div>
-          <div style="font-size:.8em;opacity:.6">${l.contact_email}</div>
+          <div>${esc(l.contact_name || '—')}</div>
+          <div style="font-size:.8em;opacity:.6">${esc(l.contact_email)}</div>
         </td>
-        <td style="font-size:.85em;opacity:.8">${l.campaign_slug || '—'}</td>
-        <td style="font-size:.85em">${l.subject}</td>
-        <td style="font-size:.8em;opacity:.7;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${l.body_preview}</td>
+        <td style="font-size:.85em;opacity:.8">${esc(l.campaign_slug || '—')}</td>
+        <td style="font-size:.85em">${esc(l.subject)}</td>
+        <td style="font-size:.8em;opacity:.7;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(l.body_preview)}</td>
       </tr>
     `).join('');
   } catch (err) {
     console.error('leads error:', err);
+    const tbody = document.querySelector('#leads-table tbody');
+    if (tbody) tbody.innerHTML = `<tr><td colspan="6" class="table-empty" style="color:var(--danger)">Error loading leads</td></tr>`;
   }
 }
 
