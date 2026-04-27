@@ -18,6 +18,7 @@ module.exports = async function handler(req, res) {
       campaign_slug: r.campaign_slug || '',
       subject:       r.subject       || '',
       body_preview:  r.body_preview  || '',
+      body_plain:    r.body_plain    || '',
     }));
 
     const forms = (data.form_submissions || []).map(f => ({

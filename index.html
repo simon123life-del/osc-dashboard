@@ -1042,6 +1042,21 @@
   </div>
 </div>
 
+<!-- Reply Detail Modal -->
+<div id="reply-modal" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,0.72);align-items:flex-start;justify-content:center;padding:40px 24px;overflow-y:auto;">
+  <div style="background:var(--surface);border-radius:10px;width:100%;max-width:640px;box-shadow:0 24px 60px rgba(0,0,0,0.5);margin:auto;">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border);">
+      <div>
+        <div id="reply-modal-from" style="font-size:13px;font-weight:600;color:var(--text);"></div>
+        <div id="reply-modal-meta" style="font-size:11px;color:var(--muted);margin-top:2px;"></div>
+      </div>
+      <button onclick="closeReplyModal()" style="background:none;border:none;cursor:pointer;color:var(--muted);font-size:20px;line-height:1;padding:4px 8px;border-radius:4px;" onmouseover="this.style.background='var(--border)'" onmouseout="this.style.background='none'">&times;</button>
+    </div>
+    <div id="reply-modal-subject" style="padding:12px 20px 0;font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;"></div>
+    <pre id="reply-modal-body" style="padding:16px 20px 24px;margin:0;font-family:inherit;font-size:13px;line-height:1.65;color:var(--text);white-space:pre-wrap;word-break:break-word;max-height:60vh;overflow-y:auto;"></pre>
+  </div>
+</div>
+
 <!-- Investor Response Detail Drawer -->
 <div class="resp-overlay" id="resp-overlay">
   <div class="resp-drawer" id="resp-drawer">
@@ -1058,6 +1073,26 @@
 
 <script>
 // ── Utilities ────────────────────────────────────────────────────────────────
+
+let _leadsCache = [];
+
+function openReplyModal(id) {
+  const lead = _leadsCache.find(l => l.id === id);
+  if (!lead) return;
+  document.getElementById('reply-modal-from').textContent =
+    (lead.contact_name ? lead.contact_name + '  <' + lead.contact_email + '>' : lead.contact_email) || '—';
+  document.getElementById('reply-modal-meta').textContent =
+    (lead.campaign_slug ? 'Campaign: ' + lead.campaign_slug + '  ·  ' : '') + lead.ts_display;
+  document.getElementById('reply-modal-subject').textContent = lead.subject || '(no subject)';
+  document.getElementById('reply-modal-body').textContent = lead.body_plain || lead.body_preview || '(no body)';
+  const modal = document.getElementById('reply-modal');
+  modal.style.display = 'flex';
+  modal.onclick = function(e) { if (e.target === modal) closeReplyModal(); };
+}
+
+function closeReplyModal() {
+  document.getElementById('reply-modal').style.display = 'none';
+}
 
 function esc(s) {
   return String(s)
@@ -1588,8 +1623,14 @@ async function loadLeads() {
       tbody.innerHTML = '<tr><td colspan="6" class="table-empty">No inbound leads yet</td></tr>';
       return;
     }
-    tbody.innerHTML = leads.map(l => `
-      <tr>
+    tbody.innerHTML = leads.map(l => {
+      const dataAttr = l.type === 'reply'
+        ? `onclick="openReplyModal(${l.id})" style="cursor:pointer;" title="Click to read full reply"`
+        : '';
+      const hoverStyle = l.type === 'reply'
+        ? `onmouseover="this.style.background='var(--hover)'" onmouseout="this.style.background=''"` : '';
+      return `
+      <tr ${dataAttr} ${hoverStyle}>
         <td>${esc(l.ts_display)}</td>
         <td style="font-size:.8em;opacity:.7">${l.type === 'reply' ? '✉️ Reply' : '📋 Form'}</td>
         <td>
@@ -1599,8 +1640,9 @@ async function loadLeads() {
         <td style="font-size:.85em;opacity:.8">${esc(l.campaign_slug || '—')}</td>
         <td style="font-size:.85em">${esc(l.subject)}</td>
         <td style="font-size:.8em;opacity:.7;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(l.body_preview)}</td>
-      </tr>
-    `).join('');
+      </tr>`;
+    }).join('');
+    _leadsCache = leads;
   } catch (err) {
     console.error('leads error:', err);
     const tbody = document.querySelector('#leads-table tbody');
