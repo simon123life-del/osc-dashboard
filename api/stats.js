@@ -1,8 +1,6 @@
 const { fetchContactsByTag } = require('./_ghl');
 
-const DAILY_LIMIT = 150;
-
-const LIST_TAG = '1st import';
+const DAILY_LIMIT = 500;
 
 const DEALS = [
   {
@@ -39,7 +37,7 @@ module.exports = async function handler(req, res) {
     const todayStart = new Date();
     todayStart.setHours(0, 0, 0, 0);
 
-    const [dealStats, listResult] = await Promise.all([
+    const [dealStats, totalContactsResult] = await Promise.all([
       Promise.all(DEALS.map(async (deal) => {
         const outreachTag = `deal_outreach_${deal.slug}`;
         const clickedTag  = `deal_viewed_${deal.slug}`;
@@ -108,10 +106,15 @@ module.exports = async function handler(req, res) {
           view_rate:         clickRate,
         };
       })),
-      fetchContactsByTag(LIST_TAG, GHL_LOCATION_ID, GHL_API_KEY),
+      fetch(`https://services.leadconnectorhq.com/contacts/?locationId=${GHL_LOCATION_ID}&limit=1`, {
+        headers: {
+          Authorization: `Bearer ${GHL_API_KEY}`,
+          Version: '2021-07-28',
+        },
+      }).then(r => r.json()),
     ]);
 
-    const totalContacts = listResult.total;
+    const totalContacts = totalContactsResult.meta?.total || 0;
     const dailySent     = dealStats.reduce((sum, d) => sum + d.sent_today, 0);
     const activeDeals   = dealStats.filter(d => d.status === 'SENT').length;
     const totalFormSubmissions = dealStats.reduce((sum, d) => sum + (d.form_submissions || 0), 0);
