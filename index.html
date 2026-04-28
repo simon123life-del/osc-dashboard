@@ -327,6 +327,60 @@ button{cursor:pointer;font-family:var(--f-ui)}
 #ipr-drawer.on{transform:translateX(0)}
 #ipr-drawer::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gd2);z-index:1}
 
+/* ── REPLY CONVERSATION DRAWER ─────────────────────────── */
+#rd-overlay{display:none;position:fixed;inset:0;z-index:900;background:rgba(0,0,0,0.4);backdrop-filter:blur(3px)}
+#rd-overlay.on{display:block}
+#rd-drawer{position:fixed;top:0;right:0;bottom:0;width:520px;max-width:96vw;z-index:901;background:var(--s1);border-left:2px solid var(--bd2);display:flex;flex-direction:column;transform:translateX(100%);transition:transform .28s cubic-bezier(0.4,0,0.2,1);overflow:hidden;box-shadow:-20px 0 48px rgba(0,0,0,0.22)}
+#rd-drawer.on{transform:translateX(0)}
+#rd-drawer::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),rgba(122,92,0,.2));z-index:1}
+.rd-hdr{padding:18px 20px 14px;border-bottom:1px solid var(--bd2);background:var(--s2);flex-shrink:0}
+.rd-hdr-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:8px}
+.rd-hdr-name{font:700 15px var(--f-ui);color:var(--text)}
+.rd-hdr-email{font:400 11px var(--f-ui);color:var(--t3);margin-top:2px}
+.rd-hdr-subj{font:600 10.5px var(--f-ui);color:var(--t2);margin-top:4px}
+.rd-close{font-size:20px;line-height:1;color:var(--t3);cursor:pointer;background:none;border:none;padding:2px 6px;border-radius:4px;transition:color .1s}
+.rd-close:hover{color:var(--text)}
+.rd-hdr-meta{display:flex;align-items:center;gap:8px}
+.rd-hdr-badge{font:700 8px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;padding:3px 7px;border-radius:3px;border:1px solid}
+
+/* Thread area */
+.rd-thread{flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:12px;scrollbar-width:thin;scrollbar-color:rgba(0,0,0,.1) transparent}
+.rd-thread::-webkit-scrollbar{width:3px}
+.rd-thread::-webkit-scrollbar-thumb{background:rgba(0,0,0,.12);border-radius:3px}
+
+/* Bubbles */
+.rd-bubble{display:flex;flex-direction:column;gap:4px;max-width:88%}
+.rd-bubble.out{align-self:flex-end;align-items:flex-end}
+.rd-bubble.in{align-self:flex-start;align-items:flex-start}
+.rd-bubble-meta{display:flex;align-items:center;gap:6px}
+.rd-bubble-sender{font:600 10px var(--f-ui);color:var(--t3)}
+.rd-bubble-ts{font:400 9px var(--f-mono);color:var(--t4)}
+.rd-bubble-body{padding:10px 14px;border-radius:12px;font:400 12.5px var(--f-ui);line-height:1.6;white-space:pre-wrap;word-break:break-word}
+.rd-bubble.out .rd-bubble-body{background:var(--s3);border:1px solid var(--bd);border-bottom-right-radius:3px;color:var(--t2)}
+.rd-bubble.in .rd-bubble-body{background:rgba(184,146,12,0.08);border:1px solid rgba(184,146,12,0.2);border-bottom-left-radius:3px;color:var(--text)}
+.rd-bubble-subj{font:600 9.5px var(--f-ui);color:var(--t4);margin-bottom:3px}
+
+/* AI summary card */
+.rd-summary{margin:0 20px 4px;padding:12px 16px;background:rgba(184,146,12,0.07);border:1px solid rgba(184,146,12,0.22);border-radius:var(--r2);flex-shrink:0}
+.rd-summary-label{font:700 8px var(--f-mono);letter-spacing:.18em;text-transform:uppercase;color:var(--gold2);margin-bottom:6px}
+.rd-summary-text{font:400 12px var(--f-ui);color:var(--t1);line-height:1.65}
+.rd-summary-spin{font:400 11px var(--f-ui);color:var(--t3);font-style:italic}
+
+/* Compose */
+.rd-compose{padding:14px 20px 16px;border-top:1px solid var(--bd2);background:var(--s2);flex-shrink:0}
+.rd-compose-head{font:700 8px var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--t3);margin-bottom:8px}
+.rd-compose-ta{width:100%;min-height:90px;max-height:200px;background:var(--s1);border:1px solid var(--bd2);border-radius:var(--r);padding:10px 13px;font:400 12.5px var(--f-ui);color:var(--text);resize:vertical;outline:none;transition:border-color .13s;line-height:1.55;box-sizing:border-box}
+.rd-compose-ta:focus{border-color:var(--gold)}
+.rd-compose-ft{display:flex;align-items:center;justify-content:space-between;margin-top:8px;gap:8px}
+.rd-compose-meta{font:400 9px var(--f-ui);color:var(--t4);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rd-compose-btns{display:flex;gap:7px;flex-shrink:0}
+.rd-ai-btn{padding:6px 13px;border-radius:var(--r);background:var(--hdr);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.75);font:600 9px var(--f-ui);letter-spacing:.06em;cursor:pointer;transition:all .14s}
+.rd-ai-btn:hover:not(:disabled){background:#1e2028;color:#fff}
+.rd-ai-btn:disabled{opacity:.4;cursor:default}
+.rd-send-btn{padding:6px 18px;border-radius:var(--r);background:var(--gd2);border:1px solid transparent;color:#FEFDF8;font:600 9px var(--f-ui);letter-spacing:.08em;cursor:pointer;transition:all .14s}
+.rd-send-btn:hover:not(:disabled){box-shadow:0 2px 12px rgba(138,106,0,.35)}
+.rd-send-btn:disabled{opacity:.4;cursor:default}
+
 /* Drawer header */
 .ipr-hdr{padding:20px 20px 16px;border-bottom:2px solid var(--bd2);background:var(--s3);flex-shrink:0}
 .ipr-hdr-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
@@ -1035,6 +1089,46 @@ button{cursor:pointer;font-family:var(--f-ui)}
   <div class="ipr-actions">
     <button class="ipr-act-btn ipr-act-primary" onclick="profileQuickChat()">Ask AI About This Investor</button>
     <button class="ipr-act-btn ipr-act-sec" onclick="closeProfile()">Close</button>
+  </div>
+</div>
+
+<!-- REPLY CONVERSATION DRAWER -->
+<div id="rd-overlay" onclick="closeReplyDrawer()"></div>
+<div id="rd-drawer">
+  <div class="rd-hdr">
+    <div class="rd-hdr-top">
+      <div>
+        <div class="rd-hdr-name" id="rd-name">—</div>
+        <div class="rd-hdr-email" id="rd-email">—</div>
+        <div class="rd-hdr-subj" id="rd-subj"></div>
+      </div>
+      <button class="rd-close" onclick="closeReplyDrawer()">✕</button>
+    </div>
+    <div class="rd-hdr-meta">
+      <span id="rd-thread-badge" style="font:700 8px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;padding:3px 7px;border-radius:3px;background:var(--s3);border:1px solid var(--bd);color:var(--t3)"></span>
+      <span id="rd-status-badge" style="font:700 8px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;padding:3px 7px;border-radius:3px;display:none"></span>
+    </div>
+  </div>
+  <!-- AI Summary -->
+  <div class="rd-summary" id="rd-summary">
+    <div class="rd-summary-label">✦ AI Summary</div>
+    <div class="rd-summary-text rd-summary-spin" id="rd-summary-text">Analyzing conversation…</div>
+  </div>
+  <!-- Thread messages -->
+  <div class="rd-thread" id="rd-thread">
+    <div style="font:400 11px var(--f-ui);color:var(--t4);text-align:center;padding:20px">Loading thread…</div>
+  </div>
+  <!-- Compose -->
+  <div class="rd-compose">
+    <div class="rd-compose-head">Reply</div>
+    <textarea class="rd-compose-ta" id="rd-ta" placeholder="Write your reply…"></textarea>
+    <div class="rd-compose-ft">
+      <span class="rd-compose-meta" id="rd-from-meta">From: Brian Hampton</span>
+      <div class="rd-compose-btns">
+        <button class="rd-ai-btn" id="rd-ai-btn" onclick="rdAiDraft()">✦ AI Draft</button>
+        <button class="rd-send-btn" id="rd-send-btn" onclick="rdSend()">Send →</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1794,9 +1888,8 @@ function renderReplies(){
         ${r.subject?`<div class="reply-subj">${E(r.subject)}</div>`:''}
         <div class="reply-text${body?'':' empty'}">${body?E(body):'(no body captured yet)'}</div>
         <div class="reply-actions">
+          <button class="reply-act-btn" onclick="openReplyDrawer(${r.id})" style="background:var(--hdr);border-color:rgba(255,255,255,0.1);color:rgba(255,255,255,0.85)">View &amp; Reply →</button>
           <button class="reply-act-btn${done?' done':''}" onclick="toggleActioned(${r.id})">${done?'✓ Actioned':'Mark Actioned'}</button>
-          ${email?`<button class="reply-act-btn" onclick="toggleComposer(${r.id})">↩ Reply</button>`:''}
-          ${email?`<button class="reply-act-btn ai" onclick="aiDraft(${r.id})">✦ AI Draft</button>`:''}
         </div>
         <div class="reply-composer" id="composer-${r.id}">
           <span class="reply-ai-status" id="ai-status-${r.id}">✦ Drafting…</span>
@@ -1816,6 +1909,198 @@ function toggleComposer(id){
   if(!el) return
   const open=el.classList.toggle('open')
   if(open) setTimeout(()=>document.getElementById('compose-ta-'+id)?.focus(),50)
+}
+
+// ── REPLY CONVERSATION DRAWER ─────────────────────────────
+let rdReplyId=null, rdContactId=null, rdToEmail=null, rdToName=null, rdSubject=null, rdThreadEvents=[]
+
+async function openReplyDrawer(replyId){
+  const r=repliesData.find(x=>x.id===replyId)
+  if(!r) return
+  rdReplyId=replyId
+  rdContactId=r.contact_id||null
+  rdToEmail=r.contact_email||r.from_email||''
+  rdToName=r.contact_name||r.from_email||'Investor'
+  rdSubject=r.subject||''
+
+  // Set header
+  document.getElementById('rd-name').textContent=rdToName
+  document.getElementById('rd-email').textContent=rdToEmail
+  document.getElementById('rd-subj').textContent=rdSubject?'Re: '+rdSubject:''
+  document.getElementById('rd-from-meta').textContent='From: Brian Hampton <bh@oakstcap.com> → '+rdToEmail
+  document.getElementById('rd-ta').value=''
+  document.getElementById('rd-send-btn').textContent='Send →'
+  document.getElementById('rd-send-btn').disabled=false
+  document.getElementById('rd-ai-btn').disabled=false
+
+  // Reset summary
+  const sumEl=document.getElementById('rd-summary-text')
+  if(sumEl){sumEl.className='rd-summary-text rd-summary-spin';sumEl.textContent='Analyzing conversation…'}
+
+  // Open drawer
+  document.getElementById('rd-overlay').classList.add('on')
+  document.getElementById('rd-drawer').classList.add('on')
+
+  // Load thread
+  await rdLoadThread()
+
+  // Generate summary
+  rdGenerateSummary(r)
+}
+
+function closeReplyDrawer(){
+  document.getElementById('rd-overlay').classList.remove('on')
+  document.getElementById('rd-drawer').classList.remove('on')
+}
+
+async function rdLoadThread(){
+  const el=document.getElementById('rd-thread')
+  if(!el) return
+  el.innerHTML='<div style="font:400 11px var(--f-ui);color:var(--t4);text-align:center;padding:20px">Loading…</div>'
+
+  rdThreadEvents=[]
+  if(rdContactId){
+    try{
+      const d=await get('/api/thread?contact_id='+encodeURIComponent(rdContactId))
+      rdThreadEvents=d.events||[]
+    }catch(e){}
+  }
+
+  // Fallback: build from the single reply
+  if(!rdThreadEvents.length){
+    const r=repliesData.find(x=>x.id===rdReplyId)
+    if(r){
+      rdThreadEvents=[{
+        type:'inbound',ts:r.received_at,subject:r.subject,
+        email:r.from_email,body_plain:r.body_plain,
+      }]
+    }
+  }
+
+  const badge=document.getElementById('rd-thread-badge')
+  if(badge) badge.textContent=rdThreadEvents.length+' message'+(rdThreadEvents.length===1?'':'s')
+
+  rdRenderThread()
+  // Scroll to bottom
+  setTimeout(()=>{if(el) el.scrollTop=el.scrollHeight},100)
+}
+
+function rdRenderThread(){
+  const el=document.getElementById('rd-thread')
+  if(!el) return
+  const fmt=ts=>{
+    if(!ts) return ''
+    try{return new Date(ts).toLocaleDateString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'})}
+    catch{return ts.slice(0,16).replace('T',' ')}
+  }
+  if(!rdThreadEvents.length){
+    el.innerHTML='<div style="font:400 11px var(--f-ui);color:var(--t4);text-align:center;padding:20px">No thread history</div>'
+    return
+  }
+  el.innerHTML=rdThreadEvents.map(e=>{
+    const isOut=e.type==='outbound'
+    const sender=isOut?'Oak Street Capital':E(e.email||rdToName)
+    const body=(e.body_plain||'').trim()
+    return`<div class="rd-bubble ${isOut?'out':'in'}">
+      <div class="rd-bubble-meta">
+        <span class="rd-bubble-sender">${sender}</span>
+        <span class="rd-bubble-ts">${fmt(e.ts)}</span>
+      </div>
+      ${e.subject?`<div class="rd-bubble-subj">${E(e.subject)}</div>`:''}
+      <div class="rd-bubble-body">${body?E(body):'<span style="color:var(--t4);font-style:italic">Sent — body not captured</span>'}</div>
+    </div>`
+  }).join('')
+}
+
+async function rdGenerateSummary(reply){
+  const sumEl=document.getElementById('rd-summary-text')
+  const body=(reply.body_plain||'').trim()
+  const sentCount=rdThreadEvents.filter(e=>e.type==='outbound').length
+  const replyCount=rdThreadEvents.filter(e=>e.type!=='outbound').length
+  const ctx=buildChatContext()
+
+  const prompt=`Summarize this investor conversation in 2-3 sentences for Brian Hampton (Oak Street Capital). Include: what the investor said, their apparent interest level, and one concrete suggested next step.
+
+Investor: ${rdToName} <${rdToEmail}>
+Subject: ${reply.subject||'—'}
+Their message: ${body||'(no body captured)'}
+Thread: ${sentCount} outbound email${sentCount===1?'':'s'}, ${replyCount} reply/replies
+Campaign: ${ctx.name||'OSC Nurture'}
+
+Be direct, practical, no filler. Do not use em dashes.`
+
+  try{
+    const res=await fetch('/api/chat',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({messages:[{role:'user',content:prompt}],campaign_context:ctx})
+    })
+    const d=await res.json()
+    const text=(d.text||'').trim()
+    if(sumEl&&text){
+      sumEl.className='rd-summary-text'
+      sumEl.textContent=text
+    }
+  }catch(e){
+    if(sumEl){sumEl.className='rd-summary-text';sumEl.textContent='Summary unavailable.'}
+  }
+}
+
+async function rdAiDraft(){
+  const ta=document.getElementById('rd-ta')
+  const btn=document.getElementById('rd-ai-btn')
+  const r=repliesData.find(x=>x.id===rdReplyId)
+  if(!r||!ta) return
+  if(btn){btn.textContent='Drafting…';btn.disabled=true}
+
+  const body=(r.body_plain||'').trim()
+  const ctx=buildChatContext()
+  const prompt=`You are writing on behalf of Brian Hampton from Oak Street Capital. Draft a short, direct reply to ${rdToName} who replied to our nurture email.
+
+Subject: ${r.subject||'Are you still actively investing right now?'}
+Their message: ${body||'(no body — they replied but text was not captured)'}
+Campaign stats: ${ctx.stats.sent||0} sent, ${ctx.stats.click_rate||0}% CTR.
+
+Write ONLY the email body (no subject, no "Hi X", no sign-off). 2-3 sentences. Conversational. Push toward a call. No em dashes.`
+
+  try{
+    const res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:prompt}],campaign_context:ctx})})
+    const d=await res.json()
+    if(ta) ta.value=(d.text||'').trim()
+  }catch(e){}
+  if(btn){btn.textContent='✦ AI Draft';btn.disabled=false}
+  ta.focus()
+}
+
+async function rdSend(){
+  const ta=document.getElementById('rd-ta')
+  const btn=document.getElementById('rd-send-btn')
+  const text=(ta?.value||'').trim()
+  if(!text){alert('Write something first');return}
+  if(!rdToEmail){alert('No recipient email');return}
+  if(btn){btn.textContent='Sending…';btn.disabled=true}
+  try{
+    const r2=await fetch('/api/send-reply',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({to_email:rdToEmail,to_name:rdToName,subject:rdSubject,body:text,reply_id:rdReplyId})
+    })
+    const d=await r2.json()
+    if(d.error) throw new Error(d.error)
+    if(btn){btn.textContent='Sent ✓'}
+    // Mark actioned
+    actioned.add(rdReplyId)
+    renderReplies()
+    // Add outbound bubble to thread
+    rdThreadEvents.push({type:'outbound',ts:new Date().toISOString(),subject:'Re: '+rdSubject,body_plain:text})
+    rdRenderThread()
+    setTimeout(()=>{const el=document.getElementById('rd-thread');if(el)el.scrollTop=el.scrollHeight},80)
+    if(ta) ta.value=''
+    setTimeout(()=>{if(btn&&btn.textContent==='Sent ✓'){btn.textContent='Send →';btn.disabled=false}},3000)
+  }catch(e){
+    if(btn){btn.textContent='Failed — retry';btn.disabled=false}
+    alert('Send failed: '+e.message)
+  }
 }
 
 function toggleActioned(id){
