@@ -1123,7 +1123,7 @@ button{cursor:pointer;font-family:var(--f-ui)}
     <div class="rd-compose-head">Reply</div>
     <textarea class="rd-compose-ta" id="rd-ta" placeholder="Write your reply…"></textarea>
     <div class="rd-compose-ft">
-      <span class="rd-compose-meta" id="rd-from-meta">From: Brian Hampton</span>
+      <span class="rd-compose-meta" id="rd-from-meta">From: —</span>
       <div class="rd-compose-btns">
         <button class="rd-ai-btn" id="rd-ai-btn" onclick="rdAiDraft()">✦ AI Draft</button>
         <button class="rd-send-btn" id="rd-send-btn" onclick="rdSend()">Send →</button>
@@ -1159,6 +1159,12 @@ button{cursor:pointer;font-family:var(--f-ui)}
 </div>
 
 <script>
+// ── CONFIG ───────────────────────────────────────────────
+const CFG = window.LEDGER_CONFIG || {
+  client_slug:'demo', client_name:'Demo Client',
+  client_industry:'investment firm', sender_name:'Your Name', sender_email:'you@example.com'
+}
+
 // ── STATE ────────────────────────────────────────────────
 let S=null, hotleads=[], seqs=null
 let currentCampaign=null, cdContacts=[], cdLinks=[], cdEmailStats=[]
@@ -1215,6 +1221,12 @@ function switchTab(btn, tab){
 
 // ── DATA LOAD ─────────────────────────────────────────────
 async function load(){
+  // Wire OAuth URLs from config
+  const outlookURL='https://emersonnorth.com/api/auth/outlook/login?client='+encodeURIComponent(CFG.client_slug)
+  const gmailURL='https://emersonnorth.com/api/auth/gmail/login?client='+encodeURIComponent(CFG.client_slug)
+  document.querySelectorAll('#outlook-connect-btn,#settings-outlook-connect-btn').forEach(el=>el.href=outlookURL)
+  document.querySelectorAll('#settings-gmail-connect-btn').forEach(el=>el.href=gmailURL)
+
   await Promise.all([
     get('/api/stats').then(d=>{S=d}).catch(()=>{}),
     get('/api/hotleads').then(d=>{hotleads=d.leads||[]}).catch(()=>{}),
@@ -1895,7 +1907,7 @@ function renderReplies(){
           <span class="reply-ai-status" id="ai-status-${r.id}">✦ Drafting…</span>
           <textarea class="reply-composer-ta" id="compose-ta-${r.id}" placeholder="Write your reply to ${E(name)}…"></textarea>
           <div class="reply-composer-ft">
-            <span class="reply-composer-meta">From: Brian Hampton &lt;bh@oakstcap.com&gt; → ${E(email)}</span>
+            <span class="reply-composer-meta">From: ${E(CFG.sender_name)} &lt;${E(CFG.sender_email)}&gt; → ${E(email)}</span>
             <button class="reply-send-btn" id="send-btn-${r.id}" onclick="sendReply(${r.id},'${E(email)}','${E(name)}','${E(r.subject||'')}')">Send →</button>
           </div>
         </div>
@@ -1927,7 +1939,7 @@ async function openReplyDrawer(replyId){
   document.getElementById('rd-name').textContent=rdToName
   document.getElementById('rd-email').textContent=rdToEmail
   document.getElementById('rd-subj').textContent=rdSubject?'Re: '+rdSubject:''
-  document.getElementById('rd-from-meta').textContent='From: Brian Hampton <bh@oakstcap.com> → '+rdToEmail
+  document.getElementById('rd-from-meta').textContent='From: '+CFG.sender_name+' <'+CFG.sender_email+'> → '+rdToEmail
   document.getElementById('rd-ta').value=''
   document.getElementById('rd-send-btn').textContent='Send →'
   document.getElementById('rd-send-btn').disabled=false
@@ -1999,7 +2011,7 @@ function rdRenderThread(){
   }
   el.innerHTML=rdThreadEvents.map(e=>{
     const isOut=e.type==='outbound'
-    const sender=isOut?'Oak Street Capital':E(e.email||rdToName)
+    const sender=isOut?E(CFG.client_name):E(e.email||rdToName)
     const body=(e.body_plain||'').trim()
     return`<div class="rd-bubble ${isOut?'out':'in'}">
       <div class="rd-bubble-meta">
@@ -2019,7 +2031,7 @@ async function rdGenerateSummary(reply){
   const replyCount=rdThreadEvents.filter(e=>e.type!=='outbound').length
   const ctx=buildChatContext()
 
-  const prompt=`Summarize this investor conversation in 2-3 sentences for Brian Hampton (Oak Street Capital). Include: what the investor said, their apparent interest level, and one concrete suggested next step.
+  const prompt=`Summarize this investor conversation in 2-3 sentences for ${CFG.sender_name} (${CFG.client_name}). Include: what the investor said, their apparent interest level, and one concrete suggested next step.
 
 Investor: ${rdToName} <${rdToEmail}>
 Subject: ${reply.subject||'—'}
@@ -2055,7 +2067,7 @@ async function rdAiDraft(){
 
   const body=(r.body_plain||'').trim()
   const ctx=buildChatContext()
-  const prompt=`You are writing on behalf of Brian Hampton from Oak Street Capital. Draft a short, direct reply to ${rdToName} who replied to our nurture email.
+  const prompt=`You are writing on behalf of ${CFG.sender_name} from ${CFG.client_name}. Draft a short, direct reply to ${rdToName} who replied to our nurture email.
 
 Subject: ${r.subject||'Are you still actively investing right now?'}
 Their message: ${body||'(no body — they replied but text was not captured)'}
@@ -2120,7 +2132,7 @@ async function aiDraft(replyId){
   const name=r.contact_name||r.from_email||'the investor'
   const body=(r.body_plain||'').trim()
   const ctx=buildChatContext()
-  const prompt=`You are writing on behalf of Brian Hampton from Oak Street Capital. Draft a short, personable reply email to ${name} who replied to a nurture campaign email with subject "${r.subject||'Are you still actively investing right now?'}".
+  const prompt=`You are writing on behalf of ${CFG.sender_name} from ${CFG.client_name}. Draft a short, personable reply email to ${name} who replied to a nurture campaign email with subject "${r.subject||'Are you still actively investing right now?'}".
 
 Their message: ${body||'(no body — they replied but the text was not captured)'}
 

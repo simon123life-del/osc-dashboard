@@ -5,7 +5,7 @@ module.exports = async function handler(req, res) {
   if (!contact_id) return res.status(400).json({ error: 'contact_id required' });
   try {
     const r = await fetch(
-      `${TRACKER_BASE}/api/contact/${encodeURIComponent(contact_id)}/thread?client=osc`,
+      `${TRACKER_BASE}/api/contact/${encodeURIComponent(contact_id)}/thread?client=${process.env.LEDGER_CLIENT_SLUG||'osc'}`,
       { signal: AbortSignal.timeout(12000) }
     );
     if (!r.ok) throw new Error(`Tracker ${r.status}`);

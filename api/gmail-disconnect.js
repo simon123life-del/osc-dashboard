@@ -8,7 +8,7 @@ module.exports = async function handler(req, res) {
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ client: 'osc' }),
+        body: JSON.stringify({ client: process.env.LEDGER_CLIENT_SLUG||'osc' }),
         signal: AbortSignal.timeout(8000),
       }
     );

@@ -3,7 +3,7 @@ const TRACKER_BASE = process.env.TRACKER_BASE_URL || 'https://bryces-mac-mini.ta
 module.exports = async function handler(req, res) {
   try {
     const r = await fetch(
-      `${TRACKER_BASE}/auth/gmail/status?client=osc`,
+      `${TRACKER_BASE}/auth/gmail/status?client=${process.env.LEDGER_CLIENT_SLUG||'osc'}`,
       { signal: AbortSignal.timeout(8000) }
     );
     if (!r.ok) throw new Error(`Tracker ${r.status}`);

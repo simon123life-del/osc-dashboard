@@ -6,7 +6,7 @@ module.exports = async function handler(req, res) {
     const r = await fetch(`${TRACKER_BASE}/auth/outlook/disconnect`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ client: 'osc' }),
+      body: JSON.stringify({ client: process.env.LEDGER_CLIENT_SLUG||'osc' }),
       signal: AbortSignal.timeout(8000),
     });
     if (!r.ok) throw new Error(`Tracker ${r.status}`);

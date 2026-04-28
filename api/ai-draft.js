@@ -4,13 +4,17 @@ module.exports = async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'POST only' });
 
   const { campaign_name, campaign_type, stats, action, subjects, hot_leads } = req.body || {};
+  const clientName = process.env.LEDGER_CLIENT_NAME || 'Oak Street Capital';
+  const clientIndustry = process.env.LEDGER_CLIENT_INDUSTRY || 'real estate private equity firm';
+  const senderName = process.env.LEDGER_SENDER_NAME || 'the team';
+  const senderEmail = process.env.LEDGER_SENDER_EMAIL || '';
 
   if (!campaign_name || !action) {
     return res.status(400).json({ error: 'campaign_name and action required' });
   }
 
   const prompts = {
-    followup: `You are an investor relations specialist for Oak Street Capital, a real estate private equity firm.
+    followup: `You are an investor relations specialist for ${clientName}, a ${clientIndustry}.
 
 Write a brief, warm follow-up email for investors who clicked on the "${campaign_name}" email but haven't yet filled out the investor profile form.
 
@@ -28,7 +32,7 @@ Requirements:
 - Subject line + email body
 - No em dashes. Professional but human.`,
 
-    reengagement: `You are an investor relations specialist for Oak Street Capital.
+    reengagement: `You are an investor relations specialist for ${clientName}, a ${clientIndustry}.
 
 Write a re-engagement email for investors who received "${campaign_name}" but haven't opened or clicked yet.
 
@@ -45,7 +49,7 @@ Requirements:
 
     analysis: `You are an expert investor relations analyst.
 
-Analyze this campaign performance and give Brian Hampton at Oak Street Capital 3 specific, actionable recommendations to improve results.
+Analyze this campaign performance and give ${senderName} at ${clientName} 3 specific, actionable recommendations to improve results.
 
 Campaign: ${campaign_name}
 Stats:

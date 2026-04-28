@@ -11,7 +11,9 @@ module.exports = async function handler(req, res) {
   const hotList = (ctx.hot_leads || []).slice(0, 8);
   const subjects = (ctx.subjects || []);
 
-  const system = `You are a campaign intelligence assistant inside Ledger, a tool built by Emerson North for Oak Street Capital — a real estate private equity firm.
+  const clientName = process.env.LEDGER_CLIENT_NAME || 'Oak Street Capital';
+  const clientIndustry = process.env.LEDGER_CLIENT_INDUSTRY || 'real estate private equity firm';
+  const system = `You are a campaign intelligence assistant inside Ledger, a tool built by Emerson North for ${clientName} — a ${clientIndustry}.
 
 You have full access to the "${ctx.name || 'this'}" investor outreach campaign.
 
