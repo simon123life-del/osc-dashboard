@@ -3,1704 +3,820 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Oak Street Capital — Deal Pipeline</title>
-<script src="/config.js?v=20260410"></script>
+<title>Ledger — Investor Relations</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  /* ── Reset & Base ── */
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --bg: #0F0F0F;
-    --card: #1A1A1A;
-    --border: #2A2A2A;
-    --accent: #BADA55;
-    --accent-dim: rgba(186,218,85,0.15);
-    --accent-glow: rgba(186,218,85,0.35);
-    --text: #F0F0F0;
-    --muted: #888888;
-    --danger: #E05252;
-    --success: #52C07A;
-    --warn: #E09B3A;
-    --font-display: 'Cormorant Garamond', Georgia, serif;
-    --font-body: 'DM Sans', system-ui, sans-serif;
-    --radius: 6px;
-    --radius-lg: 10px;
-  }
-
-  html { font-size: 15px; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--font-body);
-    font-weight: 400;
-    line-height: 1.5;
-    min-height: 100vh;
-    -webkit-font-smoothing: antialiased;
-  }
-
-  a { color: var(--accent); text-decoration: none; }
-  a:hover { text-decoration: underline; }
-
-  /* ── Layout ── */
-  .container {
-    max-width: 1440px;
-    margin: 0 auto;
-    padding: 0 32px;
-  }
-
-  /* ── Top Bar ── */
-  .topbar {
-    background: var(--card);
-    border-bottom: 1px solid var(--border);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    padding: 0 32px;
-  }
-
-  .topbar-inner {
-    max-width: 1440px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    gap: 32px;
-    height: 64px;
-  }
-
-  .topbar-brand {
-    flex-shrink: 0;
-  }
-
-  .topbar-brand .wordmark {
-    font-family: var(--font-display);
-    font-size: 22px;
-    font-weight: 600;
-    color: var(--text);
-    letter-spacing: 0.02em;
-    line-height: 1;
-  }
-
-  .topbar-brand .subtitle {
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-top: 3px;
-  }
-
-  .topbar-divider {
-    width: 1px;
-    height: 32px;
-    background: var(--border);
-    flex-shrink: 0;
-  }
-
-  .topbar-budget {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex-shrink: 0;
-  }
-
-  .budget-label {
-    font-size: 11px;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    white-space: nowrap;
-  }
-
-  .budget-count {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text);
-    white-space: nowrap;
-  }
-
-  .budget-bar-wrap {
-    width: 120px;
-    height: 4px;
-    background: var(--border);
-    border-radius: 2px;
-    overflow: hidden;
-  }
-
-  .budget-bar-fill {
-    height: 100%;
-    background: var(--accent);
-    border-radius: 2px;
-    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .topbar-right {
-    margin-left: auto;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-
-  .topbar-clock {
-    font-size: 12px;
-    color: var(--muted);
-    font-variant-numeric: tabular-nums;
-    white-space: nowrap;
-  }
-
-  .refresh-indicator {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 11px;
-    color: var(--muted);
-  }
-
-  .refresh-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--muted);
-    transition: background 0.3s;
-  }
-
-  .refresh-dot.fresh {
-    background: var(--accent);
-    animation: pulse-dot 2s ease-in-out;
-  }
-
-  @keyframes pulse-dot {
-    0%   { box-shadow: 0 0 0 0 var(--accent-glow); }
-    50%  { box-shadow: 0 0 0 6px transparent; }
-    100% { box-shadow: 0 0 0 0 transparent; }
-  }
-
-  /* ── Page Content ── */
-  .page-body {
-    padding: 36px 32px 64px;
-    max-width: 1440px;
-    margin: 0 auto;
-  }
-
-  /* ── Section Headers ── */
-  .section-header {
-    display: flex;
-    align-items: baseline;
-    gap: 12px;
-    margin-bottom: 20px;
-    margin-top: 48px;
-  }
-
-  .section-header:first-child {
-    margin-top: 0;
-  }
-
-  .section-title {
-    font-family: var(--font-display);
-    font-size: 26px;
-    font-weight: 600;
-    color: var(--text);
-    letter-spacing: 0.01em;
-  }
-
-  .section-count {
-    font-size: 12px;
-    color: var(--muted);
-    font-weight: 500;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-
-  /* ── Deal Cards Grid ── */
-  .deals-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-    gap: 20px;
-  }
-
-  .deal-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 24px;
-    position: relative;
-    overflow: hidden;
-    transition: border-color 0.2s, transform 0.2s;
-  }
-
-  .deal-card:hover {
-    border-color: #3A3A3A;
-    transform: translateY(-1px);
-  }
-
-  .deal-card.status-active {
-    border-top: 2px solid var(--accent);
-  }
-
-  .deal-card.status-sent {
-    border-top: 2px solid var(--success);
-  }
-
-  .deal-card.status-no_memo {
-    border-top: 2px solid var(--warn);
-  }
-
-  .deal-card-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 16px;
-  }
-
-  .deal-name {
-    font-family: var(--font-display);
-    font-size: 20px;
-    font-weight: 600;
-    color: var(--text);
-    line-height: 1.2;
-    flex: 1;
-  }
-
-  .status-pill {
-    flex-shrink: 0;
-    padding: 3px 9px;
-    border-radius: 20px;
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-
-  .pill-ready    { background: rgba(136,136,136,0.15); color: var(--muted); border: 1px solid #3A3A3A; }
-  .pill-active   { background: var(--accent-dim); color: var(--accent); border: 1px solid rgba(186,218,85,0.4); }
-  .pill-sent     { background: rgba(82,192,122,0.12); color: var(--success); border: 1px solid rgba(82,192,122,0.4); }
-  .pill-no_memo  { background: rgba(224,155,58,0.12); color: var(--warn); border: 1px solid rgba(224,155,58,0.4); }
-
-  .deal-meta {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 16px;
-    flex-wrap: wrap;
-  }
-
-  .deal-badge {
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--muted);
-    background: rgba(255,255,255,0.04);
-    border: 1px solid var(--border);
-    padding: 2px 8px;
-    border-radius: 3px;
-  }
-
-  .deal-location {
-    font-size: 12px;
-    color: var(--muted);
-  }
-
-  .deal-raise {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text);
-    margin-bottom: 16px;
-  }
-
-  .deal-raise span {
-    font-size: 11px;
-    font-weight: 400;
-    color: var(--muted);
-    margin-left: 4px;
-  }
-
-  .deal-stats-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin-bottom: 16px;
-  }
-
-  .deal-stat-box {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 10px 12px;
-  }
-
-  .deal-stat-label {
-    font-size: 10px;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-bottom: 3px;
-  }
-
-  .deal-stat-value {
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--text);
-    font-variant-numeric: tabular-nums;
-    transition: color 0.3s;
-  }
-
-  .deal-stat-value.highlight {
-    color: var(--accent);
-  }
-
-  .deal-stat-sub {
-    font-size: 10px;
-    color: var(--muted);
-    margin-top: 1px;
-  }
-
-  .deal-progress {
-    margin-bottom: 14px;
-  }
-
-  .deal-progress-label {
-    display: flex;
-    justify-content: space-between;
-    font-size: 11px;
-    color: var(--muted);
-    margin-bottom: 5px;
-  }
-
-  .deal-progress-bar {
-    height: 3px;
-    background: var(--border);
-    border-radius: 2px;
-    overflow: hidden;
-  }
-
-  .deal-progress-fill {
-    height: 100%;
-    background: var(--accent);
-    border-radius: 2px;
-    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .deal-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 4px;
-  }
-
-  .deal-sent-info {
-    font-size: 11px;
-    color: var(--muted);
-  }
-
-  .deal-sent-info strong {
-    color: var(--text);
-    font-weight: 600;
-  }
-
-  .deal-memo-link {
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--accent);
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    transition: opacity 0.15s;
-  }
-
-  .deal-memo-link:hover {
-    opacity: 0.8;
-    text-decoration: none;
-  }
-
-  .deal-memo-link svg {
-    width: 12px;
-    height: 12px;
-  }
-
-  /* ── Empty state for deals ── */
-  .empty-state {
-    grid-column: 1 / -1;
-    text-align: center;
-    padding: 60px 32px;
-    color: var(--muted);
-  }
-
-  .empty-state-icon {
-    font-size: 40px;
-    margin-bottom: 12px;
-    opacity: 0.3;
-  }
-
-  .empty-state p {
-    font-size: 14px;
-  }
-
-  /* ── Campaign Stats Table ── */
-  .table-wrap {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 13px;
-  }
-
-  thead {
-    background: rgba(255,255,255,0.03);
-    border-bottom: 1px solid var(--border);
-  }
-
-  thead th {
-    padding: 12px 18px;
-    text-align: left;
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    white-space: nowrap;
-  }
-
-  tbody tr {
-    border-bottom: 1px solid var(--border);
-    transition: background 0.15s;
-  }
-
-  tbody tr:last-child {
-    border-bottom: none;
-  }
-
-  tbody tr:hover {
-    background: rgba(255,255,255,0.025);
-  }
-
-  tbody td {
-    padding: 14px 18px;
-    vertical-align: middle;
-  }
-
-  .td-deal-name {
-    font-family: var(--font-display);
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--text);
-  }
-
-  .td-number {
-    font-variant-numeric: tabular-nums;
-    font-weight: 500;
-    color: var(--text);
-  }
-
-  .td-rate {
-    font-variant-numeric: tabular-nums;
-    font-weight: 600;
-  }
-
-  .td-rate.good  { color: var(--accent); }
-  .td-rate.ok    { color: var(--warn); }
-  .td-rate.poor  { color: var(--muted); }
-
-  .td-muted {
-    color: var(--muted);
-    font-size: 12px;
-  }
-
-  .table-empty {
-    text-align: center;
-    padding: 40px;
-    color: var(--muted);
-    font-size: 13px;
-  }
-
-  /* ── Activity Feed ── */
-  .activity-panel {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-  }
-
-  .activity-feed {
-    max-height: 460px;
-    overflow-y: auto;
-  }
-
-  .activity-feed::-webkit-scrollbar { width: 4px; }
-  .activity-feed::-webkit-scrollbar-track { background: transparent; }
-  .activity-feed::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-
-  .activity-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 14px;
-    padding: 14px 20px;
-    border-bottom: 1px solid var(--border);
-    transition: background 0.15s;
-    animation: slide-in 0.3s ease-out;
-  }
-
-  .activity-item:last-child {
-    border-bottom: none;
-  }
-
-  .activity-item:hover {
-    background: rgba(255,255,255,0.025);
-  }
-
-  @keyframes slide-in {
-    from { opacity: 0; transform: translateY(-6px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  .activity-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--border);
-    flex-shrink: 0;
-    margin-top: 5px;
-    transition: background 0.3s;
-  }
-
-  .activity-dot.new {
-    background: var(--accent);
-    box-shadow: 0 0 0 3px var(--accent-dim);
-    animation: pulse-activity 2s infinite;
-  }
-
-  @keyframes pulse-activity {
-    0%, 100% { box-shadow: 0 0 0 3px var(--accent-dim); }
-    50%       { box-shadow: 0 0 0 6px transparent; }
-  }
-
-  .activity-content {
-    flex: 1;
-    min-width: 0;
-  }
-
-  .activity-main {
-    font-size: 13px;
-    color: var(--text);
-    font-weight: 500;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .activity-main .contact-name {
-    color: var(--text);
-  }
-
-  .activity-main .deal-name-ref {
-    color: var(--accent);
-    font-weight: 400;
-  }
-
-  .activity-sub {
-    font-size: 11px;
-    color: var(--muted);
-    margin-top: 2px;
-  }
-
-  .activity-time {
-    font-size: 11px;
-    color: var(--muted);
-    flex-shrink: 0;
-    font-variant-numeric: tabular-nums;
-    white-space: nowrap;
-    align-self: center;
-  }
-
-  .activity-empty {
-    text-align: center;
-    padding: 48px 32px;
-    color: var(--muted);
-    font-size: 13px;
-  }
-
-  /* ── Health Stats Bar ── */
-  .health-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-  }
-
-  .health-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 24px;
-  }
-
-  .health-label {
-    font-size: 11px;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-bottom: 8px;
-  }
-
-  .health-value {
-    font-size: 36px;
-    font-family: var(--font-display);
-    font-weight: 600;
-    color: var(--text);
-    line-height: 1;
-    margin-bottom: 6px;
-    transition: color 0.3s;
-    font-variant-numeric: tabular-nums;
-  }
-
-  .health-value.accent { color: var(--accent); }
-
-  .health-desc {
-    font-size: 12px;
-    color: var(--muted);
-  }
-
-  .health-total {
-    font-size: 12px;
-    color: var(--accent);
-    margin-top: 6px;
-    font-weight: 500;
-  }
-
-  .preview-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    background: none;
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 5px 10px;
-    font-size: 11px;
-    font-weight: 500;
-    color: var(--muted);
-    cursor: pointer;
-    transition: color 0.15s, border-color 0.15s, background 0.15s;
-    letter-spacing: 0.02em;
-  }
-  .preview-btn:hover {
-    color: var(--accent);
-    border-color: var(--accent);
-    background: rgba(99,102,241,0.06);
-  }
-
-  /* ── Two-column layout for bottom panels ── */
-  .bottom-grid {
-    display: grid;
-    grid-template-columns: 1fr 1.4fr;
-    gap: 20px;
-    align-items: start;
-  }
-
-  /* ── Scrollable deals section ── */
-  .deals-scroll {
-    max-height: 560px;
-    overflow-y: auto;
-    padding-right: 4px;
-  }
-  .deals-scroll::-webkit-scrollbar { width: 4px; }
-  .deals-scroll::-webkit-scrollbar-track { background: transparent; }
-  .deals-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-
-  /* ── Loading shimmer ── */
-  .shimmer {
-    background: linear-gradient(90deg, var(--card) 25%, #232323 50%, var(--card) 75%);
-    background-size: 200% 100%;
-    animation: shimmer 1.5s infinite;
-    border-radius: 4px;
-    height: 14px;
-  }
-
-  @keyframes shimmer {
-    0%   { background-position: -200% 0; }
-    100% { background-position: 200% 0; }
-  }
-
-  /* ── Responsive ── */
-  @media (max-width: 900px) {
-    .bottom-grid { grid-template-columns: 1fr; }
-    .health-grid { grid-template-columns: 1fr 1fr; }
-    .deals-grid { grid-template-columns: 1fr; }
-  }
-
-  @media (max-width: 600px) {
-    .topbar-inner { gap: 16px; }
-    .page-body { padding: 24px 16px 48px; }
-    .container { padding: 0 16px; }
-    .topbar { padding: 0 16px; }
-    .health-grid { grid-template-columns: 1fr; }
-    .topbar-budget { display: none; }
-  }
-
-  /* ── Response Detail Modal ── */
-  .resp-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.72);
-    z-index: 1000;
-    align-items: flex-start;
-    justify-content: flex-end;
-  }
-  .resp-overlay.open { display: flex; }
-  .resp-drawer {
-    background: #1A1A1A;
-    border-left: 1px solid var(--border);
-    width: 480px;
-    max-width: 100vw;
-    height: 100vh;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-  }
-  .resp-drawer-header {
-    padding: 24px 28px 20px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 16px;
-    position: sticky;
-    top: 0;
-    background: #1A1A1A;
-    z-index: 1;
-  }
-  .resp-drawer-name {
-    font-family: var(--font-display);
-    font-size: 22px;
-    font-weight: 600;
-    color: var(--text);
-    line-height: 1.2;
-  }
-  .resp-drawer-meta {
-    font-size: 12px;
-    color: var(--muted);
-    margin-top: 4px;
-  }
-  .resp-close {
-    background: none;
-    border: 1px solid var(--border);
-    color: var(--muted);
-    cursor: pointer;
-    font-size: 18px;
-    line-height: 1;
-    padding: 4px 9px;
-    border-radius: var(--radius);
-    flex-shrink: 0;
-  }
-  .resp-close:hover { color: var(--text); border-color: var(--muted); }
-  .resp-drawer-body { padding: 24px 28px 40px; display: flex; flex-direction: column; gap: 24px; }
-  .resp-section { }
-  .resp-section-label {
-    font-size: 9.5px;
-    font-weight: 600;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 8px;
-  }
-  .resp-section-question {
-    font-family: var(--font-display);
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--text);
-    margin-bottom: 10px;
-  }
-  .resp-pills { display: flex; flex-wrap: wrap; gap: 6px; }
-  .resp-pill {
-    font-size: 13px;
-    font-weight: 500;
-    color: #1A1A1A;
-    background: var(--accent);
-    padding: 6px 14px;
-    border-radius: 3px;
-  }
-  .resp-pill-empty {
-    font-size: 13px;
-    color: var(--muted);
-    font-style: italic;
-  }
-  .resp-divider { border: none; border-top: 1px solid var(--border); }
-  tr.resp-row { cursor: pointer; }
-  tr.resp-row:hover td { background: rgba(186,218,85,0.04); }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:         #080808;
+  --surface:    #0F0F0F;
+  --surface-2:  #141414;
+  --border:     #1C1C1C;
+  --border-2:   #242424;
+  --gold:       #C9A84C;
+  --gold-soft:  rgba(201,168,76,0.10);
+  --gold-mid:   rgba(201,168,76,0.22);
+  --gold-glow:  rgba(201,168,76,0.40);
+  --text:       #F0EDE6;
+  --text-2:     #A09A90;
+  --text-3:     #605A52;
+  --success:    #4CAF7D;
+  --danger:     #E05252;
+  --warn:       #E09B3A;
+  --sidebar-w:  220px;
+  --font:       'Montserrat', system-ui, sans-serif;
+  --radius:     6px;
+  --radius-lg:  10px;
+}
+
+html { font-size: 14px; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-weight: 400;
+  line-height: 1.5;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+}
+
+/* ── SIDEBAR ─────────────────────────────────────── */
+.sidebar {
+  width: var(--sidebar-w);
+  min-height: 100vh;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  padding: 28px 0;
+  position: fixed;
+  top: 0; left: 0;
+  z-index: 100;
+}
+
+.sidebar-logo {
+  padding: 0 24px 28px;
+  border-bottom: 1px solid var(--border);
+}
+.sidebar-logo .wordmark {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--gold);
+  text-transform: uppercase;
+}
+.sidebar-logo .client-name {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-3);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+.sidebar-nav {
+  flex: 1;
+  padding: 20px 0;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 24px;
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--text-2);
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+  user-select: none;
+}
+.nav-item:hover { color: var(--text); background: var(--surface-2); }
+.nav-item.active { color: var(--gold); background: var(--gold-soft); }
+.nav-item .nav-icon { font-size: 14px; width: 16px; text-align: center; }
+
+.sidebar-footer {
+  padding: 20px 24px 0;
+  border-top: 1px solid var(--border);
+}
+.last-updated {
+  font-size: 10px;
+  color: var(--text-3);
+  letter-spacing: 0.04em;
+}
+
+/* ── MAIN ─────────────────────────────────────────── */
+.main {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  height: 56px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  background: var(--surface);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.topbar-title {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--text);
+  text-transform: uppercase;
+}
+.topbar-actions { display: flex; gap: 10px; align-items: center; }
+.btn {
+  padding: 7px 16px;
+  border-radius: var(--radius);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  border: none;
+  transition: opacity 0.15s;
+  font-family: var(--font);
+}
+.btn:hover { opacity: 0.85; }
+.btn-gold { background: var(--gold); color: #000; }
+.btn-ghost { background: var(--surface-2); color: var(--text-2); border: 1px solid var(--border-2); }
+
+.content { padding: 28px 32px; flex: 1; }
+
+/* ── VIEWS ───────────────────────────────────────── */
+.view { display: none; }
+.view.active { display: block; }
+
+/* ── STAT CARDS ──────────────────────────────────── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 14px;
+  margin-bottom: 28px;
+}
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  transition: border-color 0.2s;
+}
+.stat-card:hover { border-color: var(--border-2); }
+.stat-card.gold-accent { border-color: var(--gold-mid); }
+.stat-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 8px;
+}
+.stat-value {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+}
+.stat-card.gold-accent .stat-value { color: var(--gold); }
+.stat-sub {
+  font-size: 10.5px;
+  color: var(--text-3);
+  margin-top: 4px;
+}
+
+/* ── SECTION ─────────────────────────────────────── */
+.section { margin-bottom: 32px; }
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.section-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+.section-meta { font-size: 11px; color: var(--text-3); }
+
+/* ── TABLE ───────────────────────────────────────── */
+.table-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+table { width: 100%; border-collapse: collapse; }
+thead th {
+  padding: 11px 16px;
+  text-align: left;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-2);
+}
+tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background 0.12s;
+  cursor: default;
+}
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: var(--surface-2); }
+tbody td {
+  padding: 12px 16px;
+  font-size: 12.5px;
+  color: var(--text);
+  vertical-align: middle;
+}
+.td-muted { color: var(--text-2); }
+.td-gold { color: var(--gold); font-weight: 600; }
+
+/* ── BADGES ──────────────────────────────────────── */
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.badge-gold    { background: var(--gold-soft);  color: var(--gold); border: 1px solid var(--gold-mid); }
+.badge-green   { background: rgba(76,175,125,0.12); color: var(--success); border: 1px solid rgba(76,175,125,0.25); }
+.badge-red     { background: rgba(224,82,82,0.12);  color: var(--danger);  border: 1px solid rgba(224,82,82,0.25); }
+.badge-muted   { background: var(--surface-2);  color: var(--text-3); border: 1px solid var(--border-2); }
+
+/* ── CAMPAIGN CARDS ──────────────────────────────── */
+.campaign-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 16px;
+}
+.campaign-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px 22px;
+  transition: border-color 0.2s;
+}
+.campaign-card:hover { border-color: var(--border-2); }
+.campaign-card.active-deal { border-color: var(--gold-mid); }
+.cc-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
+.cc-name { font-size: 13px; font-weight: 600; color: var(--text); line-height: 1.3; }
+.cc-meta { font-size: 11px; color: var(--text-3); margin-top: 3px; }
+.cc-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+.cc-stat-label { font-size: 9.5px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-3); margin-bottom: 3px; }
+.cc-stat-val { font-size: 17px; font-weight: 700; color: var(--text); }
+.cc-link { font-size: 11px; color: var(--gold); text-decoration: none; margin-top: 12px; display: inline-block; }
+.cc-link:hover { text-decoration: underline; }
+
+/* ── HOT LEAD PILL ───────────────────────────────── */
+.hot-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  background: rgba(224,82,82,0.12);
+  border: 1px solid rgba(224,82,82,0.3);
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #E05252;
+  letter-spacing: 0.04em;
+}
+
+/* ── REPLY MODAL ─────────────────────────────────── */
+#reply-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(4px);
+  align-items: center;
+  justify-content: center;
+}
+#reply-modal.open { display: flex; }
+.modal-box {
+  background: var(--surface);
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius-lg);
+  width: 620px;
+  max-width: 95vw;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.6);
+}
+.modal-header {
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.modal-title { font-size: 13px; font-weight: 600; color: var(--text); }
+.modal-sub { font-size: 11px; color: var(--text-3); margin-top: 3px; }
+.modal-close {
+  background: none;
+  border: none;
+  color: var(--text-3);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+}
+.modal-close:hover { color: var(--text); }
+.modal-body {
+  padding: 20px 22px;
+  overflow-y: auto;
+  flex: 1;
+}
+.modal-body pre {
+  font-family: var(--font);
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: var(--text-2);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* ── EMPTY STATE ─────────────────────────────────── */
+.empty {
+  padding: 40px;
+  text-align: center;
+  color: var(--text-3);
+  font-size: 12px;
+}
+
+/* ── LOADING ─────────────────────────────────────── */
+.skeleton {
+  background: linear-gradient(90deg, var(--surface-2) 25%, var(--border) 50%, var(--surface-2) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: 4px;
+  height: 14px;
+}
+@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+/* ── DIVIDER ─────────────────────────────────────── */
+.divider { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+/* ── CLICKABLE ROW ───────────────────────────────── */
+tr.clickable { cursor: pointer; }
+
+/* ── SEQUENCE PROGRESS BAR ───────────────────────── */
+.seq-bar-wrap { background: var(--border); border-radius: 4px; height: 4px; flex: 1; }
+.seq-bar { background: var(--gold); border-radius: 4px; height: 100%; transition: width 0.3s; }
 </style>
 </head>
 <body>
 
-<!-- ── Top Bar ── -->
-<header class="topbar">
-  <div class="topbar-inner">
-    <div class="topbar-brand">
-      <div class="wordmark">Oak Street Capital</div>
-      <div class="subtitle">Deal Pipeline</div>
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="wordmark">Ledger</div>
+    <div class="client-name">Oak Street Capital</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-item active" data-view="overview">
+      <span class="nav-icon">◈</span> Overview
     </div>
+    <div class="nav-item" data-view="pipeline">
+      <span class="nav-icon">◎</span> Pipeline
+    </div>
+    <div class="nav-item" data-view="sequences">
+      <span class="nav-icon">⟳</span> Sequences
+    </div>
+    <div class="nav-item" data-view="hotleads">
+      <span class="nav-icon">⚡</span> Hot Leads
+    </div>
+    <div class="nav-item" data-view="replies">
+      <span class="nav-icon">◷</span> Replies
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="last-updated" id="last-updated">Loading…</div>
+  </div>
+</aside>
 
-    <div class="topbar-divider"></div>
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-title" id="view-title">Overview</div>
+    <div class="topbar-actions">
+      <button class="btn btn-ghost" onclick="refreshAll()">↻ Refresh</button>
+    </div>
+  </div>
 
-    <div class="topbar-budget">
-      <span class="budget-label">Today</span>
-      <span class="budget-count" id="budget-text">— / 100 sent</span>
-      <div class="budget-bar-wrap">
-        <div class="budget-bar-fill" id="budget-bar" style="width: 0%"></div>
+  <div class="content">
+
+    <!-- ── OVERVIEW ── -->
+    <div id="view-overview" class="view active">
+      <div class="stats-grid" id="stats-grid">
+        <div class="stat-card"><div class="stat-label">Total Investors</div><div class="stat-value skeleton" style="width:60px;height:26px"></div></div>
+        <div class="stat-card"><div class="stat-label">Emails Sent</div><div class="stat-value skeleton" style="width:60px;height:26px"></div></div>
+        <div class="stat-card"><div class="stat-label">Click Rate</div><div class="stat-value skeleton" style="width:60px;height:26px"></div></div>
+        <div class="stat-card gold-accent"><div class="stat-label">Hot Leads</div><div class="stat-value skeleton" style="width:60px;height:26px"></div></div>
+        <div class="stat-card"><div class="stat-label">Replies</div><div class="stat-value skeleton" style="width:60px;height:26px"></div></div>
+        <div class="stat-card"><div class="stat-label">In Sequences</div><div class="stat-value skeleton" style="width:60px;height:26px"></div></div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <div class="section-title">Active Campaigns</div>
+        </div>
+        <div class="campaign-grid" id="campaign-grid">
+          <div class="campaign-card"><div class="skeleton" style="height:80px"></div></div>
+          <div class="campaign-card"><div class="skeleton" style="height:80px"></div></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <div class="section-title">Recent Replies</div>
+          <div class="section-meta" id="replies-meta"></div>
+        </div>
+        <div class="table-wrap" id="overview-replies-table">
+          <div class="empty">Loading…</div>
+        </div>
       </div>
     </div>
 
-    <div class="topbar-right">
-      <div class="topbar-clock" id="clock"></div>
-      <div class="refresh-indicator">
-        <div class="refresh-dot" id="refresh-dot"></div>
-        <span id="refresh-label">live</span>
+    <!-- ── PIPELINE ── -->
+    <div id="view-pipeline" class="view">
+      <div class="section">
+        <div class="section-header">
+          <div class="section-title">Deal Pipeline</div>
+        </div>
+        <div class="campaign-grid" id="pipeline-grid">
+          <div class="empty">Loading…</div>
+        </div>
       </div>
     </div>
-  </div>
-</header>
 
-<!-- ── Page Body ── -->
-<div class="page-body">
-
-  <!-- Campaigns Table (top) -->
-  <div class="section-header">
-    <h2 class="section-title">Campaigns</h2>
-  </div>
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>Campaign</th>
-          <th>Emails Sent</th>
-          <th>Link Clicks <span style="font-size:9px;font-weight:400;color:#555;text-transform:none;letter-spacing:0;">(clicked a link)</span></th>
-          <th>Click Rate</th>
-          <th>Forms Submitted <span style="font-size:9px;font-weight:400;color:#555;text-transform:none;letter-spacing:0;">(filled the form)</span></th>
-          <th>Last Activity</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody id="stats-tbody">
-        <tr><td colspan="7" class="table-empty">Loading…</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- Health Stats -->
-  <div class="section-header">
-    <h2 class="section-title">Contact Database</h2>
-  </div>
-  <div class="health-grid" id="health-grid" style="grid-template-columns:repeat(4,1fr);">
-    <div class="health-card">
-      <div class="health-label">Total Contacts in Pipeline</div>
-      <div class="health-value" id="h-total-contacts">—</div>
-      <div class="health-desc">Unique investors across all campaigns</div>
-    </div>
-    <div class="health-card">
-      <div class="health-label">Emails Sent Today</div>
-      <div class="health-value" id="h-today-sent">—</div>
-      <div class="health-desc" id="h-today-desc">of 150 daily limit</div>
-      <div class="health-total" id="h-total-sent">— total sent all-time</div>
-    </div>
-    <div class="health-card">
-      <div class="health-label">Link Clicks — All Campaigns</div>
-      <div class="health-value accent" id="h-total-clicks">—</div>
-      <div class="health-desc">Investors who clicked a tracked link</div>
-    </div>
-    <div class="health-card">
-      <div class="health-label">Forms Submitted</div>
-      <div class="health-value" id="h-total-forms" style="color:var(--success);">—</div>
-      <div class="health-desc">Investors who filled out the profile form</div>
-    </div>
-  </div>
-
-  <!-- Campaign Cards -->
-  <div class="section-header">
-    <h2 class="section-title">Campaign Details</h2>
-    <span class="section-count" id="deals-count"></span>
-  </div>
-  <div class="deals-scroll">
-    <div class="deals-grid" id="deals-grid">
-      <div class="empty-state">
-        <div class="shimmer" style="width:200px;margin:0 auto 12px;"></div>
-        <div class="shimmer" style="width:140px;margin:0 auto;"></div>
+    <!-- ── SEQUENCES ── -->
+    <div id="view-sequences" class="view">
+      <div class="stats-grid" style="grid-template-columns: repeat(3,1fr); max-width: 600px;" id="seq-stats-row">
+        <div class="stat-card"><div class="stat-label">Total Enrolled</div><div class="stat-value" id="seq-total">—</div></div>
+        <div class="stat-card gold-accent"><div class="stat-label">Due Today</div><div class="stat-value" id="seq-due">—</div></div>
+        <div class="stat-card"><div class="stat-label">Replied</div><div class="stat-value" id="seq-replied">—</div></div>
+      </div>
+      <div class="section">
+        <div class="section-header"><div class="section-title">Sequence Templates</div></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th>Template</th><th>Active</th><th>Completed</th><th>Replied</th><th>Progress</th>
+            </tr></thead>
+            <tbody id="seq-tbody"><tr><td colspan="5" class="empty">Loading…</td></tr></tbody>
+          </table>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- Recipients Table -->
-  <div class="section-header">
-    <h2 class="section-title">Recipients</h2>
-    <span class="section-count" id="recipients-count"></span>
-  </div>
-  <div style="margin-bottom:12px;display:flex;align-items:center;gap:12px;">
-    <input id="recipients-search" type="text" placeholder="Search by name, email, or company…"
-      style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:8px 14px;font-size:13px;color:var(--text);font-family:var(--font-body);width:320px;outline:none;"
-      oninput="filterRecipients(this.value)">
-    <select id="recipients-filter" onchange="filterRecipients(document.getElementById('recipients-search').value)"
-      style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:8px 12px;font-size:13px;color:var(--text);font-family:var(--font-body);outline:none;">
-      <option value="">All campaigns</option>
-    </select>
-  </div>
-  <div class="table-wrap" style="max-height:480px;overflow-y:auto;">
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Company</th>
-          <th>Campaign</th>
-          <th>Sent</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody id="recipients-tbody">
-        <tr><td colspan="6" class="table-empty">Loading…</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- Live Activity Feed (full width) -->
-  <div class="section-header">
-    <h2 class="section-title">Live Activity</h2>
-    <span class="section-count" id="activity-count"></span>
-  </div>
-  <div class="activity-panel">
-    <div class="activity-feed" id="activity-feed">
-      <div class="activity-empty">Loading activity…</div>
+    <!-- ── HOT LEADS ── -->
+    <div id="view-hotleads" class="view">
+      <div class="section">
+        <div class="section-header">
+          <div class="section-title">Hot Leads</div>
+          <div class="section-meta">Investors with 2+ link clicks — not yet profiled</div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th>Investor</th><th>Company</th><th>Campaign</th><th>Clicks</th><th>Last Activity</th>
+            </tr></thead>
+            <tbody id="hotleads-tbody"><tr><td colspan="5" class="empty">Loading…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
     </div>
-  </div>
 
-  <!-- Investor Responses -->
-  <div class="section-header" style="margin-top:32px;">
-    <h2 class="section-title">Investor Responses</h2>
-    <span class="section-count" id="responses-count"></span>
-  </div>
-  <div style="overflow-x:auto;">
-    <table class="stats-table" id="responses-table">
-      <thead>
-        <tr>
-          <th>Investor</th>
-          <th>Company</th>
-          <th>Inv. Status</th>
-          <th>Check Size</th>
-          <th>Asset Focus</th>
-          <th>Structure</th>
-          <th>Target Return</th>
-          <th>Geography</th>
-          <th>Accredited</th>
-        </tr>
-      </thead>
-      <tbody id="responses-tbody">
-        <tr><td colspan="9" class="table-empty">Loading…</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- ── Inbound Leads ── -->
-  <div class="section-header" style="margin-top:2.5rem">
-    <h2 class="section-title">Inbound Leads</h2>
-    <span class="section-count" id="leads-count"></span>
-  </div>
-  <div class="table-wrap">
-    <table id="leads-table">
-      <thead>
-        <tr>
-          <th>Time</th>
-          <th>Type</th>
-          <th>Contact</th>
-          <th>Campaign</th>
-          <th>Subject</th>
-          <th>Preview</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td colspan="6" class="table-empty">Loading…</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-</div>
-
-<!-- Email Preview Modal -->
-<div id="preview-modal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.75);align-items:center;justify-content:center;padding:24px;">
-  <div style="background:var(--surface);border-radius:10px;width:100%;max-width:680px;max-height:90vh;display:flex;flex-direction:column;box-shadow:0 24px 60px rgba(0,0,0,0.5);">
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border);flex-shrink:0;">
-      <span id="preview-title" style="font-size:13px;font-weight:600;color:var(--text);letter-spacing:0.01em;"></span>
-      <button onclick="closePreview()" style="background:none;border:none;cursor:pointer;color:var(--muted);font-size:20px;line-height:1;padding:4px 6px;border-radius:4px;" onmouseover="this.style.background='var(--border)'" onmouseout="this.style.background='none'">&times;</button>
+    <!-- ── REPLIES ── -->
+    <div id="view-replies" class="view">
+      <div class="section">
+        <div class="section-header">
+          <div class="section-title">Investor Replies</div>
+          <div class="section-meta" id="all-replies-meta"></div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th>Date</th><th>Investor</th><th>Campaign</th><th>Subject</th><th>Preview</th>
+            </tr></thead>
+            <tbody id="replies-tbody"><tr><td colspan="5" class="empty">Loading…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
     </div>
-    <div id="preview-spinner" style="display:flex;align-items:center;justify-content:center;padding:60px;flex-shrink:0;">
-      <div style="width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 0.7s linear infinite;"></div>
-    </div>
-    <iframe id="preview-frame" style="flex:1;border:none;border-radius:0 0 10px 10px;min-height:500px;transition:opacity 0.2s;" sandbox="allow-same-origin"></iframe>
-  </div>
-</div>
 
-<!-- Reply Detail Modal -->
-<div id="reply-modal" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,0.72);align-items:flex-start;justify-content:center;padding:40px 24px;overflow-y:auto;">
-  <div style="background:var(--surface);border-radius:10px;width:100%;max-width:640px;box-shadow:0 24px 60px rgba(0,0,0,0.5);margin:auto;">
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border);">
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<!-- REPLY MODAL -->
+<div id="reply-modal">
+  <div class="modal-box">
+    <div class="modal-header">
       <div>
-        <div id="reply-modal-from" style="font-size:13px;font-weight:600;color:var(--text);"></div>
-        <div id="reply-modal-meta" style="font-size:11px;color:var(--muted);margin-top:2px;"></div>
+        <div class="modal-title" id="modal-title">Reply</div>
+        <div class="modal-sub" id="modal-sub"></div>
       </div>
-      <button onclick="closeReplyModal()" style="background:none;border:none;cursor:pointer;color:var(--muted);font-size:20px;line-height:1;padding:4px 8px;border-radius:4px;" onmouseover="this.style.background='var(--border)'" onmouseout="this.style.background='none'">&times;</button>
+      <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
-    <div id="reply-modal-subject" style="padding:12px 20px 0;font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;"></div>
-    <pre id="reply-modal-body" style="padding:16px 20px 24px;margin:0;font-family:inherit;font-size:13px;line-height:1.65;color:var(--text);white-space:pre-wrap;word-break:break-word;max-height:60vh;overflow-y:auto;"></pre>
-  </div>
-</div>
-
-<!-- Investor Response Detail Drawer -->
-<div class="resp-overlay" id="resp-overlay">
-  <div class="resp-drawer" id="resp-drawer">
-    <div class="resp-drawer-header">
-      <div>
-        <div class="resp-drawer-name" id="resp-name"></div>
-        <div class="resp-drawer-meta" id="resp-meta"></div>
-      </div>
-      <button class="resp-close" onclick="closeResponseDetail()">✕</button>
+    <div class="modal-body">
+      <pre id="modal-body-text"></pre>
     </div>
-    <div class="resp-drawer-body" id="resp-body"></div>
   </div>
 </div>
 
 <script>
-// ── Utilities ────────────────────────────────────────────────────────────────
+// ── STATE ──────────────────────────────────────────
+let _stats = null, _leads = [], _hotleads = [], _seqs = null;
 
-let _leadsCache = [];
+const VIEW_TITLES = {
+  overview: 'Overview',
+  pipeline: 'Deal Pipeline',
+  sequences: 'Sequences',
+  hotleads: 'Hot Leads',
+  replies: 'Replies',
+};
 
-function openReplyModal(id) {
-  const lead = _leadsCache.find(l => l.id === id);
-  if (!lead) return;
-  document.getElementById('reply-modal-from').textContent =
-    (lead.contact_name ? lead.contact_name + '  <' + lead.contact_email + '>' : lead.contact_email) || '—';
-  document.getElementById('reply-modal-meta').textContent =
-    (lead.campaign_slug ? 'Campaign: ' + lead.campaign_slug + '  ·  ' : '') + lead.ts_display;
-  document.getElementById('reply-modal-subject').textContent = lead.subject || '(no subject)';
-  document.getElementById('reply-modal-body').textContent = lead.body_plain || lead.body_preview || '(no body)';
-  const modal = document.getElementById('reply-modal');
-  modal.style.display = 'flex';
-  modal.onclick = function(e) { if (e.target === modal) closeReplyModal(); };
+// ── NAVIGATION ─────────────────────────────────────
+document.querySelectorAll('.nav-item').forEach(el => {
+  el.addEventListener('click', () => {
+    const view = el.dataset.view;
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('view-' + view).classList.add('active');
+    document.getElementById('view-title').textContent = VIEW_TITLES[view] || view;
+  });
+});
+
+// ── FETCH ──────────────────────────────────────────
+async function fetchAll() {
+  await Promise.all([fetchStats(), fetchLeads(), fetchHotLeads(), fetchSequences()]);
+  renderAll();
+  document.getElementById('last-updated').textContent =
+    'Updated ' + new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
 }
-
-function closeReplyModal() {
-  document.getElementById('reply-modal').style.display = 'none';
-}
-
-function esc(s) {
-  return String(s)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
-}
-
-function statusPillClass(status) {
-  const map = { READY: 'pill-ready', ACTIVE: 'pill-active', SENT: 'pill-sent', NO_MEMO: 'pill-no_memo' };
-  return map[status] || 'pill-ready';
-}
-
-function statusLabel(status) {
-  const map = { READY: 'Ready', ACTIVE: 'Active', SENT: 'Sent', NO_MEMO: 'No Memo' };
-  return map[status] || status;
-}
-
-function cardClass(status) {
-  return 'status-' + status.toLowerCase();
-}
-
-function formatNumber(n) {
-  return Number(n).toLocaleString();
-}
-
-// ── Clock ────────────────────────────────────────────────────────────────────
-
-function updateClock() {
-  const now = new Date();
-  const opts = {
-    weekday: 'short', month: 'short', day: 'numeric',
-    hour: '2-digit', minute: '2-digit', second: '2-digit',
-    hour12: true
-  };
-  document.getElementById('clock').textContent = now.toLocaleString('en-US', opts);
-}
-
-setInterval(updateClock, 1000);
-updateClock();
-
-// ── Deal Cards ────────────────────────────────────────────────────────────────
-
-function renderDeals(deals) {
-  const grid = document.getElementById('deals-grid');
-  const countEl = document.getElementById('deals-count');
-
-  if (!deals || deals.length === 0) {
-    grid.innerHTML = `<div class="empty-state">
-      <div class="empty-state-icon">◇</div>
-      <p>No deals found in deals/</p>
-    </div>`;
-    countEl.textContent = '';
-    return;
-  }
-
-  countEl.textContent = deals.length + ' campaign' + (deals.length !== 1 ? 's' : '');
-
-  grid.innerHTML = deals.map(d => {
-    const memoLink = d.memo_url
-      ? `<a class="deal-memo-link" href="${esc(d.memo_url)}" target="_blank" rel="noopener">
-           View Memo
-           <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5">
-             <path d="M2 2h8v8M10 2 2 10"/>
-           </svg>
-         </a>`
-      : `<span style="font-size:11px;color:var(--muted);">No memo</span>`;
-
-    const emailsSent = d.emails_sent || d.sent_count || 0;
-    const sentInfo = emailsSent > 0
-      ? `<span class="deal-sent-info">
-           <strong>${formatNumber(emailsSent)}</strong> emails sent${d.sent_at ? ' · ' + d.sent_at : ''}
-         </span>`
-      : `<span class="deal-sent-info" style="color:var(--muted);">Not sent yet</span>`;
-
-    const clickHighlight = (d.unique_clickers || 0) > 0 ? ' highlight' : '';
-
-    return `<div class="deal-card ${cardClass(d.status)}">
-      <div class="deal-card-header">
-        <div class="deal-name">${esc(d.name)}</div>
-        <span class="status-pill ${statusPillClass(d.status)}">${statusLabel(d.status)}</span>
-      </div>
-
-      <div class="deal-meta">
-        ${d.asset_type ? `<span class="deal-badge">${esc(d.asset_type)}</span>` : ''}
-        ${d.location ? `<span class="deal-location">${esc(d.location)}</span>` : ''}
-      </div>
-
-      ${d.raise_target ? `<div class="deal-raise">${esc(d.raise_target)}<span>raise target</span></div>` : ''}
-
-      <div class="deal-stats-row" style="grid-template-columns:${d.has_form ? '1fr 1fr 1fr' : '1fr 1fr'};">
-        <div class="deal-stat-box">
-          <div class="deal-stat-label">Emails Sent</div>
-          <div class="deal-stat-value">${formatNumber(d.emails_sent || d.sent_count || 0)}</div>
-          <div class="deal-stat-sub">delivered to investors</div>
-        </div>
-        <div class="deal-stat-box">
-          <div class="deal-stat-label">Link Clicks</div>
-          <div class="deal-stat-value${clickHighlight}">${formatNumber(d.unique_clickers || 0)}</div>
-          <div class="deal-stat-sub">clicked a link · ${d.click_rate || d.view_rate || 0}% click rate</div>
-        </div>
-        ${d.has_form ? `<div class="deal-stat-box">
-          <div class="deal-stat-label">Forms Submitted</div>
-          <div class="deal-stat-value" style="color:${d.form_submissions > 0 ? 'var(--success)' : 'var(--muted)'};">${formatNumber(d.form_submissions || 0)}</div>
-          <div class="deal-stat-sub">filled the profile form${d.unique_clickers > 0 ? ' · ' + (d.conversion_rate || 0) + '% of clickers' : ''}</div>
-        </div>` : ''}
-      </div>
-
-      <div class="deal-footer">
-        ${sentInfo}
-        <div style="display:flex;gap:10px;align-items:center;">
-          <button class="preview-btn" data-slug="${esc(d.slug)}" data-name="${esc(d.name)}">
-            <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" style="width:11px;height:11px;">
-              <circle cx="6" cy="6" r="4"/><circle cx="6" cy="6" r="1.5" fill="currentColor" stroke="none"/>
-            </svg>
-            Preview Email
-          </button>
-          ${memoLink}
-        </div>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-// ── Campaign Stats Table ──────────────────────────────────────────────────────
-
-function renderStatsTable(deals) {
-  const tbody = document.getElementById('stats-tbody');
-  const sent = deals.filter(d => d.sent_count > 0 || d.status === 'SENT' || d.status === 'ACTIVE');
-
-  if (sent.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="7" class="table-empty">No campaigns sent yet</td></tr>`;
-    return;
-  }
-
-  tbody.innerHTML = sent.map(d => {
-    const clickRate = d.click_rate || d.view_rate || 0;
-    let rateClass = 'poor';
-    if (clickRate >= 20) rateClass = 'good';
-    else if (clickRate >= 10) rateClass = 'ok';
-
-    const typeBadge = d.campaign_type === 'nurture'
-      ? `<span style="font-size:9px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);background:rgba(255,255,255,0.04);border:1px solid var(--border);padding:1px 6px;border-radius:3px;margin-left:8px;">Nurture</span>`
-      : '';
-
-    const formCell = d.has_form
-      ? `<td class="td-number" style="color:${d.form_submissions > 0 ? 'var(--success)' : 'var(--muted)'};">${formatNumber(d.form_submissions || 0)}${d.form_submissions > 0 && d.unique_clickers > 0 ? `<span style="font-size:10px;color:var(--muted);margin-left:6px;">(${d.conversion_rate}% of clickers)</span>` : ''}</td>`
-      : `<td class="td-muted">—</td>`;
-
-    return `<tr>
-      <td class="td-deal-name">${esc(d.name)}${typeBadge}</td>
-      <td class="td-number">${formatNumber(d.emails_sent || d.sent_count || 0)}</td>
-      <td class="td-number">${formatNumber(d.unique_clickers || d.unique_viewers || 0)}</td>
-      <td class="td-rate ${rateClass}">${clickRate > 0 ? clickRate + '%' : '—'}</td>
-      ${formCell}
-      <td class="td-muted">${d.last_activity || '—'}</td>
-      <td><span class="status-pill ${statusPillClass(d.status)}">${statusLabel(d.status)}</span></td>
-    </tr>`;
-  }).join('');
-}
-
-// ── Activity Feed ─────────────────────────────────────────────────────────────
-
-// Track rendered event timestamps to animate only truly new events
-let _seenTimestamps = new Set();
-
-function renderActivity(events, meta) {
-  const feed = document.getElementById('activity-feed');
-  const countEl = document.getElementById('activity-count');
-
-  if (!events || events.length === 0) {
-    feed.innerHTML = `<div class="activity-empty">No link clicks recorded yet. Clicks will appear here in real time as investors open tracked links.</div>`;
-    countEl.textContent = '';
-    return;
-  }
-
-  const visible = events.slice(0, 50);
-  const uniqueCount = meta && meta.unique_clickers ? meta.unique_clickers : new Set(events.map(e => e.contact_email).filter(Boolean)).size;
-  countEl.textContent = `${uniqueCount} unique · ${events.length} total clicks`;
-
-  const newTimestamps = new Set(visible.map(e => e.timestamp));
-
-  feed.innerHTML = visible.map(e => {
-    const isNew = e.is_new && !_seenTimestamps.has(e.timestamp);
-    const dotClass = isNew ? 'new' : '';
-    const name = e.contact_name || e.contact_email || 'Unknown investor';
-    const campaignLabel = e.campaign_name || e.deal_slug || '';
-    const repeatBadge = e.is_repeat
-      ? `<span style="font-size:10px;color:var(--muted);margin-left:6px;border:1px solid var(--border);padding:1px 5px;border-radius:3px;">repeat</span>`
-      : `<span style="font-size:10px;color:var(--success);margin-left:6px;">first click</span>`;
-
-    return `<div class="activity-item">
-      <div class="activity-dot ${dotClass}"></div>
-      <div class="activity-content">
-        <div class="activity-main">
-          <span class="contact-name">${esc(name)}</span>
-          <span style="color:var(--muted);font-weight:400;"> clicked a link in </span>
-          <span class="deal-name-ref">${esc(campaignLabel)}</span>
-          ${repeatBadge}
-        </div>
-        <div class="activity-sub">${esc(e.contact_email || '')}</div>
-      </div>
-      <div class="activity-time">${esc(e.ts_display)}</div>
-    </div>`;
-  }).join('');
-
-  _seenTimestamps = newTimestamps;
-}
-
-// ── Health Stats ──────────────────────────────────────────────────────────────
-
-function renderHealth(data) {
-  const totalEl     = document.getElementById('h-total-contacts');
-  const todayEl     = document.getElementById('h-today-sent');
-  const descEl      = document.getElementById('h-today-desc');
-  const totalSentEl = document.getElementById('h-total-sent');
-  const clicksEl    = document.getElementById('h-total-clicks');
-  const formsEl     = document.getElementById('h-total-forms');
-  const budgetText  = document.getElementById('budget-text');
-  const budgetBar   = document.getElementById('budget-bar');
-
-  const allTimeSent   = (data.deals || []).reduce((sum, d) => sum + (d.emails_sent || d.sent_count || 0), 0) + 150;
-  const totalClickers = (data.deals || []).reduce((sum, d) => sum + (d.unique_clickers || d.unique_viewers || 0), 0);
-  const totalForms    = data.total_form_submissions || 0;
-
-  animateNumber(totalEl, data.total_contacts);
-  animateNumber(todayEl, data.daily_sent);
-  animateNumber(clicksEl, totalClickers);
-  animateNumber(formsEl, totalForms);
-
-  const pct = Math.min(100, Math.round((data.daily_sent / data.daily_limit) * 100));
-  descEl.textContent = `of ${formatNumber(data.daily_limit)} daily limit`;
-  if (totalSentEl) totalSentEl.textContent = `${formatNumber(allTimeSent)} total sent all-time`;
-  budgetText.textContent = `${formatNumber(data.daily_sent)} / ${formatNumber(data.daily_limit)} sent today`;
-  budgetBar.style.width = pct + '%';
-
-  if (pct >= 90) todayEl.style.color = 'var(--danger)';
-  else if (pct >= 70) todayEl.style.color = 'var(--warn)';
-  else todayEl.style.color = '';
-}
-
-// ── Number Animation ──────────────────────────────────────────────────────────
-
-function animateNumber(el, target) {
-  const start = parseInt(el.textContent.replace(/[^0-9]/g, ''), 10) || 0;
-  const end = parseInt(target, 10) || 0;
-  if (start === end) return;
-  const duration = 600;
-  const startTime = performance.now();
-  function step(now) {
-    const elapsed = now - startTime;
-    const progress = Math.min(1, elapsed / duration);
-    const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
-    const current = Math.round(start + (end - start) * eased);
-    el.textContent = formatNumber(current);
-    if (progress < 1) requestAnimationFrame(step);
-  }
-  requestAnimationFrame(step);
-}
-
-// ── Refresh Indicator ─────────────────────────────────────────────────────────
-
-function flashRefresh() {
-  const dot = document.getElementById('refresh-dot');
-  const label = document.getElementById('refresh-label');
-  dot.classList.add('fresh');
-  label.textContent = 'updated';
-  setTimeout(() => {
-    dot.classList.remove('fresh');
-    label.textContent = 'live';
-  }, 3000);
-}
-
-// ── Polling ───────────────────────────────────────────────────────────────────
 
 async function fetchStats() {
   try {
-    const res = await fetch((window.OSC_API_BASE||'') + '/api/stats');
-    if (!res.ok) return;
-    const data = await res.json();
-    const allCampaigns = data.deals || [];
-    renderDeals(allCampaigns);
-    renderStatsTable(allCampaigns);
-    renderHealth(data);
-    flashRefresh();
-  } catch (e) {
-    console.warn('Stats fetch failed:', e);
-  }
+    const [sr, lr] = await Promise.all([
+      fetch('/api/stats').then(r => r.json()),
+      fetch('/api/leads?limit=50').then(r => r.json()),
+    ]);
+    _stats = sr;
+    _leads = lr.leads || [];
+  } catch(e) { console.error('stats/leads', e); }
 }
 
-async function fetchActivity() {
+async function fetchHotLeads() {
   try {
-    const res = await fetch((window.OSC_API_BASE||'') + '/api/activity');
-    if (!res.ok) return;
-    const data = await res.json();
-    // API now returns {events, total_events, unique_clickers, first_clicks}
-    renderActivity(data.events || [], data);
-  } catch (e) {
-    console.warn('Activity fetch failed:', e);
-  }
+    const r = await fetch('/api/hotleads').then(r => r.json());
+    _hotleads = r.leads || [];
+  } catch(e) { console.error('hotleads', e); }
 }
 
-// ── Recipients ────────────────────────────────────────────────────────────────
-
-let _allRecipients = [];
-
-function renderRecipients(rows) {
-  const tbody = document.getElementById('recipients-tbody');
-  const countEl = document.getElementById('recipients-count');
-  const filterEl = document.getElementById('recipients-filter');
-
-  const slugs = [...new Set(rows.map(r => r.slug))];
-  const existing = [...filterEl.options].map(o => o.value);
-  slugs.forEach(slug => {
-    if (!existing.includes(slug)) {
-      const opt = document.createElement('option');
-      opt.value = slug;
-      opt.textContent = rows.find(r => r.slug === slug)?.campaign || slug;
-      filterEl.appendChild(opt);
-    }
-  });
-
-  countEl.textContent = rows.length.toLocaleString() + ' total';
-
-  if (!rows.length) {
-    tbody.innerHTML = `<tr><td colspan="6" class="table-empty">No emails sent yet</td></tr>`;
-    return;
-  }
-
-  tbody.innerHTML = rows.slice(0, 500).map(r => {
-    const statusColor = r.status === 'sent' ? 'var(--success)' : r.status === 'personalization_failed' ? 'var(--warn)' : 'var(--muted)';
-    return `<tr>
-      <td style="font-weight:500;color:var(--text);">${esc(r.name || '—')}</td>
-      <td class="td-muted">${esc(r.email || '—')}</td>
-      <td class="td-muted">${esc(r.company || '—')}</td>
-      <td><span style="font-size:10px;color:var(--muted);background:rgba(255,255,255,0.04);border:1px solid var(--border);padding:1px 6px;border-radius:3px;">${esc(r.campaign || r.slug)}</span></td>
-      <td class="td-muted" style="white-space:nowrap;">${esc(r.ts_display || '—')}</td>
-      <td><span style="font-size:11px;font-weight:600;color:${statusColor};">${esc(r.status || '—')}</span></td>
-    </tr>`;
-  }).join('');
-}
-
-function filterRecipients(query) {
-  const slug = document.getElementById('recipients-filter').value;
-  const q = (query || '').toLowerCase();
-  let filtered = _allRecipients;
-  if (slug) filtered = filtered.filter(r => r.slug === slug);
-  if (q) filtered = filtered.filter(r =>
-    (r.name||'').toLowerCase().includes(q) ||
-    (r.email||'').toLowerCase().includes(q) ||
-    (r.company||'').toLowerCase().includes(q)
-  );
-  renderRecipients(filtered);
-  document.getElementById('recipients-count').textContent = filtered.length.toLocaleString() + ' shown';
-}
-
-async function fetchRecipients() {
+async function fetchSequences() {
   try {
-    const res = await fetch((window.OSC_API_BASE||'') + '/api/recipients');
-    if (!res.ok) return;
-    _allRecipients = await res.json();
-    renderRecipients(_allRecipients);
-  } catch (e) {
-    console.warn('Recipients fetch failed:', e);
-  }
+    _seqs = await fetch('/api/sequences').then(r => r.json());
+  } catch(e) { console.error('sequences', e); }
 }
 
-// ── Investor Responses ────────────────────────────────────────────────────────
-
-let _responseMap = {};
-
-function renderResponses(data) {
-  const tbody   = document.getElementById('responses-tbody');
-  const countEl = document.getElementById('responses-count');
-  const rows    = data.responses || [];
-
-  _responseMap = {};
-  rows.forEach(r => { _responseMap[r.id] = r; });
-
-  countEl.textContent = rows.length.toLocaleString() + ' submitted';
-
-  if (!rows.length) {
-    tbody.innerHTML = `<tr><td colspan="9" class="table-empty">No profile submissions yet</td></tr>`;
-    return;
-  }
-
-  tbody.innerHTML = rows.map(r => {
-    const invStatusBadge = r.investor_status
-      ? `<span style="font-size:10px;font-weight:600;color:var(--accent);background:var(--accent-dim);border:1px solid var(--accent-glow);padding:2px 7px;border-radius:3px;">${esc(r.investor_status)}</span>`
-      : `<span style="font-size:10px;color:var(--muted);">—</span>`;
-
-    const accreditedBadge = r.accredited
-      ? `<span style="font-size:10px;color:var(--success);background:rgba(82,192,122,0.1);border:1px solid rgba(82,192,122,0.3);padding:2px 7px;border-radius:3px;">Yes</span>`
-      : `<span style="font-size:10px;color:var(--muted);">—</span>`;
-
-    const assetFocus = r.investment_focus_raw || (r.asset_types||[]).join(', ') || '—';
-
-    return `<tr class="resp-row" onclick="openResponseDetail('${r.id}')">
-      <td style="font-weight:500;color:var(--text);">${esc(r.name || '—')}</td>
-      <td class="td-muted">${esc(r.company || '—')}</td>
-      <td>${invStatusBadge}</td>
-      <td class="td-muted">${esc(r.check_size || '—')}</td>
-      <td class="td-muted">${esc(assetFocus)}</td>
-      <td class="td-muted">${esc((r.structure||[]).join(', ') || '—')}</td>
-      <td class="td-muted">${esc(r.target_irr || '—')}</td>
-      <td class="td-muted">${esc((r.geography||[]).join(', ') || '—')}</td>
-      <td>${accreditedBadge}</td>
-    </tr>`;
-  }).join('');
+// ── RENDER ─────────────────────────────────────────
+function renderAll() {
+  renderStatCards();
+  renderCampaignGrid('campaign-grid');
+  renderCampaignGrid('pipeline-grid');
+  renderOverviewReplies();
+  renderAllReplies();
+  renderHotLeads();
+  renderSequences();
 }
 
-function pills(items) {
-  if (!items || !items.length) return `<span class="resp-pill-empty">Not provided</span>`;
-  return items.map(i => `<span class="resp-pill">${esc(i)}</span>`).join('');
-}
+function _n(v) { return (v ?? 0).toLocaleString(); }
+function _pct(v) { return (v ?? 0) + '%'; }
 
-function singlePill(value) {
-  if (!value) return `<span class="resp-pill-empty">Not provided</span>`;
-  return `<span class="resp-pill">${esc(value)}</span>`;
-}
+function renderStatCards() {
+  if (!_stats) return;
+  const deals = _stats.deals || [];
+  const totalSent = deals.reduce((s, d) => s + (d.emails_sent || 0), 0);
+  const totalClick = deals.reduce((s, d) => s + (d.unique_clickers || 0), 0);
+  const clickRate = totalSent > 0 ? Math.round(totalClick / totalSent * 100) : 0;
+  const replies = _leads.filter(l => l.type === 'reply').length;
+  const seqTotal = _seqs ? (_seqs.total_enrolled || 0) : 0;
 
-function openResponseDetail(id) {
-  const r = _responseMap[id];
-  if (!r) return;
-
-  document.getElementById('resp-name').textContent = r.name || '—';
-
-  const metaParts = [];
-  if (r.company) metaParts.push(r.company);
-  if (r.email)   metaParts.push(r.email);
-  if (r.profile_submitted) {
-    const d = new Date(r.profile_submitted);
-    if (!isNaN(d)) metaParts.push('Submitted ' + d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }));
-  }
-  document.getElementById('resp-meta').textContent = metaParts.join(' · ');
-
-  const assetItems = r.investment_focus_raw
-    ? r.investment_focus_raw.split(/,\s*/).filter(Boolean)
-    : (r.asset_types || []);
-
-  document.getElementById('resp-body').innerHTML = `
-    <div class="resp-section">
-      <div class="resp-section-label">Question 1 of 5</div>
-      <div class="resp-section-question">Are you actively investing right now?</div>
-      <div class="resp-pills">${singlePill(r.investor_status)}</div>
+  document.getElementById('stats-grid').innerHTML = `
+    <div class="stat-card">
+      <div class="stat-label">Total Investors</div>
+      <div class="stat-value">${_n(_stats.total_contacts)}</div>
+      <div class="stat-sub">in CRM</div>
     </div>
-    <hr class="resp-divider">
-    <div class="resp-section">
-      <div class="resp-section-label">Question 2 of 5</div>
-      <div class="resp-section-question">What core asset types do you focus on?</div>
-      <div class="resp-pills">${pills(assetItems)}</div>
+    <div class="stat-card">
+      <div class="stat-label">Emails Sent</div>
+      <div class="stat-value">${_n(totalSent)}</div>
+      <div class="stat-sub">across all campaigns</div>
     </div>
-    <hr class="resp-divider">
-    <div class="resp-section">
-      <div class="resp-section-label">Question 3 of 5</div>
-      <div class="resp-section-question">What's your typical investment per deal?</div>
-      <div class="resp-pills">${singlePill(r.check_size)}</div>
+    <div class="stat-card">
+      <div class="stat-label">Click Rate</div>
+      <div class="stat-value">${_pct(clickRate)}</div>
+      <div class="stat-sub">${_n(totalClick)} unique clickers</div>
     </div>
-    <hr class="resp-divider">
-    <div class="resp-section">
-      <div class="resp-section-label">Question 4 of 5</div>
-      <div class="resp-section-question">What investment structures do you prefer?</div>
-      <div class="resp-pills">${pills(r.structure && r.structure.length ? r.structure : r.preferred_structure ? [r.preferred_structure] : [])}</div>
+    <div class="stat-card gold-accent">
+      <div class="stat-label">Hot Leads</div>
+      <div class="stat-value">${_n(_hotleads.length)}</div>
+      <div class="stat-sub">2+ clicks, not profiled</div>
     </div>
-    <hr class="resp-divider">
-    <div class="resp-section">
-      <div class="resp-section-label">Question 5 of 5</div>
-      <div class="resp-section-question">What return range are you targeting?</div>
-      <div class="resp-pills">${singlePill(r.target_irr)}</div>
+    <div class="stat-card">
+      <div class="stat-label">Replies</div>
+      <div class="stat-value">${_n(replies)}</div>
+      <div class="stat-sub">inbound this session</div>
     </div>
-    ${r.geography && r.geography.length ? `
-    <hr class="resp-divider">
-    <div class="resp-section">
-      <div class="resp-section-label">Geography</div>
-      <div class="resp-section-question">Geographic focus</div>
-      <div class="resp-pills">${pills(r.geography)}</div>
-    </div>` : ''}
-    ${r.accredited ? `
-    <hr class="resp-divider">
-    <div class="resp-section">
-      <div class="resp-section-label">Accreditation</div>
-      <div class="resp-section-question">Accredited investor status</div>
-      <div class="resp-pills"><span class="resp-pill">Accredited</span></div>
-    </div>` : ''}
+    <div class="stat-card">
+      <div class="stat-label">In Sequences</div>
+      <div class="stat-value">${_n(seqTotal)}</div>
+      <div class="stat-sub">${_seqs ? _seqs.due_now : 0} due today</div>
+    </div>
   `;
-
-  document.getElementById('resp-overlay').classList.add('open');
-  document.body.style.overflow = 'hidden';
 }
 
-function closeResponseDetail() {
-  document.getElementById('resp-overlay').classList.remove('open');
-  document.body.style.overflow = '';
+function renderCampaignGrid(id) {
+  if (!_stats) return;
+  const el = document.getElementById(id);
+  if (!el) return;
+  const deals = _stats.deals || [];
+  if (!deals.length) { el.innerHTML = '<div class="empty">No campaigns found</div>'; return; }
+
+  el.innerHTML = deals.map(d => {
+    const isActive = d.status === 'SENT';
+    const badge = isActive
+      ? '<span class="badge badge-green">Sent</span>'
+      : '<span class="badge badge-muted">Pending</span>';
+    const typeLabel = d.campaign_type === 'nurture' ? 'Nurture' : (d.asset_type || 'Deal');
+    return `
+      <div class="campaign-card ${isActive ? 'active-deal' : ''}">
+        <div class="cc-header">
+          <div>
+            <div class="cc-name">${d.name}</div>
+            <div class="cc-meta">${typeLabel}${d.location ? ' · ' + d.location : ''}${d.raise_target ? ' · ' + d.raise_target : ''}</div>
+          </div>
+          ${badge}
+        </div>
+        <div class="cc-stats">
+          <div>
+            <div class="cc-stat-label">Sent</div>
+            <div class="cc-stat-val">${_n(d.emails_sent)}</div>
+          </div>
+          <div>
+            <div class="cc-stat-label">Clicked</div>
+            <div class="cc-stat-val">${_n(d.unique_clickers)}</div>
+          </div>
+          <div>
+            <div class="cc-stat-label">Click Rate</div>
+            <div class="cc-stat-val">${_pct(d.click_rate)}</div>
+          </div>
+        </div>
+        ${d.memo_url ? `<a class="cc-link" href="${d.memo_url}" target="_blank">View Deal Memo →</a>` : ''}
+      </div>
+    `;
+  }).join('');
 }
 
-// Close on overlay click (outside drawer)
-document.getElementById('resp-overlay').addEventListener('click', function(e) {
-  if (e.target === this) closeResponseDetail();
-});
-
-async function fetchResponses() {
-  try {
-    const res = await fetch((window.OSC_API_BASE||'') + '/api/responses');
-    if (!res.ok) return;
-    const data = await res.json();
-    renderResponses(data);
-  } catch (e) {
-    document.getElementById('responses-tbody').innerHTML =
-      `<tr><td colspan="9" class="table-empty">Failed to load</td></tr>`;
-    console.warn('Responses fetch failed:', e);
+function _replyRow(lead, clickable) {
+  const from = lead.contact_name || lead.contact_email || '—';
+  const preview = (lead.body_preview || '').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const row = document.createElement('tr');
+  if (clickable && lead.type === 'reply') row.classList.add('clickable');
+  row.innerHTML = `
+    <td class="td-muted">${lead.ts_display || '—'}</td>
+    <td>${from}</td>
+    <td class="td-muted">${lead.campaign_slug || '—'}</td>
+    <td>${lead.subject || '—'}</td>
+    <td class="td-muted" style="max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${preview}</td>
+  `;
+  if (clickable && lead.type === 'reply') {
+    row.onclick = () => openModal(lead);
   }
+  return row;
 }
 
-// ── Inbound Leads ─────────────────────────────────────────────────────────────
+function renderOverviewReplies() {
+  const el = document.getElementById('overview-replies-table');
+  const replies = _leads.filter(l => l.type === 'reply').slice(0, 8);
+  document.getElementById('replies-meta').textContent = replies.length + ' recent';
+  if (!replies.length) { el.innerHTML = '<div class="empty">No replies yet</div>'; return; }
 
-async function loadLeads() {
-  const base = window.OSC_API_BASE || '';
-  try {
-    const r = await fetch(`${base}/api/leads`);
-    if (!r.ok) throw new Error(`/api/leads returned ${r.status}`);
-    const data = await r.json();
-    const leads = data.leads || [];
-    const tbody = document.querySelector('#leads-table tbody');
-    const countEl = document.getElementById('leads-count');
-    if (countEl) countEl.textContent = leads.length;
-    if (leads.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="6" class="table-empty">No inbound leads yet</td></tr>';
-      return;
-    }
-    tbody.innerHTML = leads.map(l => {
-      const dataAttr = l.type === 'reply'
-        ? `onclick="openReplyModal(${l.id})" style="cursor:pointer;" title="Click to read full reply"`
-        : '';
-      const hoverStyle = l.type === 'reply'
-        ? `onmouseover="this.style.background='var(--hover)'" onmouseout="this.style.background=''"` : '';
-      return `
-      <tr ${dataAttr} ${hoverStyle}>
-        <td>${esc(l.ts_display)}</td>
-        <td style="font-size:.8em;opacity:.7">${l.type === 'reply' ? '✉️ Reply' : '📋 Form'}</td>
-        <td>
-          <div>${esc(l.contact_name || '—')}</div>
-          <div style="font-size:.8em;opacity:.6">${esc(l.contact_email)}</div>
-        </td>
-        <td style="font-size:.85em;opacity:.8">${esc(l.campaign_slug || '—')}</td>
-        <td style="font-size:.85em">${esc(l.subject)}</td>
-        <td style="font-size:.8em;opacity:.7;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(l.body_preview)}</td>
-      </tr>`;
-    }).join('');
-    _leadsCache = leads;
-  } catch (err) {
-    console.error('leads error:', err);
-    const tbody = document.querySelector('#leads-table tbody');
-    if (tbody) tbody.innerHTML = `<tr><td colspan="6" class="table-empty" style="color:var(--danger)">Error loading leads</td></tr>`;
-  }
+  const t = document.createElement('table');
+  t.innerHTML = `<thead><tr><th>Date</th><th>Investor</th><th>Campaign</th><th>Subject</th><th>Preview</th></tr></thead>`;
+  const tb = document.createElement('tbody');
+  replies.forEach(l => tb.appendChild(_replyRow(l, true)));
+  t.appendChild(tb);
+  el.innerHTML = '';
+  el.appendChild(t);
 }
 
-async function refreshAll() {
-  await Promise.all([fetchStats(), fetchActivity(), fetchRecipients()]);
+function renderAllReplies() {
+  const tbody = document.getElementById('replies-tbody');
+  const replies = _leads.filter(l => l.type === 'reply');
+  document.getElementById('all-replies-meta').textContent = replies.length + ' total';
+  if (!replies.length) { tbody.innerHTML = '<tr><td colspan="5" class="empty">No replies yet</td></tr>'; return; }
+  tbody.innerHTML = '';
+  replies.forEach(l => tbody.appendChild(_replyRow(l, true)));
 }
 
-// Initial load — responses and leads load separately so they don't block main data
-refreshAll();
-setTimeout(fetchResponses, 800);
-setTimeout(loadLeads, 1200);
-
-// Poll every 30 seconds
-setInterval(refreshAll, 30000);
-setInterval(fetchResponses, 60000);
-setInterval(loadLeads, 60000);
-
-// ── Email Preview Modal ───────────────────────────────────────────────────────
-
-function openPreview(slug, name) {
-  const modal   = document.getElementById('preview-modal');
-  const title   = document.getElementById('preview-title');
-  const frame   = document.getElementById('preview-frame');
-  const spinner = document.getElementById('preview-spinner');
-
-  title.textContent = name + ' — Email Preview';
-  frame.src = '';
-  frame.style.opacity = '0';
-  spinner.style.display = 'flex';
-  modal.style.display = 'flex';
-  document.body.style.overflow = 'hidden';
-
-  frame.onload = () => {
-    spinner.style.display = 'none';
-    frame.style.opacity = '1';
-  };
-  frame.src = '/api/preview?slug=' + encodeURIComponent(slug);
+function renderHotLeads() {
+  const tbody = document.getElementById('hotleads-tbody');
+  if (!_hotleads.length) { tbody.innerHTML = '<tr><td colspan="5" class="empty">No hot leads yet</td></tr>'; return; }
+  tbody.innerHTML = '';
+  _hotleads.forEach(l => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>
+        <div style="font-weight:500">${l.name || '—'}</div>
+        <div style="font-size:11px;color:var(--text-3)">${l.email}</div>
+      </td>
+      <td class="td-muted">${l.company || '—'}</td>
+      <td class="td-muted">${l.campaign || '—'}</td>
+      <td><span class="hot-badge">⚡ ${l.click_count}</span></td>
+      <td class="td-muted">${l.last_click || '—'}</td>
+    `;
+    tbody.appendChild(tr);
+  });
 }
 
-function closePreview() {
-  const modal = document.getElementById('preview-modal');
-  modal.style.display = 'none';
-  document.getElementById('preview-frame').src = '';
-  document.body.style.overflow = '';
+function renderSequences() {
+  if (!_seqs) return;
+  const templates = _seqs.templates || [];
+
+  document.getElementById('seq-total').textContent = _n(_seqs.total_enrolled);
+  document.getElementById('seq-due').textContent = _n(_seqs.due_now);
+  const totalReplied = templates.reduce((s, t) => s + (t.replied || 0), 0);
+  document.getElementById('seq-replied').textContent = _n(totalReplied);
+
+  const tbody = document.getElementById('seq-tbody');
+  if (!templates.length) { tbody.innerHTML = '<tr><td colspan="5" class="empty">No sequences yet</td></tr>'; return; }
+  tbody.innerHTML = '';
+  templates.forEach(t => {
+    const total = (t.active || 0) + (t.completed || 0) + (t.replied || 0);
+    const pct = total > 0 ? Math.round(((t.completed || 0) + (t.replied || 0)) / total * 100) : 0;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td style="font-weight:500">${t.template_slug}</td>
+      <td><span class="badge badge-gold">${_n(t.active)}</span></td>
+      <td><span class="badge badge-green">${_n(t.completed)}</span></td>
+      <td><span class="badge badge-muted">${_n(t.replied)}</span></td>
+      <td style="min-width:120px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <div class="seq-bar-wrap"><div class="seq-bar" style="width:${pct}%"></div></div>
+          <span style="font-size:11px;color:var(--text-3);white-space:nowrap">${pct}%</span>
+        </div>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
 }
 
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closePreview(); });
-
-document.addEventListener('click', e => {
-  const btn = e.target.closest('.preview-btn');
-  if (btn) openPreview(btn.dataset.slug, btn.dataset.name);
+// ── MODAL ──────────────────────────────────────────
+function openModal(lead) {
+  document.getElementById('modal-title').textContent = lead.subject || '(no subject)';
+  document.getElementById('modal-sub').textContent =
+    (lead.contact_name || lead.contact_email || '') + (lead.ts_display ? '  ·  ' + lead.ts_display : '');
+  document.getElementById('modal-body-text').textContent = lead.body_plain || lead.body_preview || '(no content)';
+  document.getElementById('reply-modal').classList.add('open');
+}
+function closeModal() {
+  document.getElementById('reply-modal').classList.remove('open');
+}
+document.getElementById('reply-modal').addEventListener('click', e => {
+  if (e.target === document.getElementById('reply-modal')) closeModal();
 });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// ── REFRESH ────────────────────────────────────────
+function refreshAll() { fetchAll(); }
+
+// ── AUTO REFRESH every 90s ─────────────────────────
+fetchAll();
+setInterval(fetchAll, 90000);
 </script>
-
-
 </body>
 </html>
