@@ -809,6 +809,9 @@ button{cursor:pointer;font-family:var(--f-ui)}
       <div id="tab-contacts" class="tabpane">
         <div class="crm-toolbar">
           <input class="crm-search" id="crm-search" placeholder="Search investors…" oninput="renderCRM()">
+          <div style="display:flex;align-items:center;gap:8px;margin-left:auto">
+            <button id="repair-bots-btn" onclick="repairBotClicks()" style="font-size:11px;padding:4px 10px;background:var(--s2);border:1px solid var(--bd);border-radius:6px;color:var(--t2);cursor:pointer" title="Remove false click counts from email security scanners">⚠ Fix Bot Clicks</button>
+          </div>
           <div class="tier-filters">
             <button class="tf on" data-tier="all" onclick="setTier(this,'all')">All</button>
             <button class="tf" data-tier="hot" onclick="setTier(this,'hot')">🔥 Hot</button>
@@ -1568,6 +1571,24 @@ async function loadRepliesTab(slug){
     renderReplies()
   }catch(e){
     el.innerHTML='<div class="empty">Could not load replies</div>'
+  }
+}
+
+async function repairBotClicks(){
+  const btn=document.getElementById('repair-bots-btn')
+  if(btn){btn.disabled=true;btn.textContent='⟳ Scanning…'}
+  try{
+    const d=await post('/api/repair-bot-clicks',{})
+    if(btn) btn.textContent=`✓ ${d.updated||0} fixed`
+    if(d.updated>0){
+      setTimeout(()=>{
+        loadOverviewTab(currentCampaign)
+        loadContactsTab(currentCampaign)
+      },400)
+    }
+  }catch(e){
+    if(btn){btn.disabled=false;btn.textContent='⚠ Fix Bot Clicks'}
+    alert('Repair failed: '+e.message)
   }
 }
 
