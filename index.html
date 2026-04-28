@@ -1085,18 +1085,11 @@ const STEP_DEFS=[
 ]
 
 function renderVariantSlide(){
-  const v=variants[variantIdx]
-  if(!v){document.getElementById('flow-row').innerHTML='<div class="empty">No sequence data</div>';return}
-  const steps=v.steps||[]
   const st=currentCampaign?.stats||{}
+  const hasAB=variants.length>1
   let html=''
   for(let i=0;i<3;i++){
-    const real=steps[i]||null
     const sd=STEP_DEFS[i]
-    const sent=+(real?.sent||(i===0?(st.sent||0):0))
-    const clickers=+(real?.clickers||real?.unique_clickers||(i===0?(st.unique_clickers||0):0))
-    const rate=+(real?.click_rate||(i===0?(st.click_rate||0):0))
-    const isPending=i>0&&!real
     const isSelected=selectedStep===i
     if(i>0){
       html+=`<div class="fconn">
@@ -1104,16 +1097,48 @@ function renderVariantSlide(){
         <div class="fconn-delay">${sd.delay}</div>
       </div>`
     }
-    html+=`<div class="fnode ${isSelected?'selected':''}" id="fnode-${i}" onclick="selectStep(${i})">
-      <div class="fn-step">Step ${i+1}</div>
-      <div class="fn-icon">${sd.icon}</div>
-      <div class="fn-title">${sd.title}</div>
-      ${isPending
-        ?`<div class="fn-stat" style="font-size:14px;opacity:.5">—</div><div class="fn-stat-l">queued</div>`
-        :`<div class="fn-stat">${N(sent)}</div><div class="fn-stat-l">enrolled</div>
-          <div style="margin-top:8px;font-family:var(--f-mono);font-size:11px;color:var(--gold3)">${P(rate)} CTR</div>`
-      }
-    </div>`
+    if(i===0&&hasAB){
+      // A/B step — show both variants in the node
+      const vA=variants[0].steps[0]||{}
+      const vB=variants[1].steps[0]||{}
+      const aRate=+(vA.click_rate||0), bRate=+(vB.click_rate||0)
+      const winner=aRate>=bRate?'A':'B'
+      html+=`<div class="fnode ab-fnode ${isSelected?'selected':''}" id="fnode-0" onclick="selectStep(0)">
+        <div class="fn-step" style="display:flex;align-items:center;gap:6px">Step 1 <span style="padding:1px 6px;border-radius:3px;background:var(--gb);border:1px solid var(--gb2);color:var(--gold2);font-size:7px;letter-spacing:.1em">A/B</span></div>
+        <div class="fn-icon">✉</div>
+        <div class="fn-title">Initial Outreach</div>
+        <div style="margin-top:6px;display:flex;flex-direction:column;gap:4px;width:100%">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+            <span style="font-size:8px;font-weight:700;letter-spacing:.1em;color:var(--t3)">A</span>
+            <span style="font-family:var(--f-mono);font-size:11px;font-weight:600;color:var(--t2)">${N(vA.sent||0)}</span>
+            <span style="font-family:var(--f-mono);font-size:11px;color:${winner==='A'?'var(--gold3)':'var(--t3)'}">${P(aRate)}</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+            <span style="font-size:8px;font-weight:700;letter-spacing:.1em;color:var(--t3)">B</span>
+            <span style="font-family:var(--f-mono);font-size:11px;font-weight:600;color:var(--t2)">${N(vB.sent||0)}</span>
+            <span style="font-family:var(--f-mono);font-size:11px;color:${winner==='B'?'var(--gold3)':'var(--t3)'}">${P(bRate)}</span>
+          </div>
+        </div>
+        <div class="fn-stat-l" style="margin-top:6px">click to compare</div>
+      </div>`
+    } else {
+      const v=variants[variantIdx]||variants[0]
+      const real=(v?.steps||[])[i]||null
+      const sent=+(real?.sent||(i===0?(st.sent||0):0))
+      const clickers=+(real?.clickers||real?.unique_clickers||(i===0?(st.unique_clickers||0):0))
+      const rate=+(real?.click_rate||(i===0?(st.click_rate||0):0))
+      const isPending=i>0&&!real
+      html+=`<div class="fnode ${isSelected?'selected':''}" id="fnode-${i}" onclick="selectStep(${i})">
+        <div class="fn-step">Step ${i+1}</div>
+        <div class="fn-icon">${sd.icon}</div>
+        <div class="fn-title">${sd.title}</div>
+        ${isPending
+          ?`<div class="fn-stat" style="font-size:14px;opacity:.5">—</div><div class="fn-stat-l">queued</div>`
+          :`<div class="fn-stat">${N(sent)}</div><div class="fn-stat-l">enrolled</div>
+            <div style="margin-top:8px;font-family:var(--f-mono);font-size:11px;color:var(--gold3)">${P(rate)} CTR</div>`
+        }
+      </div>`
+    }
   }
   document.getElementById('flow-row').innerHTML=html
 }
@@ -1131,11 +1156,56 @@ function selectStep(idx){
 }
 
 function renderEmailReveal(idx){
-  const v=variants[variantIdx]
-  const step=v?.steps?.[idx]
   const slug=currentCampaign?.slug
   const st=currentCampaign?.stats||{}
   const er=document.getElementById('email-reveal')
+  er.style.display='block'
+
+  // A/B split reveal for Step 1
+  if(idx===0&&variants.length>1){
+    const vA=variants[0].steps[0]||{}
+    const vB=variants[1].steps[0]||{}
+    const aRate=+(vA.click_rate||0), bRate=+(vB.click_rate||0)
+    const maxRate=Math.max(aRate,bRate,0.1)
+    const aWins=aRate>=bRate
+    er.innerHTML=`<div class="email-reveal">
+      <div class="er-head">
+        <div>
+          <div class="er-step-label">Step 1 · Initial Outreach · A/B Test</div>
+          <div style="font-size:11px;color:var(--t3);margin-top:3px;font-weight:500">Two email versions sent — click "View Email" to preview each</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--bd)">
+        ${[{v:vA,ab:'A',wins:aWins},{v:vB,ab:'B',wins:!aWins}].map(({v,ab,wins})=>{
+          const rate=+(v.click_rate||0)
+          const barW=Math.min(rate*8,100)
+          const subj=v.subject||`Variant ${ab}`
+          return`<div style="padding:18px 20px;position:relative;${wins?'background:rgba(122,92,0,0.03)':''}${ab==='B'?'border-left:1px solid var(--bd)':''}">
+            ${wins?`<div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--gold3),transparent)"></div>`:''}
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+              <span style="width:20px;height:20px;border-radius:3px;background:${wins?'var(--gb)':'var(--s3)'};border:1px solid ${wins?'var(--gb2)':'var(--bd2)'};display:inline-flex;align-items:center;justify-content:center;font:700 9px var(--f-mono);color:${wins?'var(--gold2)':'var(--t2)'}">  ${ab}</span>
+              <span style="font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--t3)">Variant ${ab}${wins?' · Leading':''}</span>
+            </div>
+            <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:12px;line-height:1.4;font-style:italic">"${E(subj)}"</div>
+            <div style="display:flex;gap:16px;margin-bottom:12px">
+              <div><div style="font-family:var(--f-mono);font-size:20px;font-weight:600">${N(v.sent||0)}</div><div style="font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--t3)">Sent</div></div>
+              <div><div style="font-family:var(--f-mono);font-size:20px;font-weight:600">${N(v.clicks||v.clickers||0)}</div><div style="font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--t3)">Clicked</div></div>
+              <div><div style="font-family:var(--f-mono);font-size:20px;font-weight:600;${wins?'background:var(--gd2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text':''}">${P(rate)}</div><div style="font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--t3)">CTR</div></div>
+            </div>
+            <div style="height:4px;background:rgba(0,0,0,0.08);border-radius:2px;overflow:hidden;margin-bottom:12px">
+              <div style="height:100%;background:var(--gd2);border-radius:2px;width:${Math.round(rate/maxRate*100)}%;transition:width .5s ease"></div>
+            </div>
+            ${slug?`<button class="er-preview-btn" onclick="openPreview('${E(slug)}','${E(subj)}')">View Email ${ab} →</button>`:''}
+          </div>`
+        }).join('')}
+      </div>
+    </div>`
+    return
+  }
+
+  // Normal single-variant reveal
+  const v=variants[variantIdx]||variants[0]
+  const step=v?.steps?.[idx]
   const subject=step?.subject||`Step ${idx+1}`
   const sent=+(step?.sent||st.sent||0)
   const clickers=+(step?.clickers||step?.unique_clickers||st.unique_clickers||0)
@@ -1143,7 +1213,6 @@ function renderEmailReveal(idx){
   const barW=Math.min(rate*8,100)
   const hasPreview=idx===0&&slug
   const varLabel=v?.ab?`Variant ${v.ab}`:v?.label||'Email'
-  er.style.display='block'
   er.innerHTML=`<div class="email-reveal">
     <div class="er-head">
       <div>
