@@ -724,6 +724,9 @@ button{cursor:pointer;font-family:var(--f-ui)}
         <button class="cds-nav-item" data-tab="delivery" onclick="switchTab(this,'delivery')">
           <span class="nav-icon">◎</span> Delivery
         </button>
+        <button class="cds-nav-item" data-tab="settings" onclick="switchTab(this,'settings')">
+          <span class="nav-icon">⚙</span> Settings
+        </button>
       </nav>
       <div class="cds-footer">
         <div class="cds-status"><span class="dot-g" style="animation:none;background:var(--green)"></span>Live Data</div>
@@ -752,7 +755,7 @@ button{cursor:pointer;font-family:var(--f-ui)}
             <div style="font-size:12px;font-weight:600;color:var(--t1)">📬 Outlook Not Connected</div>
             <div style="font-size:11px;color:var(--t3);margin-top:2px">Connect Brian's mailbox to see the full conversation thread for every investor</div>
           </div>
-          <a id="outlook-connect-btn" href="https://bryces-mac-mini.tailfa4ceb.ts.net/auth/outlook/login?client=osc" target="_blank" style="white-space:nowrap;padding:7px 14px;background:var(--gold2);color:#000;font-size:11px;font-weight:700;border-radius:6px;text-decoration:none;flex-shrink:0">Connect Outlook →</a>
+          <a id="outlook-connect-btn" href="https://emersonnorth.com/api/auth/outlook/login?client=osc" target="_blank" style="white-space:nowrap;padding:7px 14px;background:var(--gold2);color:#000;font-size:11px;font-weight:700;border-radius:6px;text-decoration:none;flex-shrink:0">Connect Outlook →</a>
         </div>
         <div id="outlook-connected-bar" style="display:none;margin:14px 0 0;padding:10px 16px;background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);display:flex;align-items:center;gap:10px">
           <span style="color:#1a7f4b;font-size:16px">✓</span>
@@ -856,6 +859,68 @@ button{cursor:pointer;font-family:var(--f-ui)}
         <div class="seq-section">
           <div class="sec-head">Deliverability Health</div>
           <div id="delivery-content"><div class="empty">Loading…</div></div>
+        </div>
+      </div>
+
+      <!-- SETTINGS TAB -->
+      <div id="tab-settings" class="tabpane">
+        <div class="seq-section">
+          <div class="sec-head">Mailbox Connections</div>
+          <div style="font-size:12px;color:var(--t3);margin-bottom:20px">Connect an inbox so Ledger can read and surface investor replies automatically.</div>
+
+          <!-- Outlook Card -->
+          <div id="settings-outlook-card" style="background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);padding:20px 24px;margin-bottom:16px">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+              <div style="width:36px;height:36px;background:#0078d4;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="24" height="24" fill="none"/><path d="M2 6l10 6 10-6" stroke="#fff" stroke-width="2" stroke-linecap="round"/><rect x="2" y="4" width="20" height="16" rx="2" stroke="#fff" stroke-width="2"/></svg>
+              </div>
+              <div style="flex:1">
+                <div style="font-size:13px;font-weight:600;color:var(--t1)">Microsoft Outlook</div>
+                <div style="font-size:11px;color:var(--t3)">Connect Brian's Outlook mailbox to track replies</div>
+              </div>
+              <div id="settings-outlook-badge" style="font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px;background:var(--s2);color:var(--t3)">Checking…</div>
+            </div>
+            <div id="settings-outlook-email" style="display:none;font-size:11px;color:var(--t3);margin-bottom:12px;padding:6px 10px;background:var(--s2);border-radius:4px"></div>
+            <div style="display:flex;gap:8px">
+              <a id="settings-outlook-connect-btn" href="https://emersonnorth.com/api/auth/outlook/login?client=osc" target="_blank"
+                 style="display:none;padding:7px 16px;background:var(--gold2);color:#000;font-size:11px;font-weight:700;border-radius:6px;text-decoration:none">
+                Connect Outlook →
+              </a>
+              <button id="settings-outlook-disconnect-btn" onclick="settingsDisconnectOutlook()" style="display:none;padding:7px 14px;background:none;border:1px solid var(--bd);color:var(--t3);font-size:11px;border-radius:6px;cursor:pointer">
+                Disconnect
+              </button>
+              <button onclick="checkSettingsConnections()" style="padding:7px 14px;background:none;border:1px solid var(--bd);color:var(--t3);font-size:11px;border-radius:6px;cursor:pointer">
+                ↻ Refresh
+              </button>
+            </div>
+          </div>
+
+          <!-- Gmail Card -->
+          <div id="settings-gmail-card" style="background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);padding:20px 24px">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+              <div style="width:36px;height:36px;background:#EA4335;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 6l10 6 10-6" stroke="#fff" stroke-width="2" stroke-linecap="round"/><rect x="2" y="4" width="20" height="16" rx="2" stroke="#fff" stroke-width="2"/></svg>
+              </div>
+              <div style="flex:1">
+                <div style="font-size:13px;font-weight:600;color:var(--t1)">Google Gmail</div>
+                <div style="font-size:11px;color:var(--t3)">Connect a Gmail inbox to track replies</div>
+              </div>
+              <div id="settings-gmail-badge" style="font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px;background:var(--s2);color:var(--t3)">Checking…</div>
+            </div>
+            <div id="settings-gmail-email" style="display:none;font-size:11px;color:var(--t3);margin-bottom:12px;padding:6px 10px;background:var(--s2);border-radius:4px"></div>
+            <div style="display:flex;gap:8px">
+              <a id="settings-gmail-connect-btn" href="https://emersonnorth.com/api/auth/gmail/login?client=osc" target="_blank"
+                 style="display:none;padding:7px 16px;background:#EA4335;color:#fff;font-size:11px;font-weight:700;border-radius:6px;text-decoration:none">
+                Connect Gmail →
+              </a>
+              <button id="settings-gmail-disconnect-btn" onclick="settingsDisconnectGmail()" style="display:none;padding:7px 14px;background:none;border:1px solid var(--bd);color:var(--t3);font-size:11px;border-radius:6px;cursor:pointer">
+                Disconnect
+              </button>
+              <button onclick="checkSettingsConnections()" style="padding:7px 14px;background:none;border:1px solid var(--bd);color:var(--t3);font-size:11px;border-radius:6px;cursor:pointer">
+                ↻ Refresh
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -1006,6 +1071,7 @@ function switchTab(btn, tab){
   btn.classList.add('on')
   document.getElementById('tab-'+tab).classList.add('on')
   if(tab==='delivery'&&!deliveryLoaded){ deliveryLoaded=true; loadDeliveryTab() }
+  if(tab==='settings'){ checkSettingsConnections() }
 }
 
 // ── DATA LOAD ─────────────────────────────────────────────
@@ -1863,6 +1929,74 @@ async function disconnectOutlook(){
   try{
     await post('/api/outlook-disconnect',{})
     checkOutlookStatus()
+    checkSettingsConnections()
+  }catch(e){}
+}
+
+// ── SETTINGS TAB ──────────────────────────────────────────
+async function checkSettingsConnections(){
+  // Outlook
+  try{
+    const d=await get('/api/outlook-status')
+    const badge=document.getElementById('settings-outlook-badge')
+    const emailEl=document.getElementById('settings-outlook-email')
+    const connectBtn=document.getElementById('settings-outlook-connect-btn')
+    const disconnectBtn=document.getElementById('settings-outlook-disconnect-btn')
+    if(d.connected&&!d.expired){
+      if(badge){badge.textContent='Connected';badge.style.background='rgba(26,127,75,0.15)';badge.style.color='#1a7f4b'}
+      if(emailEl){emailEl.textContent='Connected as '+d.email;emailEl.style.display='block'}
+      if(connectBtn) connectBtn.style.display='none'
+      if(disconnectBtn) disconnectBtn.style.display='block'
+    } else {
+      if(badge){badge.textContent='Not Connected';badge.style.background='var(--s2)';badge.style.color='var(--t3)'}
+      if(emailEl) emailEl.style.display='none'
+      if(connectBtn) connectBtn.style.display='inline-block'
+      if(disconnectBtn) disconnectBtn.style.display='none'
+    }
+  }catch(e){
+    const badge=document.getElementById('settings-outlook-badge')
+    if(badge){badge.textContent='Error';badge.style.color='#e55'}
+  }
+  // Gmail
+  try{
+    const d=await get('/api/gmail-status')
+    const badge=document.getElementById('settings-gmail-badge')
+    const emailEl=document.getElementById('settings-gmail-email')
+    const connectBtn=document.getElementById('settings-gmail-connect-btn')
+    const disconnectBtn=document.getElementById('settings-gmail-disconnect-btn')
+    if(d.connected&&!d.expired){
+      if(badge){badge.textContent='Connected';badge.style.background='rgba(26,127,75,0.15)';badge.style.color='#1a7f4b'}
+      if(emailEl){emailEl.textContent='Connected as '+d.email;emailEl.style.display='block'}
+      if(connectBtn) connectBtn.style.display='none'
+      if(disconnectBtn) disconnectBtn.style.display='block'
+    } else {
+      if(badge){badge.textContent='Not Connected';badge.style.background='var(--s2)';badge.style.color='var(--t3)'}
+      if(emailEl) emailEl.style.display='none'
+      if(connectBtn) connectBtn.style.display='inline-block'
+      if(disconnectBtn) disconnectBtn.style.display='none'
+    }
+  }catch(e){
+    const badge=document.getElementById('settings-gmail-badge')
+    if(badge){badge.textContent='Not Configured';badge.style.color='var(--t3)'}
+    const connectBtn=document.getElementById('settings-gmail-connect-btn')
+    if(connectBtn) connectBtn.style.display='none'
+  }
+}
+
+async function settingsDisconnectOutlook(){
+  if(!confirm('Disconnect Outlook from Ledger?')) return
+  try{
+    await post('/api/outlook-disconnect',{})
+    checkOutlookStatus()
+    checkSettingsConnections()
+  }catch(e){}
+}
+
+async function settingsDisconnectGmail(){
+  if(!confirm('Disconnect Gmail from Ledger?')) return
+  try{
+    await post('/api/gmail-disconnect',{})
+    checkSettingsConnections()
   }catch(e){}
 }
 
