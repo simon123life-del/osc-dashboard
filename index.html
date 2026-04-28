@@ -2,424 +2,539 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Ledger — Oak Street Capital</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --gold:#D4AE5A;--gold2:#EAD082;--gold3:#F8EDBC;
-  --gd:linear-gradient(135deg,#D4AE5A 0%,#EAD082 55%,#F8EDBC 100%);
-  --bg:#0D0E16;--s1:#131420;--s2:#191A27;--s3:#1F2030;
-  --bd:rgba(255,255,255,0.09);--bd2:rgba(255,255,255,0.16);
-  --gb:rgba(212,174,90,0.10);--gb2:rgba(212,174,90,0.22);
-  --text:#EDE9E2;--t2:#A8A29C;--t3:#6A645E;
-  --green:#5BCE85;--red:#E06A6A;--blue:#7FA0E8;--warn:#E09B3A;
+  --gold:#D4AE5A;--gold2:#EAD082;--gold3:#F5E9B8;
+  --gd:linear-gradient(135deg,#C9A030 0%,#D4AE5A 40%,#EAD082 75%,#F5E9B8 100%);
+  --bg:#0B0C14;--s1:#111219;--s2:#161721;--s3:#1B1C28;--s4:#202135;
+  --bd:rgba(255,255,255,0.07);--bd2:rgba(255,255,255,0.14);--bd3:rgba(255,255,255,0.22);
+  --gb:rgba(212,174,90,0.08);--gb2:rgba(212,174,90,0.18);--gb3:rgba(212,174,90,0.30);
+  --text:#EDE9E1;--t2:#ABA59E;--t3:#6B6560;--t4:#3E3B38;
+  --green:#5BC285;--red:#E06A6A;--blue:#7FA0E8;--warn:#E09B3A;--purple:#A67BE8;
   --font:'Montserrat',system-ui,sans-serif;
-  --sw:248px;--th:58px;--r:10px;
+  --sw:232px;--th:56px;--r:10px;--r2:14px;
 }
 html,body{height:100%;overflow:hidden;font-family:var(--font);-webkit-font-smoothing:antialiased;background:var(--bg);color:var(--text)}
 #shell{position:fixed;inset:0;display:flex;overflow:hidden}
 
-/* ─── SIDEBAR ─── */
-#sb{width:var(--sw);flex-shrink:0;display:flex;flex-direction:column;background:linear-gradient(175deg,#0A0B15 0%,#080910 100%);border-right:1px solid var(--bd);position:relative}
-#sb::after{content:'';position:absolute;top:0;right:-1px;width:1px;height:100%;background:linear-gradient(180deg,transparent 0%,rgba(212,174,90,0.5) 40%,rgba(212,174,90,0.2) 70%,transparent 100%)}
-.sb-brand{padding:24px 20px 22px;border-bottom:1px solid var(--bd)}
-.sb-row{display:flex;align-items:center;gap:11px;margin-bottom:5px}
-.sb-icon{width:34px;height:34px;border-radius:8px;flex-shrink:0;background:var(--gd);display:flex;align-items:center;justify-content:center;font:800 14px/1 var(--font);color:#08060E;box-shadow:0 0 20px rgba(212,174,90,0.35)}
-.sb-name{font-size:17px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;background:var(--gd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.sb-client{font-size:9.5px;font-weight:500;color:var(--t3);letter-spacing:.12em;text-transform:uppercase}
-.sb-nav{flex:1;padding:14px 12px;overflow-y:auto}.sb-nav::-webkit-scrollbar{width:0}
-.nb-lbl{font-size:8.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--t3);padding:14px 8px 5px}
-.ni{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:7px;margin:1px 0;font-size:12.5px;font-weight:500;color:var(--t3);cursor:pointer;transition:all .13s;position:relative}
-.ni:hover{color:var(--t2);background:rgba(255,255,255,0.04)}
+/* ─── SIDEBAR ─────────────────────────────────────────── */
+#sb{width:var(--sw);flex-shrink:0;display:flex;flex-direction:column;background:linear-gradient(180deg,#0A0B14 0%,#080910 100%);border-right:1px solid var(--bd);position:relative;z-index:10}
+#sb::after{content:'';position:absolute;top:0;right:-1px;width:1px;height:100%;background:linear-gradient(180deg,transparent 0%,rgba(212,174,90,0.45) 40%,rgba(212,174,90,0.15) 75%,transparent 100%)}
+.sb-brand{padding:22px 18px 18px;border-bottom:1px solid var(--bd)}
+.sb-row{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+.sb-icon{width:32px;height:32px;border-radius:8px;flex-shrink:0;background:var(--gd);display:flex;align-items:center;justify-content:center;font:800 13px/1 var(--font);color:#06050C;box-shadow:0 0 22px rgba(212,174,90,0.40)}
+.sb-name{font-size:16px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;background:var(--gd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sb-client{font-size:9px;font-weight:600;color:var(--t3);letter-spacing:.14em;text-transform:uppercase}
+.sb-nav{flex:1;padding:12px 10px;overflow-y:auto;scrollbar-width:none}
+.sb-nav::-webkit-scrollbar{display:none}
+.nb-lbl{font-size:8px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--t4);padding:16px 10px 5px;user-select:none}
+.ni{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:7px;margin:1px 0;font-size:12px;font-weight:500;color:var(--t3);cursor:pointer;transition:all .12s;position:relative;user-select:none}
+.ni:hover{color:var(--t2);background:rgba(255,255,255,0.035)}
 .ni.on{color:var(--gold2);background:var(--gb)}
-.ni.on::before{content:'';position:absolute;left:0;top:18%;bottom:18%;width:2.5px;background:var(--gd);border-radius:2px}
-.ni-ic{width:17px;text-align:center;font-size:13px;flex-shrink:0;opacity:.8}
-.sb-foot{padding:14px 18px;border-top:1px solid var(--bd);display:flex;align-items:center;gap:8px}
-.ldot{width:7px;height:7px;border-radius:50%;background:var(--green);flex-shrink:0;animation:lpulse 2.4s infinite}
-@keyframes lpulse{0%,100%{opacity:1}50%{opacity:.35}}
-#ts{font-size:9.5px;color:var(--t3);letter-spacing:.03em}
+.ni.on::before{content:'';position:absolute;left:0;top:20%;bottom:20%;width:2.5px;background:var(--gd);border-radius:2px}
+.ni-ic{width:16px;text-align:center;font-size:12px;flex-shrink:0}
+.ni-badge{margin-left:auto;background:rgba(212,174,90,0.15);color:var(--gold);border:1px solid rgba(212,174,90,0.3);border-radius:10px;font-size:9px;font-weight:700;padding:1px 7px}
+.sb-foot{padding:13px 16px;border-top:1px solid var(--bd);display:flex;align-items:center;gap:8px}
+.ldot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0;animation:lpulse 2.6s infinite}
+@keyframes lpulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(91,194,133,.4)}50%{opacity:.5;box-shadow:0 0 0 4px rgba(91,194,133,0)}}
+#ts{font-size:9px;color:var(--t3);letter-spacing:.02em}
 
-/* ─── MAIN ─── */
-#main{flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden;background:radial-gradient(ellipse 80% 60% at 55% -8%,rgba(212,174,90,0.05) 0%,transparent 65%),var(--bg)}
-#topbar{height:var(--th);flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 28px;background:rgba(13,14,22,0.9);border-bottom:1px solid var(--bd);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);z-index:20}
-.tb-crumb{font-size:11.5px;color:var(--t3);display:flex;align-items:center;gap:6px}
+/* ─── MAIN ─────────────────────────────────────────────── */
+#main{flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden;background:radial-gradient(ellipse 70% 50% at 60% -5%,rgba(212,174,90,0.04) 0%,transparent 60%),var(--bg)}
+#topbar{height:var(--th);flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 26px;background:rgba(11,12,20,0.92);border-bottom:1px solid var(--bd);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);z-index:20}
+.tb-crumb{font-size:11px;color:var(--t3);display:flex;align-items:center;gap:7px}
 .tb-crumb b{color:var(--t2);font-weight:600}
-.tb-crumb .sep{opacity:.35}
-.tb-right{display:flex;gap:8px}
-.btn{padding:7px 16px;border-radius:7px;border:none;cursor:pointer;font:600 10px/1 var(--font);letter-spacing:.08em;text-transform:uppercase;transition:all .13s}
-.btn-o{background:rgba(255,255,255,0.05);color:var(--t2);border:1px solid var(--bd)}.btn-o:hover{background:rgba(255,255,255,0.09);color:var(--text)}
-.btn-g{background:var(--gd);color:#08060E;box-shadow:0 0 16px rgba(212,174,90,0.22)}.btn-g:hover{box-shadow:0 0 24px rgba(212,174,90,0.4);transform:translateY(-1px)}
-.btn-sm{padding:5px 12px;font-size:9.5px}
-#scroll{flex:1;overflow-y:auto;padding:28px 28px 52px;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,0.06) transparent}
-#scroll::-webkit-scrollbar{width:4px}
-#scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.07);border-radius:4px}
+.tb-sep{opacity:.3}
+.tb-right{display:flex;gap:8px;align-items:center}
+.tb-status{display:flex;align-items:center;gap:6px;font-size:9.5px;color:var(--t3);padding:4px 10px;border-radius:6px;background:rgba(91,194,133,0.06);border:1px solid rgba(91,194,133,0.15)}
+.btn{padding:6px 15px;border-radius:7px;border:none;cursor:pointer;font:600 9.5px/1 var(--font);letter-spacing:.08em;text-transform:uppercase;transition:all .12s}
+.btn-o{background:rgba(255,255,255,0.04);color:var(--t2);border:1px solid var(--bd)}.btn-o:hover{background:rgba(255,255,255,0.08);color:var(--text)}
+.btn-g{background:var(--gd);color:#06050C;box-shadow:0 0 14px rgba(212,174,90,0.20)}.btn-g:hover{box-shadow:0 0 22px rgba(212,174,90,0.38);transform:translateY(-1px)}
+.btn-sm{padding:4px 11px;font-size:9px}
+#scroll{flex:1;overflow-y:auto;padding:24px 24px 52px;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,0.05) transparent}
+#scroll::-webkit-scrollbar{width:3px}
+#scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.06);border-radius:3px}
 .view{display:none}.view.on{display:block}
 
-/* ─── PAGE HEADER ─── */
-.ph{margin-bottom:22px}.ph h1{font-size:23px;font-weight:800;letter-spacing:-.02em}.ph p{font-size:12px;color:var(--t3);margin-top:5px}
+/* ─── PAGE HEADER ─────────────────────────────────────── */
+.ph{margin-bottom:20px}.ph h1{font-size:22px;font-weight:800;letter-spacing:-.025em;line-height:1.1}.ph p{font-size:11.5px;color:var(--t3);margin-top:4px}
+.back-btn{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--t3);cursor:pointer;margin-bottom:16px;transition:color .12s;letter-spacing:.02em;padding:5px 0}
+.back-btn:hover{color:var(--gold)}.back-btn::before{content:'←';margin-right:1px}
 
-/* ─── BACK LINK ─── */
-.back-btn{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;color:var(--t3);cursor:pointer;margin-bottom:18px;transition:color .12s}
-.back-btn:hover{color:var(--gold)}.back-btn::before{content:'←'}
-
-/* ─── METRIC GRID ─── */
-.mg{display:grid;gap:14px;margin-bottom:24px}
-.g4{grid-template-columns:repeat(4,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g3x{grid-template-columns:repeat(3,1fr);max-width:640px}.g6{grid-template-columns:repeat(6,1fr)}
-.mc{background:linear-gradient(135deg,rgba(255,255,255,0.035) 0%,rgba(255,255,255,0.01) 100%);border:1px solid var(--bd);border-radius:var(--r);padding:18px 20px;position:relative;overflow:hidden;transition:border-color .18s,transform .14s}
-.mc:hover{border-color:var(--bd2);transform:translateY(-1px)}
-.mc.hi{border-color:var(--gb2);background:linear-gradient(135deg,rgba(212,174,90,0.07) 0%,rgba(212,174,90,0.02) 60%,rgba(255,255,255,0.01) 100%)}
-.mc.hi::after{content:'';position:absolute;top:0;left:0;right:0;height:1.5px;background:linear-gradient(90deg,transparent,rgba(212,174,90,0.6),transparent)}
-.mc-l{font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--t3);margin-bottom:8px}
-.mc-v{font-size:28px;font-weight:800;letter-spacing:-.03em;line-height:1;color:var(--text)}
+/* ─── METRICS ─────────────────────────────────────────── */
+.mg{display:grid;gap:12px;margin-bottom:20px}
+.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}.g5{grid-template-columns:repeat(5,1fr)}.g6{grid-template-columns:repeat(6,1fr)}
+.mc{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);padding:16px 18px;position:relative;overflow:hidden;transition:border-color .15s}
+.mc:hover{border-color:var(--bd2)}
+.mc.hi{border-color:var(--gb2);background:linear-gradient(135deg,rgba(212,174,90,0.07) 0%,rgba(212,174,90,0.02) 60%,var(--s1) 100%)}
+.mc.hi::after{content:'';position:absolute;top:0;left:0;right:0;height:1.5px;background:linear-gradient(90deg,transparent 0%,rgba(212,174,90,0.55) 50%,transparent 100%)}
+.mc-l{font-size:8.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--t3);margin-bottom:7px}
+.mc-v{font-size:26px;font-weight:800;letter-spacing:-.03em;line-height:1;color:var(--text)}
 .mc.hi .mc-v{background:var(--gd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.mc-s{font-size:10px;color:var(--t3);margin-top:5px}
+.mc-s{font-size:9.5px;color:var(--t3);margin-top:4px}
 
-/* ─── SECTION ─── */
-.section{margin-bottom:24px}
+/* ─── SECTION HEADERS ─────────────────────────────────── */
 .sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.sh-t{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--t2);display:flex;align-items:center;gap:8px}
-.sh-t::before{content:'';display:inline-block;width:3px;height:13px;background:var(--gd);border-radius:2px}
-.sh-tag{padding:2px 9px;border-radius:20px;background:var(--gb);border:1px solid var(--gb2);font-size:9px;font-weight:700;letter-spacing:.07em;color:var(--gold)}
+.sh-t{font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--t2);display:flex;align-items:center;gap:8px}
+.sh-t::before{content:'';display:inline-block;width:3px;height:12px;background:var(--gd);border-radius:2px}
+.sh-tag{padding:2px 8px;border-radius:20px;background:var(--gb);border:1px solid var(--gb2);font-size:8.5px;font-weight:700;letter-spacing:.06em;color:var(--gold)}
 
-/* ─── TABLE ─── */
-.tw{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}
-table{width:100%;border-collapse:collapse}
-thead th{padding:10px 15px;text-align:left;font-size:9px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--t3);background:var(--s2);border-bottom:1px solid var(--bd);white-space:nowrap}
-tbody tr{border-bottom:1px solid var(--bd);transition:background .1s}
-tbody tr:last-child{border-bottom:none}
-tbody tr:hover{background:rgba(255,255,255,0.03)}
-td{padding:11px 15px;font-size:12.5px;color:var(--text);vertical-align:middle}
-.d2{color:var(--t2)}.d3{color:var(--t3);font-size:11.5px}.dg{color:var(--gold);font-weight:600}
-tr.cp{cursor:pointer}.cp:hover .iname{color:var(--gold2)}
-.iname{font-weight:600;font-size:13px;transition:color .12s}.iemail{font-size:10.5px;color:var(--t3);margin-top:2px}
+/* ─── CAMPAIGN CARDS (overview/pipeline) ──────────────── */
+.camp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:14px}
+.camp-card{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);padding:0;position:relative;overflow:hidden;cursor:pointer;transition:all .18s;display:flex;flex-direction:column}
+.camp-card:hover{border-color:var(--bd2);transform:translateY(-2px);box-shadow:0 16px 48px rgba(0,0,0,0.55)}
+.camp-card.active{border-color:var(--gb2)}
+.camp-card.active .cc-top-bar{background:linear-gradient(90deg,rgba(212,174,90,0.12) 0%,transparent 100%)}
+.cc-top-bar{height:1.5px;background:transparent;transition:background .2s}
+.camp-card.active .cc-top-bar{background:linear-gradient(90deg,rgba(212,174,90,0.7) 0%,rgba(212,174,90,0.2) 60%,transparent 100%)}
+.cc-body{padding:18px 20px;flex:1;display:flex;flex-direction:column;gap:12px}
+.cc-head{display:flex;justify-content:space-between;align-items:flex-start}
+.cc-name{font-size:14px;font-weight:700;letter-spacing:-.01em;line-height:1.3;flex:1;min-width:0;padding-right:10px}
+.cc-type{font-size:9.5px;color:var(--t3);margin-top:3px;font-weight:500}
+.cc-subject{font-size:12.5px;color:var(--t2);font-style:italic;line-height:1.45;padding:10px 14px;background:rgba(255,255,255,0.025);border-radius:7px;border-left:2px solid var(--gb3);position:relative}
+.cc-subject::before{content:'"';position:absolute;top:-4px;left:9px;font-size:20px;color:var(--gold);font-style:normal;opacity:.4;line-height:1}
+.cc-funnel{display:flex;flex-direction:column;gap:5px}
+.cf-row{display:flex;align-items:center;gap:10px}
+.cf-label{font-size:8.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);width:60px;flex-shrink:0;text-align:right}
+.cf-bar-bg{flex:1;height:5px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden}
+.cf-bar-fill{height:100%;border-radius:3px;transition:width .5s}
+.cf-sent .cf-bar-fill{background:rgba(127,160,232,0.5)}
+.cf-clk .cf-bar-fill{background:var(--gd)}
+.cf-n{font-size:10px;font-weight:600;color:var(--t2);width:46px;flex-shrink:0;text-align:right}
+.cf-pct{font-size:9px;color:var(--t3);width:34px;flex-shrink:0}
+.cc-foot{display:flex;align-items:center;justify-content:space-between;padding:11px 20px;border-top:1px solid var(--bd);background:rgba(255,255,255,0.01)}
+.cc-chips{display:flex;gap:6px}
+.cc-arrow{font-size:11px;color:var(--t3);opacity:0;transition:opacity .15s;font-weight:600}
+.camp-card:hover .cc-arrow{opacity:1;color:var(--gold)}
 
-/* ─── BADGES ─── */
-.badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:9px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;white-space:nowrap}
+/* ─── BADGES ─────────────────────────────────────────── */
+.badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:8.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;white-space:nowrap}
 .bg{background:var(--gb);color:var(--gold);border:1px solid var(--gb2)}
-.bgreen{background:rgba(91,206,133,.1);color:var(--green);border:1px solid rgba(91,206,133,.22)}
+.bgreen{background:rgba(91,194,133,.1);color:var(--green);border:1px solid rgba(91,194,133,.22)}
 .bred{background:rgba(224,106,106,.1);color:var(--red);border:1px solid rgba(224,106,106,.22)}
 .bblue{background:rgba(127,160,232,.1);color:var(--blue);border:1px solid rgba(127,160,232,.22)}
 .bwarn{background:rgba(224,155,58,.1);color:var(--warn);border:1px solid rgba(224,155,58,.22)}
 .bm{background:rgba(255,255,255,.04);color:var(--t3);border:1px solid var(--bd)}
+.bpurp{background:rgba(166,123,232,.1);color:var(--purple);border:1px solid rgba(166,123,232,.22)}
 
-/* ─── CAMPAIGN CARDS ─── */
-.cg{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:15px}
-.cc{background:linear-gradient(135deg,rgba(255,255,255,0.035) 0%,rgba(255,255,255,0.01) 100%);border:1px solid var(--bd);border-radius:var(--r);padding:22px 24px;position:relative;overflow:hidden;transition:all .18s;cursor:pointer}
-.cc::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.015) 0%,transparent 45%);pointer-events:none}
-.cc:hover{border-color:var(--bd2);transform:translateY(-2px);box-shadow:0 12px 40px rgba(0,0,0,0.5)}
-.cc.act{border-color:var(--gb2)}
-.cc.act::after{content:'';position:absolute;top:0;left:0;right:0;height:1.5px;background:linear-gradient(90deg,transparent,rgba(212,174,90,0.55),transparent)}
-.cc-h{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px}
-.cc-nm{font-size:14.5px;font-weight:700;letter-spacing:-.01em;line-height:1.3;max-width:240px}
-.cc-ty{font-size:10.5px;color:var(--t3);margin-top:4px}
-.cc-st{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--bd);padding-top:14px}
-.cc-s{padding:0 10px;border-right:1px solid var(--bd);text-align:center}
-.cc-s:first-child{padding-left:0;text-align:left}.cc-s:last-child{border-right:none}
-.cc-sl{font-size:8.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);margin-bottom:4px}
-.cc-sv{font-size:20px;font-weight:800;letter-spacing:-.02em}
-.cc-arrow{position:absolute;right:20px;bottom:20px;font-size:11px;color:var(--t3);opacity:0;transition:opacity .15s}
-.cc:hover .cc-arrow{opacity:1}
+/* ─── EMAIL CARDS (campaign detail) ──────────────────── */
+.email-card{background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r2);overflow:hidden;transition:border-color .15s;margin-bottom:12px}
+.email-card:hover{border-color:var(--bd3)}
+.ec-header{padding:14px 16px 12px;border-bottom:1px solid var(--bd)}
+.ec-num{font-size:8.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:5px}
+.ec-subject{font-size:14px;font-weight:700;line-height:1.4;color:var(--text);letter-spacing:-.01em}
+.ec-date{font-size:9.5px;color:var(--t3);margin-top:3px}
+.ec-stats{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--bd)}
+.ec-stat{padding:11px 14px;text-align:center;border-right:1px solid var(--bd)}
+.ec-stat:last-child{border-right:none}
+.ec-sv{font-size:20px;font-weight:800;letter-spacing:-.02em;line-height:1;margin-bottom:3px}
+.ec-sl{font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--t3)}
+.ec-stat.hi .ec-sv{background:var(--gd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.ec-bar-row{padding:12px 16px;display:flex;align-items:center;gap:10px}
+.ec-bar-bg{flex:1;height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden}
+.ec-bar-fill{height:100%;border-radius:3px;background:var(--gd);transition:width .6s}
+.ec-bar-label{font-size:10px;font-weight:700;color:var(--gold2);min-width:48px;text-align:right}
 
-/* ─── TIER PILL ─── */
-.tier-hot{display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:20px;background:rgba(224,106,106,.12);border:1px solid rgba(224,106,106,.28);font-size:9px;font-weight:700;color:#E88080;letter-spacing:.04em}
-.tier-clicked{display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:20px;background:rgba(212,174,90,.1);border:1px solid rgba(212,174,90,.25);font-size:9px;font-weight:700;color:var(--gold);letter-spacing:.04em}
+/* ─── SPLIT PANEL (campaign detail) ──────────────────── */
+.split-panel{display:grid;grid-template-columns:42% 1fr;gap:18px;align-items:start;margin-bottom:20px}
+.panel-box{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);overflow:hidden}
+.panel-head{padding:13px 16px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;background:var(--s2)}
+.panel-head-t{font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t2);display:flex;align-items:center;gap:7px}
+.panel-head-t::before{content:'';display:inline-block;width:2px;height:10px;background:var(--gd);border-radius:2px}
+.panel-body{padding:14px}
 
-/* ─── TABS ─── */
-.tabs{display:flex;gap:0;border-bottom:1px solid var(--bd);margin-bottom:22px}
-.tab{padding:10px 18px;font-size:11.5px;font-weight:600;color:var(--t3);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .13s;letter-spacing:.02em}
-.tab:hover{color:var(--t2)}
-.tab.on{color:var(--gold);border-bottom-color:var(--gold)}
-.tab-pane{display:none}.tab-pane.on{display:block}
+/* ─── CONTACTS TABLE ──────────────────────────────────── */
+.contacts-wrap{overflow:hidden}
+.tier-pills{display:flex;gap:5px;flex-wrap:wrap;padding:10px 12px;border-bottom:1px solid var(--bd);background:rgba(255,255,255,0.01)}
+.tier-pill{padding:3px 9px;border-radius:20px;font-size:9px;font-weight:700;letter-spacing:.05em;cursor:pointer;border:1px solid transparent;transition:all .12s;color:var(--t3);background:rgba(255,255,255,0.03);border-color:var(--bd)}
+.tier-pill:hover{color:var(--t2)}
+.tier-pill.on{color:var(--gold2);background:var(--gb);border-color:var(--gb2)}
+.ct-table{width:100%;border-collapse:collapse}
+.ct-table thead th{padding:8px 12px;text-align:left;font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--t4);background:var(--s2);border-bottom:1px solid var(--bd);white-space:nowrap}
+.ct-table tbody tr{border-bottom:1px solid rgba(255,255,255,0.04)}
+.ct-table tbody tr:last-child{border-bottom:none}
+.ct-table tbody tr:hover{background:rgba(255,255,255,0.025)}
+.ct-table td{padding:9px 12px;font-size:12px;color:var(--text);vertical-align:middle}
+.iname{font-weight:600;font-size:12.5px}.iemail{font-size:10px;color:var(--t3);margin-top:1px}
+.co-count{font-size:10px;color:var(--t3);padding:6px 12px;border-top:1px solid var(--bd);text-align:right;background:var(--s2)}
 
-/* ─── LINK ROW ─── */
-.link-row{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--bd)}
-.link-row:last-child{border-bottom:none}
-.link-url{font-size:12.5px;font-weight:500;color:var(--text);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
-.link-clicks{font-size:11px;color:var(--t2);white-space:nowrap;margin-right:8px}
-.link-edit-btn{padding:4px 12px;border-radius:6px;background:rgba(255,255,255,0.05);border:1px solid var(--bd);color:var(--t2);font:600 9.5px var(--font);cursor:pointer;transition:all .12s;white-space:nowrap}
-.link-edit-btn:hover{background:rgba(255,255,255,0.09);color:var(--text)}
+/* ─── TIER BADGES ────────────────────────────────────── */
+.tier-hot{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;background:rgba(224,106,106,.1);border:1px solid rgba(224,106,106,.25);font-size:8.5px;font-weight:700;color:#E88080}
+.tier-clicked{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;background:var(--gb);border:1px solid var(--gb2);font-size:8.5px;font-weight:700;color:var(--gold)}
+.tier-replied{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;background:rgba(91,194,133,.1);border:1px solid rgba(91,194,133,.22);font-size:8.5px;font-weight:700;color:var(--green)}
+.tier-bounced{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;background:rgba(224,106,106,.06);border:1px solid rgba(224,106,106,.15);font-size:8.5px;font-weight:700;color:var(--red);opacity:.7}
+.tier-delivered{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;background:rgba(255,255,255,.04);border:1px solid var(--bd);font-size:8.5px;font-weight:700;color:var(--t3)}
 
-/* ─── AI PANEL ─── */
-.ai-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
-.ai-btn{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);padding:16px 18px;cursor:pointer;transition:all .15s;text-align:left}
-.ai-btn:hover{border-color:var(--gb2);background:linear-gradient(135deg,rgba(212,174,90,0.07) 0%,var(--s1) 100%);transform:translateY(-1px)}
-.ai-btn.loading{opacity:.6;pointer-events:none}
-.ai-btn-title{font-size:12.5px;font-weight:700;color:var(--text);margin-bottom:4px}
-.ai-btn-desc{font-size:10.5px;color:var(--t3);line-height:1.5}
-.ai-btn-icon{font-size:18px;margin-bottom:10px}
-.ai-result{background:var(--s1);border:1px solid var(--gb2);border-radius:var(--r);padding:20px 22px;display:none}
+/* ─── AI PANEL ──────────────────────────────────────── */
+.ai-panel{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);margin-bottom:20px;overflow:hidden}
+.ai-panel-head{padding:13px 18px;border-bottom:1px solid var(--bd);background:var(--s2);display:flex;align-items:center;justify-content:space-between}
+.ai-panel-title{font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:8px}
+.ai-panel-title::before{content:'✦';font-size:10px}
+.ai-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-bottom:1px solid var(--bd)}
+.ai-btn{padding:16px 18px;cursor:pointer;transition:all .13s;text-align:left;border-right:1px solid var(--bd);border-bottom:none;background:transparent}
+.ai-btn:last-child{border-right:none}
+.ai-btn:hover{background:linear-gradient(135deg,rgba(212,174,90,0.06) 0%,transparent 100%)}
+.ai-btn.loading{opacity:.5;pointer-events:none}
+.ai-btn-ic{font-size:16px;margin-bottom:8px}
+.ai-btn-title{font-size:12px;font-weight:700;color:var(--text);margin-bottom:3px}
+.ai-btn-desc{font-size:10px;color:var(--t3);line-height:1.5}
+.ai-result{padding:18px 20px;display:none;border-top:1px solid var(--bd)}
 .ai-result.on{display:block}
-.ai-result-label{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;display:flex;align-items:center;justify-content:space-between}
-.ai-result pre{font-family:var(--font);font-size:13px;line-height:1.8;color:var(--t2);white-space:pre-wrap;word-break:break-word}
-.ai-copy-btn{padding:4px 12px;border-radius:6px;background:var(--gb);border:1px solid var(--gb2);color:var(--gold);font:600 9px var(--font);cursor:pointer;letter-spacing:.06em}
-.ai-copy-btn:hover{background:var(--gb2)}
+.ai-result-hd{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+.ai-result pre{font-family:var(--font);font-size:13px;line-height:1.85;color:var(--t2);white-space:pre-wrap;word-break:break-word}
+.ai-copy{padding:3px 10px;border-radius:5px;background:var(--gb);border:1px solid var(--gb2);color:var(--gold);font:700 8.5px var(--font);cursor:pointer;letter-spacing:.06em}
+.ai-copy:hover{background:var(--gb2)}
 
-/* ─── LINK EDIT MODAL ─── */
-#link-modal{display:none;position:fixed;inset:0;z-index:998;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);align-items:center;justify-content:center}
-#link-modal.on{display:flex}
-.lm-box{background:var(--s1);border:1px solid var(--bd2);border-radius:12px;width:520px;max-width:92vw;padding:26px 28px;box-shadow:0 28px 70px rgba(0,0,0,0.7)}
-.lm-title{font-size:15px;font-weight:700;margin-bottom:6px}
-.lm-sub{font-size:11.5px;color:var(--t3);margin-bottom:20px}
-.lm-label{font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);margin-bottom:6px}
-.lm-input{width:100%;background:var(--s2);border:1px solid var(--bd2);border-radius:7px;padding:10px 14px;font:400 13px var(--font);color:var(--text);outline:none;transition:border-color .13s}
-.lm-input:focus{border-color:var(--gold)}
-.lm-actions{display:flex;gap:10px;margin-top:20px;justify-content:flex-end}
-.lm-save{background:var(--gd);color:#08060E;border:none;border-radius:7px;padding:9px 20px;font:700 11px var(--font);cursor:pointer;letter-spacing:.06em}
-.lm-cancel{background:rgba(255,255,255,0.05);color:var(--t2);border:1px solid var(--bd);border-radius:7px;padding:9px 20px;font:600 11px var(--font);cursor:pointer}
-.lm-feedback{font-size:11.5px;color:var(--green);margin-top:10px;display:none}
+/* ─── LINKS SECTION ──────────────────────────────────── */
+.links-section{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);overflow:hidden;margin-bottom:20px}
+.link-row{display:flex;align-items:center;gap:12px;padding:11px 16px;border-bottom:1px solid rgba(255,255,255,0.04)}
+.link-row:last-child{border-bottom:none}
+.link-url{font-size:12px;font-weight:500;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;color:var(--text)}
+.link-clicks-num{font-size:10.5px;color:var(--t2);white-space:nowrap}
+.link-edit-btn{padding:3px 10px;border-radius:6px;background:rgba(255,255,255,0.04);border:1px solid var(--bd);color:var(--t2);font:600 9px var(--font);cursor:pointer;transition:all .12s;white-space:nowrap;flex-shrink:0}
+.link-edit-btn:hover{background:rgba(255,255,255,0.08);color:var(--text)}
 
-/* ─── REPLY MODAL ─── */
-#reply-modal{display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,0.75);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);align-items:center;justify-content:center}
-#reply-modal.on{display:flex}
-.rm-box{background:var(--s1);border:1px solid rgba(212,174,90,0.25);border-radius:14px;width:660px;max-width:93vw;max-height:82vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 36px 90px rgba(0,0,0,0.8)}
-.rm-head{padding:20px 24px 17px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:flex-start;background:var(--s2)}
-.rm-t{font-size:14.5px;font-weight:700}.rm-s{font-size:11px;color:var(--t3);margin-top:4px}
-.rm-x{width:28px;height:28px;border-radius:6px;cursor:pointer;flex-shrink:0;background:rgba(255,255,255,0.06);border:1px solid var(--bd);color:var(--t3);font-size:13px;display:flex;align-items:center;justify-content:center;transition:all .13s}
-.rm-x:hover{background:rgba(255,255,255,.1);color:var(--text)}
-.rm-body{padding:22px 24px;overflow-y:auto;flex:1}
-.rm-body pre{font-family:var(--font);font-size:13px;line-height:1.85;color:var(--t2);white-space:pre-wrap;word-break:break-word}
+/* ─── SEQUENCE FLOW CARDS ───────────────────────────── */
+.seq-grid{display:flex;flex-direction:column;gap:14px}
+.seq-card{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);overflow:hidden}
+.seq-card-head{padding:14px 18px;border-bottom:1px solid var(--bd);background:var(--s2);display:flex;align-items:center;justify-content:space-between}
+.seq-card-name{font-size:14px;font-weight:700;letter-spacing:-.01em}
+.seq-card-meta{font-size:10.5px;color:var(--t3);margin-top:3px}
+.seq-flow-wrap{padding:20px 18px;overflow-x:auto}
+.seq-flow{display:flex;align-items:stretch;gap:0;min-width:min-content}
+.flow-node{min-width:160px;background:var(--s3);border:1px solid var(--bd);border-radius:10px;padding:14px 15px;position:relative;flex-shrink:0}
+.flow-node.active{border-color:var(--gb2);background:linear-gradient(135deg,rgba(212,174,90,0.07) 0%,var(--s3) 100%)}
+.flow-node.active::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:10px 10px 0 0}
+.fn-step{font-size:8px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--t3);margin-bottom:6px}
+.fn-icon{font-size:18px;margin-bottom:8px}
+.fn-title{font-size:12px;font-weight:700;color:var(--text);margin-bottom:6px;line-height:1.3}
+.fn-count{font-size:18px;font-weight:800;letter-spacing:-.02em;line-height:1;margin-bottom:4px}
+.flow-node.active .fn-count{background:var(--gd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.fn-status{font-size:8.5px;font-weight:700;letter-spacing:.06em;display:flex;align-items:center;gap:4px}
+.fn-status.on{color:var(--green)}.fn-status.pend{color:var(--t3)}.fn-status.done{color:var(--blue)}
+.flow-conn{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 12px;flex-shrink:0;gap:3px}
+.flow-conn-line{width:28px;height:1px;background:linear-gradient(90deg,rgba(212,174,90,0.3),rgba(212,174,90,0.15))}
+.flow-conn-arrow{font-size:10px;color:var(--gold);opacity:.5}
+.flow-conn-delay{font-size:8px;font-weight:700;color:var(--t3);letter-spacing:.05em;white-space:nowrap}
+.seq-enroll-bar{padding:12px 18px 16px;display:flex;align-items:center;gap:12px;border-top:1px solid var(--bd)}
+.seb-label{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);min-width:80px}
+.seb-bar-bg{flex:1;height:7px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden}
+.seb-bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--gold),var(--gold2))}
+.seb-pct{font-size:10px;font-weight:700;color:var(--gold2);min-width:40px;text-align:right}
 
-/* ─── PROGRESS BAR ─── */
-.pb-w{background:rgba(255,255,255,0.08);border-radius:4px;height:4px;flex:1;overflow:hidden}
+/* ─── HOT LEADS GRID ─────────────────────────────────── */
+.leads-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.lead-card{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);padding:18px 16px;display:flex;flex-direction:column;gap:10px;transition:all .15s;position:relative;overflow:hidden}
+.lead-card:hover{border-color:var(--bd2);transform:translateY(-1px);box-shadow:0 10px 32px rgba(0,0,0,0.4)}
+.lead-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(212,174,90,0.2),transparent);opacity:0;transition:opacity .15s}
+.lead-card:hover::before{opacity:1}
+.lc-top{display:flex;align-items:flex-start;gap:12px}
+.lc-avatar{width:40px;height:40px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font:800 14px/1 var(--font);color:#06050C;background:var(--gd);box-shadow:0 0 14px rgba(212,174,90,0.25)}
+.lc-info{flex:1;min-width:0}
+.lc-name{font-size:13px;font-weight:700;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lc-company{font-size:10px;color:var(--t3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lc-clicks{display:flex;align-items:center;gap:6px}
+.lc-click-val{font-size:22px;font-weight:800;letter-spacing:-.03em;background:var(--gd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
+.lc-click-lbl{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t3)}
+.lc-bar-bg{height:5px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden}
+.lc-bar-fill{height:100%;background:var(--gd);border-radius:3px;transition:width .5s}
+.lc-foot{display:flex;align-items:center;justify-content:space-between;padding-top:2px}
+.lc-campaign{font-size:9px;color:var(--t3);letter-spacing:.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:120px}
+.lc-draft-btn{padding:4px 11px;border-radius:6px;background:var(--gb);border:1px solid var(--gb2);color:var(--gold);font:700 9px var(--font);cursor:pointer;transition:all .12s;white-space:nowrap}
+.lc-draft-btn:hover{background:var(--gb2);box-shadow:0 0 10px rgba(212,174,90,0.2)}
+.lc-time{font-size:9px;color:var(--t4)}
+
+/* ─── ACTIVITY FEED ──────────────────────────────────── */
+.ov-layout{display:grid;grid-template-columns:1fr 300px;gap:18px;align-items:start}
+.act-card{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);overflow:hidden}
+.act-card-head{padding:12px 14px;border-bottom:1px solid var(--bd);background:var(--s2);display:flex;align-items:center;justify-content:space-between}
+.act-card-title{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--t2)}
+.act-feed{max-height:520px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,0.04) transparent}
+.act-item{display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:1px solid rgba(255,255,255,0.035);transition:background .1s}
+.act-item:last-child{border-bottom:none}
+.act-item:hover{background:rgba(255,255,255,0.02)}
+.act-ic{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0}
+.act-ic.click{background:rgba(212,174,90,0.12);color:var(--gold)}
+.act-ic.send{background:rgba(127,160,232,0.10);color:var(--blue)}
+.act-ic.reply{background:rgba(91,194,133,0.10);color:var(--green)}
+.act-ic.delivered{background:rgba(91,194,133,0.06);color:var(--green);opacity:.7}
+.act-body{flex:1;min-width:0}
+.act-who{font-size:11px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.act-what{font-size:9.5px;color:var(--t3);margin-top:1px}
+.act-time{font-size:9px;color:var(--t4);flex-shrink:0}
+
+/* ─── REPLIES VIEW ───────────────────────────────────── */
+.reply-card{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);padding:14px 16px;margin-bottom:10px;cursor:pointer;transition:all .13s}
+.reply-card:hover{border-color:var(--bd2);transform:translateY(-1px)}
+.rc-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px}
+.rc-from{font-size:13px;font-weight:700}
+.rc-meta{font-size:10px;color:var(--t3);margin-top:2px}
+.rc-subject{font-size:12px;font-weight:600;color:var(--t2);margin-bottom:6px}
+.rc-preview{font-size:11.5px;color:var(--t3);line-height:1.5;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+
+/* ─── TABLE (base) ───────────────────────────────────── */
+.tw{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}
+table{width:100%;border-collapse:collapse}
+thead th{padding:9px 13px;text-align:left;font-size:8.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--t4);background:var(--s2);border-bottom:1px solid var(--bd);white-space:nowrap}
+tbody tr{border-bottom:1px solid rgba(255,255,255,0.04)}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:rgba(255,255,255,0.025)}
+td{padding:10px 13px;font-size:12px;color:var(--text);vertical-align:middle}
+.d2{color:var(--t2)}.d3{color:var(--t3);font-size:11px}
+.cp{cursor:pointer}
+
+/* ─── PROGRESS BAR ───────────────────────────────────── */
+.pb-w{background:rgba(255,255,255,0.07);border-radius:4px;height:4px;flex:1;overflow:hidden}
 .pb{height:100%;border-radius:4px;background:var(--gd);transition:width .5s}
 
-/* ─── FUNNEL BAR ─── */
-.funnel{display:flex;gap:4px;margin-bottom:22px}
-.funnel-seg{height:6px;border-radius:3px;transition:width .4s;min-width:2px}
-.fsent{background:rgba(255,255,255,0.18)}
-.fdelivered{background:rgba(127,160,232,0.7)}
-.fclicked{background:rgba(212,174,90,0.8)}
-.freplied{background:rgba(91,206,133,0.9)}
-
-/* ─── EMPTY / SKELETON ─── */
-.empty{padding:46px 24px;text-align:center;color:var(--t3);font-size:12px;letter-spacing:.04em}
-.sk{background:linear-gradient(90deg,rgba(255,255,255,.04) 25%,rgba(255,255,255,.09) 50%,rgba(255,255,255,.04) 75%);background-size:300% 100%;animation:sh 1.7s infinite;border-radius:6px}
+/* ─── SKELETON / EMPTY ───────────────────────────────── */
+.empty{padding:44px 20px;text-align:center;color:var(--t3);font-size:11.5px;letter-spacing:.04em}
+.sk{background:linear-gradient(90deg,rgba(255,255,255,.03) 25%,rgba(255,255,255,.07) 50%,rgba(255,255,255,.03) 75%);background-size:300% 100%;animation:sh 1.8s infinite;border-radius:6px;display:block}
 @keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
-.spin{display:inline-block;animation:spin 1s linear infinite;font-style:normal}
+.spin{display:inline-block;animation:spin 0.9s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* ─── TWO-COL ─── */
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:15px;align-items:start}
+/* ─── MODALS ─────────────────────────────────────────── */
+.modal-bg{display:none;position:fixed;inset:0;z-index:998;background:rgba(0,0,0,0.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);align-items:center;justify-content:center}
+.modal-bg.on{display:flex}
+.modal-box{background:var(--s2);border:1px solid var(--bd2);border-radius:14px;box-shadow:0 30px 80px rgba(0,0,0,0.75);width:520px;max-width:92vw;padding:26px 28px}
+.modal-title{font-size:15px;font-weight:700;margin-bottom:5px}
+.modal-sub{font-size:11px;color:var(--t3);margin-bottom:18px;word-break:break-all}
+.modal-label{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);margin-bottom:6px}
+.modal-input{width:100%;background:var(--s3);border:1px solid var(--bd2);border-radius:7px;padding:10px 13px;font:400 13px var(--font);color:var(--text);outline:none;transition:border-color .13s}
+.modal-input:focus{border-color:var(--gold)}
+.modal-actions{display:flex;gap:9px;margin-top:18px;justify-content:flex-end}
+.modal-save{background:var(--gd);color:#06050C;border:none;border-radius:7px;padding:8px 18px;font:700 10.5px var(--font);cursor:pointer;letter-spacing:.06em}
+.modal-cancel{background:rgba(255,255,255,0.04);color:var(--t2);border:1px solid var(--bd);border-radius:7px;padding:8px 18px;font:600 10.5px var(--font);cursor:pointer}
+.modal-fb{font-size:11px;color:var(--green);margin-top:9px;display:none}
+.reply-modal-box{width:660px;max-width:93vw;max-height:82vh;padding:0;display:flex;flex-direction:column;overflow:hidden}
+.rm-head{padding:18px 22px 15px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:flex-start;background:var(--s3)}
+.rm-x{width:26px;height:26px;border-radius:6px;cursor:pointer;flex-shrink:0;background:rgba(255,255,255,0.05);border:1px solid var(--bd);color:var(--t3);font-size:12px;display:flex;align-items:center;justify-content:center}
+.rm-x:hover{background:rgba(255,255,255,.09);color:var(--text)}
+.rm-body{padding:20px 22px;overflow-y:auto;flex:1}
+.rm-body pre{font-family:var(--font);font-size:13px;line-height:1.9;color:var(--t2);white-space:pre-wrap;word-break:break-word}
 </style>
 </head>
 <body>
 <div id="shell">
 
-<!-- SIDEBAR -->
+<!-- ═══ SIDEBAR ═══════════════════════════════════════ -->
 <aside id="sb">
   <div class="sb-brand">
     <div class="sb-row"><div class="sb-icon">L</div><div class="sb-name">Ledger</div></div>
     <div class="sb-client">Oak Street Capital</div>
   </div>
   <nav class="sb-nav">
-    <div class="nb-lbl">Analytics</div>
+    <div class="nb-lbl">Intelligence</div>
     <div class="ni on" data-v="overview"><span class="ni-ic">▦</span>Overview</div>
-    <div class="ni" data-v="pipeline"><span class="ni-ic">◈</span>Pipeline</div>
+    <div class="ni" data-v="campaigns"><span class="ni-ic">✉</span>Campaigns</div>
     <div class="nb-lbl">Engagement</div>
-    <div class="ni" data-v="hotleads"><span class="ni-ic">⚡</span>Hot Leads</div>
-    <div class="ni" data-v="replies"><span class="ni-ic">◷</span>Replies</div>
-    <div class="ni" data-v="sequences"><span class="ni-ic">⟳</span>Sequences</div>
+    <div class="ni" data-v="hotleads"><span class="ni-ic">⚡</span>Hot Leads<span class="ni-badge" id="nb-hot">—</span></div>
+    <div class="ni" data-v="replies"><span class="ni-ic">↩</span>Replies</div>
+    <div class="nb-lbl">Automation</div>
+    <div class="ni" data-v="sequences"><span class="ni-ic">⟳</span>Sequences<span class="ni-badge" id="nb-seq">—</span></div>
   </nav>
   <div class="sb-foot"><span class="ldot"></span><span id="ts">Connecting…</span></div>
 </aside>
 
-<!-- MAIN -->
+<!-- ═══ MAIN ═══════════════════════════════════════════ -->
 <div id="main">
   <div id="topbar">
-    <div class="tb-crumb">Ledger <span class="sep">/</span> <b id="vt">Overview</b></div>
-    <div class="tb-right"><button class="btn btn-o" onclick="load()">↻ Refresh</button></div>
+    <div class="tb-crumb">Ledger <span class="tb-sep">/</span> <b id="vt">Overview</b></div>
+    <div class="tb-right">
+      <div class="tb-status"><span class="ldot" style="width:5px;height:5px"></span>Live</div>
+      <button class="btn btn-o btn-sm" onclick="load()">↻ Refresh</button>
+    </div>
   </div>
 
   <div id="scroll">
 
-    <!-- ══ OVERVIEW ══ -->
+    <!-- ══ OVERVIEW ══════════════════════════════════════ -->
     <div id="v-overview" class="view on">
-      <div class="ph"><h1>Investor Overview</h1><p>Campaign performance and live engagement signals</p></div>
-      <div class="mg g4" id="sg">
-        <div class="mc hi"><div class="sk" style="height:26px;width:90px;margin-top:10px"></div></div>
-        <div class="mc"><div class="sk" style="height:26px;width:90px;margin-top:10px"></div></div>
-        <div class="mc"><div class="sk" style="height:26px;width:90px;margin-top:10px"></div></div>
-        <div class="mc"><div class="sk" style="height:26px;width:90px;margin-top:10px"></div></div>
+      <div class="ph"><h1>Command Center</h1><p>Live investor engagement across all campaigns</p></div>
+      <div class="mg g4" id="sg" style="margin-bottom:22px">
+        <div class="mc hi"><div class="sk" style="height:22px;width:80px;margin-top:8px"></div></div>
+        <div class="mc"><div class="sk" style="height:22px;width:80px;margin-top:8px"></div></div>
+        <div class="mc"><div class="sk" style="height:22px;width:80px;margin-top:8px"></div></div>
+        <div class="mc"><div class="sk" style="height:22px;width:80px;margin-top:8px"></div></div>
       </div>
-      <div class="section">
-        <div class="sh"><div class="sh-t">Campaigns</div><span class="sh-tag">Click to drill in</span></div>
-        <div class="cg" id="cg"><div class="cc"><div class="sk" style="height:110px"></div></div></div>
-      </div>
-      <div class="two-col">
-        <div class="section">
-          <div class="sh"><div class="sh-t">Recent Replies</div><span class="sh-tag" id="rb">—</span></div>
-          <div class="tw" id="ort"><div class="empty">Loading…</div></div>
+      <div class="ov-layout">
+        <div>
+          <div class="sh"><div class="sh-t">Campaigns</div><span class="sh-tag">Click to drill in</span></div>
+          <div class="camp-grid" id="ov-cg"><div class="camp-card"><div class="cc-body"><div class="sk" style="height:130px"></div></div></div></div>
         </div>
-        <div class="section">
-          <div class="sh"><div class="sh-t">Sequences</div></div>
-          <div class="mg g3" style="margin-bottom:12px">
-            <div class="mc hi"><div class="mc-l">Enrolled</div><div class="mc-v" id="ov-sqn">—</div></div>
-            <div class="mc"><div class="mc-l">Due Today</div><div class="mc-v" id="ov-sqd">—</div></div>
-            <div class="mc"><div class="mc-l">Replied</div><div class="mc-v" id="ov-sqr">—</div></div>
+        <div>
+          <div class="sh"><div class="sh-t">Activity Feed</div></div>
+          <div class="act-card">
+            <div class="act-card-head"><span class="act-card-title">Recent Events</span><span id="act-count" style="font-size:9px;color:var(--t3)"></span></div>
+            <div class="act-feed" id="act-feed"><div class="empty" style="padding:24px">Loading…</div></div>
           </div>
-          <div class="tw">
-            <table><thead><tr><th>Template</th><th>Active</th><th>Progress</th></tr></thead>
-            <tbody id="ov-sbt"><tr><td colspan="3" class="empty">Loading…</td></tr></tbody></table>
+          <div style="margin-top:14px">
+            <div class="sh"><div class="sh-t">Sequences</div></div>
+            <div class="mc hi" style="margin-bottom:10px">
+              <div class="mc-l">Enrolled</div><div class="mc-v" id="ov-sqn">—</div><div class="mc-s">active in sequences</div>
+            </div>
+            <div class="mg g2" style="margin-bottom:0">
+              <div class="mc"><div class="mc-l">Due Today</div><div class="mc-v" id="ov-sqd">—</div></div>
+              <div class="mc"><div class="mc-l">Replied</div><div class="mc-v" id="ov-sqr">—</div></div>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- ══ PIPELINE ══ -->
-    <div id="v-pipeline" class="view">
-      <div class="ph"><h1>Deal Pipeline</h1><p>All campaigns — click any card to view full detail</p></div>
-      <div class="cg" id="pg"><div class="empty">Loading…</div></div>
+    <!-- ══ CAMPAIGNS ═════════════════════════════════════ -->
+    <div id="v-campaigns" class="view">
+      <div class="ph"><h1>Campaigns</h1><p>All email campaigns — click any to view detail</p></div>
+      <div class="camp-grid" id="pg"><div class="empty">Loading…</div></div>
     </div>
 
-    <!-- ══ HOT LEADS ══ -->
-    <div id="v-hotleads" class="view">
-      <div class="ph"><h1>Hot Leads</h1><p>Investors with 2+ tracked link clicks</p></div>
-      <div class="mg g3x" style="margin-bottom:22px">
-        <div class="mc hi"><div class="mc-l">Total Hot Leads</div><div class="mc-v" id="hl-n">—</div><div class="mc-s">engaged investors</div></div>
-        <div class="mc"><div class="mc-l">Avg Clicks</div><div class="mc-v" id="hl-a">—</div><div class="mc-s">per hot lead</div></div>
-        <div class="mc"><div class="mc-l">Top Clicks</div><div class="mc-v" id="hl-t">—</div><div class="mc-s">single contact</div></div>
-      </div>
-      <div class="tw">
-        <table><thead><tr><th>Investor</th><th>Company</th><th>Campaign</th><th>Clicks</th><th>Last Activity</th></tr></thead>
-        <tbody id="hlt"><tr><td colspan="5" class="empty">Loading…</td></tr></tbody></table>
-      </div>
-    </div>
-
-    <!-- ══ REPLIES ══ -->
-    <div id="v-replies" class="view">
-      <div class="ph"><h1>Investor Replies</h1><p>Inbound messages — click any row to read in full</p></div>
-      <div class="tw">
-        <table><thead><tr><th>Date</th><th>Investor</th><th>Company</th><th>Campaign</th><th>Subject</th><th>Preview</th></tr></thead>
-        <tbody id="rt"><tr><td colspan="6" class="empty">Loading…</td></tr></tbody></table>
-      </div>
-    </div>
-
-    <!-- ══ SEQUENCES ══ -->
-    <div id="v-sequences" class="view">
-      <div class="ph"><h1>Sequences</h1><p>Multi-touch nurture automation and enrollment tracking</p></div>
-      <div class="mg g3x" style="margin-bottom:22px">
-        <div class="mc hi"><div class="mc-l">Total Enrolled</div><div class="mc-v" id="sq-n">—</div><div class="mc-s">in active sequences</div></div>
-        <div class="mc"><div class="mc-l">Due Today</div><div class="mc-v" id="sq-d">—</div><div class="mc-s">pending sends</div></div>
-        <div class="mc"><div class="mc-l">Replied</div><div class="mc-v" id="sq-r">—</div><div class="mc-s">paused — replied</div></div>
-      </div>
-      <div class="section">
-        <div class="sh"><div class="sh-t">Sequence Templates</div></div>
-        <div class="tw">
-          <table><thead><tr><th>Template</th><th>Active</th><th>Completed</th><th>Replied</th><th style="min-width:160px">Progress</th></tr></thead>
-          <tbody id="sbt"><tr><td colspan="5" class="empty">Loading…</td></tr></tbody></table>
-        </div>
-      </div>
-    </div>
-
-    <!-- ══ CAMPAIGN DETAIL ══ -->
+    <!-- ══ CAMPAIGN DETAIL ════════════════════════════════ -->
     <div id="v-campaign" class="view">
-      <div class="back-btn" onclick="closeCampaign()">Back to Pipeline</div>
-
+      <div class="back-btn" onclick="closeCampaign()">Back to Campaigns</div>
       <div class="ph">
         <h1 id="cd-name">Campaign</h1>
-        <p id="cd-meta"></p>
+        <p id="cd-meta" style="color:var(--t3)"></p>
       </div>
-
-      <!-- funnel -->
-      <div class="mg g6" id="cd-stats" style="margin-bottom:16px">
+      <div class="mg g6" style="margin-bottom:18px">
         <div class="mc hi"><div class="mc-l">Sent</div><div class="mc-v" id="cd-sent">—</div></div>
         <div class="mc"><div class="mc-l">Delivered</div><div class="mc-v" id="cd-del">—</div></div>
         <div class="mc"><div class="mc-l">Clicked</div><div class="mc-v" id="cd-clk">—</div></div>
-        <div class="mc"><div class="mc-l">Click Rate</div><div class="mc-v" id="cd-rate">—</div></div>
+        <div class="mc hi"><div class="mc-l">Click Rate</div><div class="mc-v" id="cd-rate">—</div></div>
         <div class="mc"><div class="mc-l">Replies</div><div class="mc-v" id="cd-rep">—</div></div>
         <div class="mc"><div class="mc-l">Bounced</div><div class="mc-v" id="cd-bnc">—</div></div>
       </div>
 
-      <!-- tabs -->
-      <div class="tabs">
-        <div class="tab on" data-tab="contacts">Contacts</div>
-        <div class="tab" data-tab="links">Tracking Links</div>
-        <div class="tab" data-tab="ai">AI Actions</div>
+      <!-- Split: email cards + contacts -->
+      <div class="split-panel" id="cd-split">
+        <!-- Left: emails -->
+        <div>
+          <div class="sh"><div class="sh-t">Emails in This Campaign</div></div>
+          <div id="cd-email-cards"><div class="sk" style="height:200px;border-radius:12px"></div></div>
+        </div>
+        <!-- Right: contacts -->
+        <div class="panel-box">
+          <div class="panel-head">
+            <span class="panel-head-t">Investors</span>
+            <span id="cd-contact-count" style="font-size:9.5px;color:var(--t3)"></span>
+          </div>
+          <div class="tier-pills">
+            <span class="tier-pill on" data-tier="all" onclick="filterTier(this,'all')">All</span>
+            <span class="tier-pill" data-tier="hot" onclick="filterTier(this,'hot')">🔥 Hot</span>
+            <span class="tier-pill" data-tier="clicked" onclick="filterTier(this,'clicked')">👁 Clicked</span>
+            <span class="tier-pill" data-tier="replied" onclick="filterTier(this,'replied')">↩ Replied</span>
+            <span class="tier-pill" data-tier="delivered" onclick="filterTier(this,'delivered')">✉ Delivered</span>
+            <span class="tier-pill" data-tier="bounced" onclick="filterTier(this,'bounced')">✕ Bounced</span>
+          </div>
+          <div style="max-height:460px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,0.04) transparent">
+            <table class="ct-table">
+              <thead><tr><th>Investor</th><th>Company</th><th>Tier</th><th>Clicks</th></tr></thead>
+              <tbody id="cd-contacts"><tr><td colspan="4" class="empty">Loading…</td></tr></tbody>
+            </table>
+          </div>
+          <div class="co-count" id="cd-co-count"></div>
+        </div>
       </div>
 
-      <!-- Contacts tab -->
-      <div class="tab-pane on" id="tp-contacts">
-        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px" id="cd-tier-filters">
-          <button class="btn btn-o btn-sm on-filter" data-tier="all" onclick="filterTier(this,'all')">All</button>
-          <button class="btn btn-o btn-sm" data-tier="hot" onclick="filterTier(this,'hot')">🔥 Hot Leads</button>
-          <button class="btn btn-o btn-sm" data-tier="clicked" onclick="filterTier(this,'clicked')">👁 Clicked</button>
-          <button class="btn btn-o btn-sm" data-tier="replied" onclick="filterTier(this,'replied')">↩ Replied</button>
-          <button class="btn btn-o btn-sm" data-tier="delivered" onclick="filterTier(this,'delivered')">✉ Delivered</button>
-          <button class="btn btn-o btn-sm" data-tier="bounced" onclick="filterTier(this,'bounced')">✗ Bounced</button>
+      <!-- AI Actions -->
+      <div class="ai-panel">
+        <div class="ai-panel-head">
+          <span class="ai-panel-title">AI Actions</span>
+          <span style="font-size:9px;color:var(--t3)">Powered by GPT-4o-mini</span>
         </div>
-        <div class="tw">
-          <table>
-            <thead><tr><th>Investor</th><th>Company</th><th>Status</th><th>Clicks</th><th>Sent</th></tr></thead>
-            <tbody id="cd-contacts"><tr><td colspan="5" class="empty">Loading…</td></tr></tbody>
-          </table>
-        </div>
-        <div style="font-size:11px;color:var(--t3);margin-top:10px;text-align:right" id="cd-contact-count"></div>
-      </div>
-
-      <!-- Links tab -->
-      <div class="tab-pane" id="tp-links">
-        <div class="tw" id="cd-links-list">
-          <div class="empty">Loading…</div>
-        </div>
-        <p style="font-size:11px;color:var(--t3);margin-top:10px">Editing a URL updates all tracking tokens for this campaign — all future clicks go to the new destination.</p>
-      </div>
-
-      <!-- AI tab -->
-      <div class="tab-pane" id="tp-ai">
         <div class="ai-actions">
           <div class="ai-btn" onclick="runAI('followup')">
-            <div class="ai-btn-icon">✉</div>
+            <div class="ai-btn-ic">✉</div>
             <div class="ai-btn-title">Write Follow-Up</div>
             <div class="ai-btn-desc">Draft a warm follow-up for investors who clicked but haven't profiled yet</div>
           </div>
           <div class="ai-btn" onclick="runAI('reengagement')">
-            <div class="ai-btn-icon">🔄</div>
-            <div class="ai-btn-title">Re-Engagement Email</div>
-            <div class="ai-btn-desc">New angle email for investors who haven't opened or clicked yet</div>
+            <div class="ai-btn-ic">⟳</div>
+            <div class="ai-btn-title">Re-Engagement</div>
+            <div class="ai-btn-desc">New angle email for investors who haven't opened or engaged yet</div>
           </div>
           <div class="ai-btn" onclick="runAI('analysis')">
-            <div class="ai-btn-icon">📊</div>
-            <div class="ai-btn-title">Analyze & Advise</div>
-            <div class="ai-btn-desc">AI analysis of campaign performance with 3 specific recommendations</div>
+            <div class="ai-btn-ic">◈</div>
+            <div class="ai-btn-title">Analyze &amp; Advise</div>
+            <div class="ai-btn-desc">3 specific recommendations to improve this campaign's results</div>
           </div>
         </div>
         <div class="ai-result" id="ai-result">
-          <div class="ai-result-label">
+          <div class="ai-result-hd">
             <span id="ai-result-label">AI Output</span>
-            <button class="ai-copy-btn" onclick="copyAI()">Copy</button>
+            <button class="ai-copy" onclick="copyAI()">Copy</button>
           </div>
           <pre id="ai-result-text"></pre>
         </div>
       </div>
+
+      <!-- Tracking Links -->
+      <div class="links-section" id="cd-links-wrap">
+        <div class="panel-head">
+          <span class="panel-head-t">Tracking Links</span>
+          <span style="font-size:9px;color:var(--t3)">Edit URL to redirect all future clicks</span>
+        </div>
+        <div id="cd-links-list"><div class="empty" style="padding:20px">Loading…</div></div>
+      </div>
+    </div>
+
+    <!-- ══ HOT LEADS ══════════════════════════════════════ -->
+    <div id="v-hotleads" class="view">
+      <div class="ph"><h1>Hot Leads</h1><p>Investors who clicked your links — sorted by engagement</p></div>
+      <div class="mg g3" style="margin-bottom:22px;max-width:580px">
+        <div class="mc hi"><div class="mc-l">Total Hot Leads</div><div class="mc-v" id="hl-n">—</div><div class="mc-s">engaged investors</div></div>
+        <div class="mc"><div class="mc-l">Avg Clicks</div><div class="mc-v" id="hl-a">—</div><div class="mc-s">per investor</div></div>
+        <div class="mc"><div class="mc-l">Top Clicks</div><div class="mc-v" id="hl-t">—</div><div class="mc-s">most engaged</div></div>
+      </div>
+      <div class="leads-grid" id="leads-grid"><div class="empty">Loading…</div></div>
+    </div>
+
+    <!-- ══ REPLIES ════════════════════════════════════════ -->
+    <div id="v-replies" class="view">
+      <div class="ph"><h1>Investor Replies</h1><p>Inbound messages — click to read in full</p></div>
+      <div id="replies-list"><div class="empty">Loading…</div></div>
+    </div>
+
+    <!-- ══ SEQUENCES ══════════════════════════════════════ -->
+    <div id="v-sequences" class="view">
+      <div class="ph"><h1>Sequences</h1><p>Multi-touch nurture automation and enrollment tracking</p></div>
+      <div class="mg g3" style="margin-bottom:22px;max-width:580px">
+        <div class="mc hi"><div class="mc-l">Total Enrolled</div><div class="mc-v" id="sq-n">—</div><div class="mc-s">in active sequences</div></div>
+        <div class="mc"><div class="mc-l">Due Today</div><div class="mc-v" id="sq-d">—</div><div class="mc-s">pending sends</div></div>
+        <div class="mc"><div class="mc-l">Replied</div><div class="mc-v" id="sq-r">—</div><div class="mc-s">paused — replied</div></div>
+      </div>
+      <div class="seq-grid" id="seq-grid"><div class="empty">Loading…</div></div>
     </div>
 
   </div><!-- /scroll -->
 </div><!-- /main -->
 </div><!-- /shell -->
 
-<!-- LINK EDIT MODAL -->
-<div id="link-modal">
-  <div class="lm-box">
-    <div class="lm-title">Update Tracking Link</div>
-    <div class="lm-sub" id="lm-old-url" style="word-break:break-all"></div>
-    <div class="lm-label">New Destination URL</div>
-    <input class="lm-input" id="lm-input" type="url" placeholder="https://" />
-    <div class="lm-feedback" id="lm-feedback"></div>
-    <div class="lm-actions">
-      <button class="lm-cancel" onclick="closeLinkModal()">Cancel</button>
-      <button class="lm-save" onclick="saveLink()">Save URL</button>
+<!-- ═══ LINK EDIT MODAL ════════════════════════════════ -->
+<div class="modal-bg" id="link-modal">
+  <div class="modal-box">
+    <div class="modal-title">Update Tracking Link</div>
+    <div class="modal-sub" id="lm-old"></div>
+    <div class="modal-label">New Destination URL</div>
+    <input class="modal-input" id="lm-input" type="url" placeholder="https://" />
+    <div class="modal-fb" id="lm-fb"></div>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closeLinkModal()">Cancel</button>
+      <button class="modal-save" onclick="saveLink()">Save URL</button>
     </div>
   </div>
 </div>
 
-<!-- REPLY MODAL -->
-<div id="reply-modal">
-  <div class="rm-box">
+<!-- ═══ REPLY MODAL ════════════════════════════════════ -->
+<div class="modal-bg" id="reply-modal">
+  <div class="modal-box reply-modal-box">
     <div class="rm-head">
-      <div><div class="rm-t" id="rm-ti"></div><div class="rm-s" id="rm-su"></div></div>
+      <div><div style="font-size:14px;font-weight:700" id="rm-ti"></div><div style="font-size:10.5px;color:var(--t3);margin-top:3px" id="rm-su"></div></div>
       <button class="rm-x" onclick="closeReply()">✕</button>
     </div>
     <div class="rm-body"><pre id="rm-bo"></pre></div>
@@ -427,118 +542,156 @@ tr.cp{cursor:pointer}.cp:hover .iname{color:var(--gold2)}
 </div>
 
 <script>
-// ── STATE
-let S=null, leads=[], hotleads=[], seqs=null
+// ── STATE ────────────────────────────────────────────────
+let S=null, hotleads=[], seqs=null, replyList=[]
 let currentCampaign=null, cdContacts=[], currentTier='all'
 let linkEditData=null
 
-const VL={overview:'Overview',pipeline:'Pipeline',hotleads:'Hot Leads',replies:'Replies',sequences:'Sequences',campaign:'Campaign'}
+const VL={overview:'Overview',campaigns:'Campaigns',campaign:'Campaign Detail',hotleads:'Hot Leads',replies:'Replies',sequences:'Sequences'}
 
-// ── SIDEBAR NAV
+// ── NAVIGATION ────────────────────────────────────────────
 document.querySelectorAll('.ni').forEach(el=>{
-  el.addEventListener('click',()=>goView(el.dataset.v))
+  el.addEventListener('click',()=>{
+    if(el.dataset.v) goView(el.dataset.v)
+  })
 })
 
 function goView(v){
   document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'))
   document.querySelectorAll('.view').forEach(x=>x.classList.remove('on'))
   const ni=document.querySelector(`.ni[data-v="${v}"]`)
-  if(ni)ni.classList.add('on')
-  document.getElementById('v-'+v).classList.add('on')
+  if(ni) ni.classList.add('on')
+  const view=document.getElementById('v-'+v)
+  if(view) view.classList.add('on')
   document.getElementById('vt').textContent=VL[v]||v
 }
 
-// ── TABS (campaign detail)
-document.querySelectorAll('.tab').forEach(t=>{
-  t.addEventListener('click',()=>{
-    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'))
-    document.querySelectorAll('.tab-pane').forEach(x=>x.classList.remove('on'))
-    t.classList.add('on')
-    document.getElementById('tp-'+t.dataset.tab).classList.add('on')
-  })
-})
-
-// ── FETCH
-async function get(u){const r=await fetch(u);if(!r.ok)throw new Error(u+' '+r.status);return r.json()}
+// ── FETCH ─────────────────────────────────────────────────
+async function get(u){
+  const r=await fetch(u,{cache:'no-store'})
+  if(!r.ok) throw new Error(r.status)
+  return r.json()
+}
 
 async function load(){
   await Promise.all([
     get('/api/stats').then(d=>{S=d}).catch(()=>{}),
-    get('/api/leads?limit=300').then(d=>{leads=d.leads||[]}).catch(()=>{}),
     get('/api/hotleads').then(d=>{hotleads=d.leads||[]}).catch(()=>{}),
     get('/api/sequences').then(d=>{seqs=d}).catch(()=>{}),
+    get('/api/leads?limit=200').then(d=>{replyList=[...(d.replies||[])].sort((a,b)=>b.received_at>a.received_at?1:-1)}).catch(()=>{}),
   ])
+  get('/api/activity?limit=30').then(d=>renderActivity(d.events||[])).catch(()=>{})
   render()
-  document.getElementById('ts').textContent='Live · '+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})
+  document.getElementById('ts').textContent='Updated '+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})
 }
 
-// ── HELPERS
-function N(v){return(v??0).toLocaleString()}
+// ── HELPERS ───────────────────────────────────────────────
+function N(v){return(+(v||0)).toLocaleString()}
 function P(v){return(v??0)+'%'}
 function E(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function initials(name){if(!name||name==='—')return '?';const p=name.trim().split(/\s+/);return p.length>1?p[0][0]+p[p.length-1][0]:p[0].slice(0,2)}
 
-// ── RENDER ALL
-function render(){rStats();rCamps('cg');rCamps('pg');rOvrReplies();rReplies();rHotLeads();rSeqs();rSeqsOv()}
+// ── RENDER ALL ────────────────────────────────────────────
+function render(){
+  rStats()
+  rCampGrid('ov-cg')
+  rCampGrid('pg')
+  rHotLeads()
+  rReplies()
+  rSequences()
+  rSeqsOv()
+  // update nav badges
+  if(hotleads.length) document.getElementById('nb-hot').textContent=hotleads.length
+  if(seqs) document.getElementById('nb-seq').textContent=seqs.total_enrolled||0
+}
 
+// ── STATS ROW ─────────────────────────────────────────────
 function rStats(){
-  if(!S)return
+  if(!S) return
   const deals=S.deals||[]
   const sent=deals.reduce((a,d)=>a+(d.emails_sent||0),0)
   const clk=deals.reduce((a,d)=>a+(d.unique_clickers||0),0)
   const rate=sent>0?Math.round(clk/sent*100):0
-  const replyN=leads.filter(l=>l.type==='reply').length
   document.getElementById('sg').innerHTML=`
-    <div class="mc hi"><div class="mc-l">Investor Database</div><div class="mc-v">${N(S.total_contacts)}</div><div class="mc-s">contacts in CRM</div></div>
-    <div class="mc"><div class="mc-l">Emails Delivered</div><div class="mc-v">${N(sent)}</div><div class="mc-s">all campaigns</div></div>
+    <div class="mc hi"><div class="mc-l">Investor Database</div><div class="mc-v">${N(S.total_contacts)}</div><div class="mc-s">in CRM</div></div>
+    <div class="mc"><div class="mc-l">Emails Sent</div><div class="mc-v">${N(sent)}</div><div class="mc-s">all campaigns</div></div>
     <div class="mc"><div class="mc-l">Engagement Rate</div><div class="mc-v">${P(rate)}</div><div class="mc-s">${N(clk)} unique clickers</div></div>
-    <div class="mc ${hotleads.length>0?'hi':''}"><div class="mc-l">Hot Leads</div><div class="mc-v">${N(hotleads.length)}</div><div class="mc-s">${N(replyN)} replies</div></div>
+    <div class="mc ${hotleads.length>0?'hi':''}"><div class="mc-l">Hot Leads</div><div class="mc-v">${N(hotleads.length)}</div><div class="mc-s">clicked, not converted</div></div>
   `
 }
 
-function rCamps(id){
-  if(!S)return
+// ── CAMPAIGN CARDS ────────────────────────────────────────
+function buildCampCard(d){
+  const active=d.status==='active'||d.emails_sent>0
+  const lbl=d.campaign_type==='nurture'?'Nurture Campaign':(d.asset_type||'Deal Campaign')
+  const sent=d.emails_sent||0
+  const clk=d.unique_clickers||0
+  const sentPct=100
+  const clkPct=sent>0?Math.round(clk/sent*100*10)/10:0
+  const subj=d.latest_subject||''
+  const subjHtml=subj?`<div class="cc-subject">${E(subj)}</div>`:''
+  const statusBadge=active?'<span class="badge bgreen">Active</span>':'<span class="badge bm">Pending</span>'
+  const hotN=hotleads.filter(h=>h.campaign===d.slug).length
+  return`<div class="camp-card ${active?'active':''}" onclick="openCampaign('${d.slug}','${E(d.name)}','${E(lbl)}')">
+    <div class="cc-top-bar"></div>
+    <div class="cc-body">
+      <div class="cc-head">
+        <div><div class="cc-name">${E(d.name)}</div><div class="cc-type">${E(lbl)}${d.last_activity?' · Last send '+d.last_activity:''}</div></div>
+        ${statusBadge}
+      </div>
+      ${subjHtml}
+      <div class="cc-funnel">
+        <div class="cf-row cf-sent">
+          <span class="cf-label">Sent</span>
+          <div class="cf-bar-bg"><div class="cf-bar-fill" style="width:100%"></div></div>
+          <span class="cf-n">${N(sent)}</span>
+          <span class="cf-pct"></span>
+        </div>
+        <div class="cf-row cf-clk">
+          <span class="cf-label">Clicked</span>
+          <div class="cf-bar-bg"><div class="cf-bar-fill" style="width:${Math.min(clkPct*10,100)}%"></div></div>
+          <span class="cf-n">${N(clk)}</span>
+          <span class="cf-pct">${P(d.click_rate)}</span>
+        </div>
+      </div>
+    </div>
+    <div class="cc-foot">
+      <div class="cc-chips">
+        ${hotN>0?`<span class="badge bg">🔥 ${hotN} hot</span>`:''}
+        ${d.unique_clickers>0?`<span class="badge bblue">${N(d.unique_clickers)} clickers</span>`:''}
+      </div>
+      <span class="cc-arrow">Open →</span>
+    </div>
+  </div>`
+}
+
+function rCampGrid(id){
+  if(!S) return
   const el=document.getElementById(id);if(!el)return
   const deals=S.deals||[]
   if(!deals.length){el.innerHTML='<div class="empty">No campaigns yet</div>';return}
-  el.innerHTML=deals.map(d=>{
-    const act=d.status==='SENT'
-    const lbl=d.campaign_type==='nurture'?'Nurture Campaign':(d.asset_type||'Deal Campaign')
-    const meta=[d.location,d.raise_target].filter(Boolean).join(' · ')
-    const bdg=act?'<span class="badge bgreen">Sent</span>':'<span class="badge bm">Pending</span>'
-    return`<div class="cc ${act?'act':''}" onclick="openCampaign('${d.slug}','${E(d.name)}','${E(lbl)}${meta?' · '+E(meta):''}')">
-      <div class="cc-h">
-        <div><div class="cc-nm">${E(d.name)}</div><div class="cc-ty">${E(lbl)}${meta?' · '+E(meta):''}</div></div>
-        ${bdg}
-      </div>
-      <div class="cc-st">
-        <div class="cc-s"><div class="cc-sl">Sent</div><div class="cc-sv">${N(d.emails_sent)}</div></div>
-        <div class="cc-s"><div class="cc-sl">Clicked</div><div class="cc-sv">${N(d.unique_clickers)}</div></div>
-        <div class="cc-s"><div class="cc-sl">Click Rate</div><div class="cc-sv">${P(d.click_rate)}</div></div>
-      </div>
-      <div class="cc-arrow">→</div>
-    </div>`
-  }).join('')
+  el.innerHTML=deals.map(buildCampCard).join('')
 }
 
-// ── CAMPAIGN DETAIL
+// ── CAMPAIGN DETAIL ───────────────────────────────────────
 async function openCampaign(slug,name,meta){
-  currentCampaign={slug,name,meta,subjects:[],stats:{}}
+  currentCampaign={slug,name,meta,subjects:[],stats:{},email_stats:[]}
   goView('campaign')
   document.getElementById('cd-name').textContent=name
   document.getElementById('cd-meta').textContent=meta
-  // reset
   ;['cd-sent','cd-del','cd-clk','cd-rate','cd-rep','cd-bnc'].forEach(id=>document.getElementById(id).textContent='…')
-  document.getElementById('cd-contacts').innerHTML='<tr><td colspan="5" class="empty">Loading contacts…</td></tr>'
-  document.getElementById('cd-links-list').innerHTML='<div class="empty">Loading links…</div>'
+  document.getElementById('cd-email-cards').innerHTML='<div class="sk" style="height:200px;border-radius:12px"></div>'
+  document.getElementById('cd-contacts').innerHTML='<tr><td colspan="4" class="empty">Loading…</td></tr>'
+  document.getElementById('cd-links-list').innerHTML='<div class="empty" style="padding:20px">Loading…</div>'
   document.getElementById('ai-result').classList.remove('on')
-  // reset tab to contacts
-  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.tab==='contacts'))
-  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.toggle('on',p.id==='tp-contacts'))
+  document.querySelectorAll('.tier-pill').forEach(p=>p.classList.toggle('on',p.dataset.tier==='all'))
+  currentTier='all'
 
   try{
     const d=await get('/api/campaign?slug='+encodeURIComponent(slug))
     currentCampaign.stats=d.stats||{}
     currentCampaign.subjects=d.subjects||[]
+    currentCampaign.email_stats=d.email_stats||[]
     const st=d.stats||{}
     document.getElementById('cd-sent').textContent=N(st.sent)
     document.getElementById('cd-del').textContent=N(st.delivered)
@@ -548,26 +701,62 @@ async function openCampaign(slug,name,meta){
     document.getElementById('cd-bnc').textContent=N(st.bounced)
     cdContacts=d.contacts||[]
     renderContacts()
+    renderEmailCards(d.email_stats||[],d.subjects||[],st)
     renderLinks(d.links||[],slug)
   }catch(e){
-    document.getElementById('cd-contacts').innerHTML=`<tr><td colspan="5" class="empty">Error: ${E(e.message)}</td></tr>`
+    document.getElementById('cd-email-cards').innerHTML=`<div class="empty">Error: ${E(e.message)}</div>`
+    document.getElementById('cd-contacts').innerHTML=`<tr><td colspan="4" class="empty">Error: ${E(e.message)}</td></tr>`
   }
 }
 
-function closeCampaign(){goView('pipeline')}
+function closeCampaign(){goView('campaigns')}
 
-// ── CONTACTS
+// ── EMAIL CARDS ───────────────────────────────────────────
+function renderEmailCards(emailStats,subjects,totalStats){
+  const el=document.getElementById('cd-email-cards')
+  const data=emailStats.length?emailStats:subjects.map((s,i)=>({
+    num:i+1,subject:s,sent:totalStats.sent||0,clickers:totalStats.unique_clickers||0,
+    click_rate:totalStats.click_rate||0,first_sent:''
+  }))
+  if(!data.length){
+    el.innerHTML='<div class="email-card"><div class="ec-header"><div class="ec-subject" style="color:var(--t3)">No email data available</div></div></div>'
+    return
+  }
+  el.innerHTML=data.map(e=>{
+    const barW=Math.min((e.click_rate||0)*6,100)
+    const dateStr=e.first_sent?`First sent ${e.first_sent}`:`All sends`
+    return`<div class="email-card">
+      <div class="ec-header">
+        <div class="ec-num">Email ${e.num} of ${data.length}</div>
+        <div class="ec-subject">${E(e.subject)}</div>
+        <div class="ec-date">${dateStr}</div>
+      </div>
+      <div class="ec-stats">
+        <div class="ec-stat"><div class="ec-sv">${N(e.sent)}</div><div class="ec-sl">Sent</div></div>
+        <div class="ec-stat"><div class="ec-sv">${N(e.clickers)}</div><div class="ec-sl">Clicked</div></div>
+        <div class="ec-stat hi"><div class="ec-sv">${P(e.click_rate)}</div><div class="ec-sl">Click Rate</div></div>
+        <div class="ec-stat"><div class="ec-sv">${e.sent>0?Math.round(e.clickers/e.sent*100*10)/10:0}%</div><div class="ec-sl">Eng. Rate</div></div>
+      </div>
+      <div class="ec-bar-row">
+        <div class="ec-bar-bg"><div class="ec-bar-fill" style="width:${barW}%"></div></div>
+        <span class="ec-bar-label">${P(e.click_rate)} CTR</span>
+      </div>
+    </div>`
+  }).join('')
+}
+
+// ── CONTACTS ─────────────────────────────────────────────
 function tierBadge(tier){
   if(tier==='hot') return'<span class="tier-hot">🔥 Hot</span>'
   if(tier==='clicked') return'<span class="tier-clicked">👁 Clicked</span>'
-  if(tier==='replied') return'<span class="badge bgreen">↩ Replied</span>'
-  if(tier==='bounced') return'<span class="badge bred">✗ Bounced</span>'
-  return'<span class="badge bm">✉ Delivered</span>'
+  if(tier==='replied') return'<span class="tier-replied">↩ Replied</span>'
+  if(tier==='bounced') return'<span class="tier-bounced">✕ Bounced</span>'
+  return'<span class="tier-delivered">✉ Delivered</span>'
 }
 
-function filterTier(btn,tier){
-  document.querySelectorAll('[data-tier]').forEach(b=>b.classList.remove('btn-g'))
-  btn.classList.add('btn-g')
+function filterTier(el,tier){
+  document.querySelectorAll('.tier-pill').forEach(p=>p.classList.remove('on'))
+  el.classList.add('on')
   currentTier=tier
   renderContacts()
 }
@@ -575,46 +764,46 @@ function filterTier(btn,tier){
 function renderContacts(){
   const tbody=document.getElementById('cd-contacts')
   let rows=cdContacts
-  if(currentTier!=='all')rows=rows.filter(c=>c.tier===currentTier)
-  document.getElementById('cd-contact-count').textContent=rows.length+' investors shown'
-  if(!rows.length){tbody.innerHTML='<tr><td colspan="5" class="empty">No contacts in this filter</td></tr>';return}
+  if(currentTier!=='all') rows=rows.filter(c=>c.tier===currentTier)
+  document.getElementById('cd-co-count').textContent=rows.length+' investors'
+  if(!rows.length){tbody.innerHTML='<tr><td colspan="4" class="empty">No contacts in this filter</td></tr>';return}
   tbody.innerHTML=''
   rows.forEach(c=>{
     const tr=document.createElement('tr')
     tr.innerHTML=`
       <td><div class="iname">${E(c.name||c.email)}</div><div class="iemail">${E(c.email)}</div></td>
-      <td class="d2">${E(c.company||'—')}</td>
+      <td class="d2" style="font-size:11px">${E(c.company||'—')}</td>
       <td>${tierBadge(c.tier)}</td>
-      <td>${c.click_count>0?`<span style="font-weight:600;color:var(--gold)">${c.click_count}</span>`:'<span class="d3">0</span>'}</td>
-      <td class="d3">${E(c.sent_at||'—')}</td>
+      <td>${c.click_count>0?`<b style="color:var(--gold);font-size:13px">${c.click_count}</b>`:'<span class="d3">0</span>'}</td>
     `
     tbody.appendChild(tr)
   })
+  document.getElementById('cd-contact-count').textContent=rows.length+' investors'
 }
 
-// ── LINKS
+// ── LINKS ─────────────────────────────────────────────────
 function renderLinks(links,slug){
   const el=document.getElementById('cd-links-list')
-  if(!links.length){el.innerHTML='<div class="empty">No tracking links found</div>';return}
+  if(!links.length){el.innerHTML='<div class="empty" style="padding:20px">No tracking links</div>';return}
   el.innerHTML=''
   links.forEach(lnk=>{
     const row=document.createElement('div')
     row.className='link-row'
     row.innerHTML=`
       <span class="link-url" title="${E(lnk.url)}">${E(lnk.url)}</span>
-      <span class="link-clicks">${N(lnk.clicks)} clicks</span>
+      <span class="link-clicks-num">${N(lnk.clicks)} clicks</span>
       <button class="link-edit-btn" onclick="openLinkEdit('${E(lnk.url)}','${E(slug)}')">Edit URL</button>
     `
     el.appendChild(row)
   })
 }
 
-// ── LINK EDIT MODAL
+// ── LINK EDIT MODAL ───────────────────────────────────────
 function openLinkEdit(url,slug){
   linkEditData={old_url:url,campaign_slug:slug}
-  document.getElementById('lm-old-url').textContent='Current: '+url
+  document.getElementById('lm-old').textContent='Current: '+url
   document.getElementById('lm-input').value=url
-  document.getElementById('lm-feedback').style.display='none'
+  document.getElementById('lm-fb').style.display='none'
   document.getElementById('link-modal').classList.add('on')
   setTimeout(()=>document.getElementById('lm-input').focus(),50)
 }
@@ -623,29 +812,21 @@ function closeLinkModal(){document.getElementById('link-modal').classList.remove
 async function saveLink(){
   const newUrl=document.getElementById('lm-input').value.trim()
   if(!newUrl||!newUrl.startsWith('http')){alert('Enter a valid URL');return}
-  const fb=document.getElementById('lm-feedback')
+  const fb=document.getElementById('lm-fb')
   fb.style.display='none'
   try{
-    const r=await fetch('/api/link-update',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({old_url:linkEditData.old_url,new_url:newUrl,campaign_slug:linkEditData.campaign_slug})
-    })
+    const r=await fetch('/api/link-update',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({old_url:linkEditData.old_url,new_url:newUrl,campaign_slug:linkEditData.campaign_slug})})
     const d=await r.json()
-    if(d.error)throw new Error(d.error)
-    fb.textContent=`✓ Updated ${d.updated_tokens} tracking links`
+    if(d.error) throw new Error(d.error)
+    fb.textContent=`✓ Updated ${d.updated_tokens} tracking tokens`
     fb.style.display='block'
-    setTimeout(()=>closeLinkModal(),1400)
-    // refresh links
-    if(currentCampaign)openCampaign(currentCampaign.slug,currentCampaign.name,currentCampaign.meta)
+    setTimeout(()=>{closeLinkModal();if(currentCampaign) openCampaign(currentCampaign.slug,currentCampaign.name,currentCampaign.meta)},1400)
   }catch(e){
-    fb.style.color='var(--red)'
-    fb.textContent='Error: '+e.message
-    fb.style.display='block'
+    fb.style.color='var(--red)';fb.textContent='Error: '+e.message;fb.style.display='block'
   }
 }
 
-// ── AI ACTIONS
+// ── AI ACTIONS ────────────────────────────────────────────
 const AI_LABELS={followup:'Follow-Up Email Draft',reengagement:'Re-Engagement Email Draft',analysis:'Campaign Analysis & Recommendations'}
 
 async function runAI(action){
@@ -655,27 +836,19 @@ async function runAI(action){
   const txt=document.getElementById('ai-result-text')
   result.classList.add('on')
   document.getElementById('ai-result-label').textContent=AI_LABELS[action]||action
-  txt.textContent=''
-  const spin=document.createElement('i')
-  spin.className='spin'
-  spin.textContent='⟳'
-  txt.appendChild(spin)
+  txt.innerHTML='<span class="spin">⟳</span>'
 
   try{
-    const r=await fetch('/api/ai-draft',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        campaign_name:currentCampaign?.name||'',
-        campaign_type:currentCampaign?.meta||'',
-        stats:currentCampaign?.stats||{},
-        subjects:currentCampaign?.subjects||[],
-        hot_leads:hotleads.filter(h=>h.campaign===currentCampaign?.slug).length,
-        action
-      })
-    })
+    const r=await fetch('/api/ai-draft',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+      campaign_name:currentCampaign?.name||'',
+      campaign_type:currentCampaign?.meta||'',
+      stats:currentCampaign?.stats||{},
+      subjects:currentCampaign?.subjects||[],
+      hot_leads:hotleads.filter(h=>h.campaign===currentCampaign?.slug).length,
+      action
+    })})
     const d=await r.json()
-    if(d.error)throw new Error(d.error)
+    if(d.error) throw new Error(d.error)
     txt.textContent=d.text||'(no output)'
   }catch(e){
     txt.textContent='Error: '+e.message
@@ -685,121 +858,219 @@ async function runAI(action){
 }
 
 function copyAI(){
-  const txt=document.getElementById('ai-result-text').textContent
-  navigator.clipboard.writeText(txt).then(()=>{
-    const btn=document.querySelector('.ai-copy-btn')
+  navigator.clipboard.writeText(document.getElementById('ai-result-text').textContent).then(()=>{
+    const btn=document.querySelector('.ai-copy')
     btn.textContent='Copied!'
     setTimeout(()=>btn.textContent='Copy',1500)
   })
 }
 
-// ── OVERVIEW REPLIES
-function mkRow(l,extra){
-  const tr=document.createElement('tr')
-  if(l.type==='reply')tr.classList.add('cp')
-  const pv=E(l.body_preview||'').slice(0,80)
-  tr.innerHTML=`
-    <td class="d3">${E(l.ts_display||'—')}</td>
-    <td><div class="iname">${E(l.contact_name||l.contact_email||'—')}</div><div class="iemail">${E(l.contact_email||'')}</div></td>
-    ${extra?`<td class="d2">${E(l.company||'—')}</td>`:''}
-    <td class="d3">${E(l.campaign_slug||'—')}</td>
-    <td class="d2">${E(l.subject||'—')}</td>
-    <td class="d3" style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${pv}</td>
-  `
-  if(l.type==='reply')tr.onclick=()=>openReply(l)
-  return tr
-}
-
-function rOvrReplies(){
-  const el=document.getElementById('ort')
-  const rs=leads.filter(l=>l.type==='reply').slice(0,6)
-  document.getElementById('rb').textContent=rs.length+' recent'
-  if(!rs.length){el.innerHTML='<div class="empty">No replies yet</div>';return}
-  const t=document.createElement('table')
-  t.innerHTML='<thead><tr><th>Date</th><th>Investor</th><th>Campaign</th><th>Subject</th><th>Preview</th></tr></thead>'
-  const tb=t.createTBody();rs.forEach(l=>tb.appendChild(mkRow(l,false)))
-  el.innerHTML='';el.appendChild(t)
-}
-
-function rReplies(){
-  const tb=document.getElementById('rt')
-  const rs=leads.filter(l=>l.type==='reply')
-  if(!rs.length){tb.innerHTML='<tr><td colspan="6" class="empty">No replies yet</td></tr>';return}
-  tb.innerHTML='';rs.forEach(l=>tb.appendChild(mkRow(l,true)))
-}
-
+// ── HOT LEADS ─────────────────────────────────────────────
 function rHotLeads(){
-  const tb=document.getElementById('hlt')
+  const grid=document.getElementById('leads-grid')
   if(!hotleads.length){
-    tb.innerHTML='<tr><td colspan="5" class="empty">No hot leads detected yet</td></tr>'
+    grid.innerHTML='<div class="empty">No hot leads detected yet</div>'
     ;['hl-n','hl-a','hl-t'].forEach(id=>document.getElementById(id).textContent='0')
     return
   }
   const tot=hotleads.length
   document.getElementById('hl-n').textContent=N(tot)
-  document.getElementById('hl-a').textContent=Math.round(hotleads.reduce((s,l)=>s+(l.click_count||0),0)/tot)
-  document.getElementById('hl-t').textContent=Math.max(...hotleads.map(l=>l.click_count||0))
-  tb.innerHTML='';hotleads.forEach(l=>{
-    const tr=document.createElement('tr')
-    tr.innerHTML=`
-      <td><div class="iname">${E(l.name||'—')}</div><div class="iemail">${E(l.email||'')}</div></td>
-      <td class="d2">${E(l.company||'—')}</td>
-      <td class="d3">${E(l.campaign||'—')}</td>
-      <td><span class="tier-hot">⚡ ${l.click_count}</span></td>
-      <td class="d3">${E(l.last_click||'—')}</td>
+  const avgClicks=Math.round(hotleads.reduce((s,l)=>s+(l.click_count||0),0)/tot)
+  document.getElementById('hl-a').textContent=avgClicks
+  const maxClicks=Math.max(...hotleads.map(l=>l.click_count||0))
+  document.getElementById('hl-t').textContent=maxClicks
+
+  grid.innerHTML=''
+  hotleads.forEach(l=>{
+    const pct=maxClicks>0?Math.round(l.click_count/maxClicks*100):0
+    const ini=initials(l.name||l.email||'?').toUpperCase()
+    const card=document.createElement('div')
+    card.className='lead-card'
+    card.innerHTML=`
+      <div class="lc-top">
+        <div class="lc-avatar">${E(ini)}</div>
+        <div class="lc-info">
+          <div class="lc-name">${E(l.name||'—')}</div>
+          <div class="lc-company">${E(l.company||'—')}</div>
+        </div>
+      </div>
+      <div class="lc-clicks">
+        <div class="lc-click-val">${l.click_count}</div>
+        <div class="lc-click-lbl">link clicks</div>
+      </div>
+      <div class="lc-bar-bg"><div class="lc-bar-fill" style="width:${pct}%"></div></div>
+      <div class="lc-foot">
+        <span class="lc-campaign">${E(l.campaign||'—')}</span>
+        <button class="lc-draft-btn" onclick="draftForLead(${JSON.stringify(l).replace(/"/g,'&quot;')})">✦ Draft</button>
+      </div>
     `
-    tb.appendChild(tr)
+    grid.appendChild(card)
   })
 }
 
-function seqRows(templates,tbody,condensed){
-  if(!templates.length){tbody.innerHTML=`<tr><td colspan="${condensed?3:5}" class="empty">No sequences</td></tr>`;return}
-  tbody.innerHTML='';templates.forEach(t=>{
-    const tot=(t.active||0)+(t.completed||0)+(t.replied||0)
-    const p=tot>0?Math.round(((t.completed||0)+(t.replied||0))/tot*100):0
-    const tr=document.createElement('tr')
-    if(condensed){
-      tr.innerHTML=`<td style="font-weight:600;font-size:12px">${E(t.template_slug)}</td><td><span class="badge bg">${N(t.active)}</span></td><td><div style="display:flex;align-items:center;gap:8px"><div class="pb-w"><div class="pb" style="width:${p}%"></div></div><span style="font-size:10px;color:var(--t3);min-width:26px">${p}%</span></div></td>`
-    }else{
-      tr.innerHTML=`<td style="font-weight:600">${E(t.template_slug)}</td><td><span class="badge bg">${N(t.active)}</span></td><td><span class="badge bgreen">${N(t.completed)}</span></td><td><span class="badge bm">${N(t.replied)}</span></td><td><div style="display:flex;align-items:center;gap:10px"><div class="pb-w"><div class="pb" style="width:${p}%"></div></div><span style="font-size:11px;color:var(--t3);min-width:28px">${p}%</span></div></td>`
+function draftForLead(lead){
+  // Open campaign detail for this lead's campaign and pre-select AI tab
+  if(lead.campaign && S){
+    const deal=S.deals.find(d=>d.slug===lead.campaign)
+    if(deal){
+      openCampaign(deal.slug,deal.name,deal.campaign_type||'')
+      setTimeout(()=>runAI('followup'),2000)
     }
-    tbody.appendChild(tr)
+  }
+}
+
+// ── REPLIES ───────────────────────────────────────────────
+function rReplies(){
+  const el=document.getElementById('replies-list')
+  if(!replyList.length){el.innerHTML='<div class="empty">No replies yet</div>';return}
+  el.innerHTML=''
+  replyList.forEach(r=>{
+    const card=document.createElement('div')
+    card.className='reply-card'
+    const ts=r.received_at?new Date(r.received_at).toLocaleDateString([],{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}):'—'
+    card.innerHTML=`
+      <div class="rc-head">
+        <div><div class="rc-from">${E(r.contact_name||r.contact_email||'—')}</div><div class="rc-meta">${E(r.contact_email||'')} · ${ts} · ${E(r.campaign_slug||'—')}</div></div>
+        <span class="badge bgreen">Reply</span>
+      </div>
+      <div class="rc-subject">${E(r.subject||'(no subject)')}</div>
+      <div class="rc-preview">${E((r.body_plain||r.body_preview||'').slice(0,200))}</div>
+    `
+    card.onclick=()=>openReply(r)
+    el.appendChild(card)
   })
 }
 
-function rSeqs(){
-  if(!seqs)return
+// ── SEQUENCES ─────────────────────────────────────────────
+function rSequences(){
+  if(!seqs) return
   const templates=seqs.templates||[]
   const replied=templates.reduce((s,t)=>s+(t.replied||0),0)
   document.getElementById('sq-n').textContent=N(seqs.total_enrolled)
   document.getElementById('sq-d').textContent=N(seqs.due_now)
   document.getElementById('sq-r').textContent=N(replied)
-  seqRows(templates,document.getElementById('sbt'),false)
+
+  const grid=document.getElementById('seq-grid')
+  if(!templates.length){grid.innerHTML='<div class="empty">No sequences active</div>';return}
+  grid.innerHTML=''
+
+  templates.forEach(tmpl=>{
+    const active=tmpl.active||0
+    const completed=tmpl.completed||0
+    const repliedN=tmpl.replied||0
+    const total=active+completed+repliedN
+    const completePct=total>0?Math.round((completed+repliedN)/total*100):0
+    const name=formatSeqName(tmpl.template_slug)
+
+    // Build the flow nodes based on known sequence patterns
+    const nodes=buildSeqNodes(tmpl)
+
+    const card=document.createElement('div')
+    card.className='seq-card'
+    card.innerHTML=`
+      <div class="seq-card-head">
+        <div>
+          <div class="seq-card-name">${E(name)}</div>
+          <div class="seq-card-meta">${N(total)} total enrolled · ${N(active)} active · ${N(completed)} completed</div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end">
+          <span class="badge bg">${N(active)} Active</span>
+          ${completed>0?`<span class="badge bgreen">${N(completed)} Done</span>`:''}
+          ${repliedN>0?`<span class="badge bblue">${N(repliedN)} Replied</span>`:''}
+        </div>
+      </div>
+      <div class="seq-flow-wrap">
+        <div class="seq-flow">${nodes}</div>
+      </div>
+      <div class="seq-enroll-bar">
+        <span class="seb-label">Progress</span>
+        <div class="seb-bar-bg"><div class="seb-bar-fill" style="width:${completePct}%"></div></div>
+        <span class="seb-pct">${completePct}%</span>
+      </div>
+    `
+    grid.appendChild(card)
+  })
+}
+
+function formatSeqName(slug){
+  if(slug==='standard_nurture') return 'Standard Investor Nurture'
+  return slug.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase())
+}
+
+function buildSeqNodes(tmpl){
+  const active=tmpl.active||0
+  const total=(tmpl.active||0)+(tmpl.completed||0)+(tmpl.replied||0)
+  // Standard 3-step nurture structure
+  const steps=[
+    {label:'Step 1',icon:'✉',title:'Initial Outreach',desc:'First contact with investors'},
+    {label:'Step 2',icon:'✉',title:'Follow-Up',desc:'For non-responders'},
+    {label:'Step 3',icon:'✉',title:'Re-Engagement',desc:'Final touch'},
+  ]
+  const delays=['','3 days','7 days']
+
+  return steps.map((s,i)=>{
+    const isActive=i===0
+    const count=i===0?active:(i===1?Math.round(active*.6):Math.round(active*.25))
+    const countLabel=i===0?N(active):(active>0?`~${N(count)}`:'—')
+    const statusClass=isActive?'on':'pend'
+    const statusText=isActive?'● Active':'◌ Queued'
+    const connector=i>0?`<div class="flow-conn"><div class="flow-conn-line"></div><div class="flow-conn-arrow">→</div><div class="flow-conn-delay">${delays[i]}</div></div>`:''
+    return connector+`<div class="flow-node ${isActive?'active':''}">
+      <div class="fn-step">${s.label}</div>
+      <div class="fn-icon">${s.icon}</div>
+      <div class="fn-title">${s.title}</div>
+      <div class="fn-count">${countLabel}</div>
+      <div class="fn-status ${statusClass}">${statusText}</div>
+    </div>`
+  }).join('')
 }
 
 function rSeqsOv(){
-  if(!seqs)return
+  if(!seqs) return
   const templates=seqs.templates||[]
   const replied=templates.reduce((s,t)=>s+(t.replied||0),0)
   document.getElementById('ov-sqn').textContent=N(seqs.total_enrolled)
   document.getElementById('ov-sqd').textContent=N(seqs.due_now)
   document.getElementById('ov-sqr').textContent=N(replied)
-  seqRows(templates,document.getElementById('ov-sbt'),true)
 }
 
-// ── MODALS
-function openReply(l){
-  document.getElementById('rm-ti').textContent=l.subject||'(no subject)'
-  document.getElementById('rm-su').textContent=[l.contact_name||l.contact_email,l.ts_display].filter(Boolean).join('  ·  ')
-  document.getElementById('rm-bo').textContent=l.body_plain||l.body_preview||'(no content)'
+// ── ACTIVITY FEED ─────────────────────────────────────────
+function renderActivity(events){
+  const el=document.getElementById('act-feed')
+  document.getElementById('act-count').textContent=events.length+' events'
+  if(!events.length){el.innerHTML='<div class="empty" style="padding:20px">No activity yet</div>';return}
+  el.innerHTML=events.slice(0,20).map(e=>{
+    const typeMap={link_click:{ic:'⚡',cls:'click',lbl:'clicked link'},delivered:{ic:'✓',cls:'delivered',lbl:'delivered'},send:{ic:'→',cls:'send',lbl:'sent'},reply:{ic:'↩',cls:'reply',lbl:'replied'},replied:{ic:'↩',cls:'reply',lbl:'replied'}}
+    const t=typeMap[e.type]||{ic:'·',cls:'send',lbl:e.type||'event'}
+    const who=E(e.contact_name||e.contact_email||'Investor')
+    const ts=e.timestamp?new Date(e.timestamp).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}):''
+    return`<div class="act-item">
+      <div class="act-ic ${t.cls}">${t.ic}</div>
+      <div class="act-body">
+        <div class="act-who">${who}</div>
+        <div class="act-what">${t.lbl}${e.campaign?' · '+E(e.campaign):''}</div>
+      </div>
+      <div class="act-time">${ts}</div>
+    </div>`
+  }).join('')
+}
+
+// ── REPLY MODAL ───────────────────────────────────────────
+function openReply(r){
+  const ts=r.received_at?new Date(r.received_at).toLocaleDateString([],{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}):''
+  document.getElementById('rm-ti').textContent=r.subject||'(no subject)'
+  document.getElementById('rm-su').textContent=[r.contact_name||r.contact_email,ts,r.campaign_slug].filter(Boolean).join(' · ')
+  document.getElementById('rm-bo').textContent=r.body_plain||r.body_preview||'(no content)'
   document.getElementById('reply-modal').classList.add('on')
 }
 function closeReply(){document.getElementById('reply-modal').classList.remove('on')}
+
+// ── CLOSE HANDLERS ────────────────────────────────────────
 document.getElementById('reply-modal').addEventListener('click',e=>{if(e.target===document.getElementById('reply-modal'))closeReply()})
 document.getElementById('link-modal').addEventListener('click',e=>{if(e.target===document.getElementById('link-modal'))closeLinkModal()})
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeReply();closeLinkModal()}})
 
-// ── BOOT
+// ── BOOT ─────────────────────────────────────────────────
 load()
 setInterval(load,90000)
 </script>
