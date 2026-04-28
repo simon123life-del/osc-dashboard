@@ -494,10 +494,23 @@ button{cursor:pointer;font-family:var(--f-ui)}
 .reply-subj{font:600 10.5px var(--f-ui);color:var(--t2);margin-bottom:3px}
 .reply-text{font:400 11px var(--f-ui);color:var(--t3);line-height:1.55;white-space:pre-wrap;word-break:break-word}
 .reply-text.empty{color:var(--t4);font-style:italic}
-.reply-actions{display:flex;gap:7px;margin-top:8px}
+.reply-actions{display:flex;gap:7px;margin-top:8px;flex-wrap:wrap}
 .reply-act-btn{padding:3px 10px;border-radius:4px;font:600 8.5px var(--f-ui);letter-spacing:.05em;border:1px solid var(--bd2);background:var(--s2);color:var(--t2);cursor:pointer;transition:all .12s}
 .reply-act-btn:hover{background:var(--s3);color:var(--text)}
 .reply-act-btn.done{background:var(--gb);border-color:var(--gb2);color:var(--gold2)}
+.reply-act-btn.ai{background:var(--hdr);border-color:rgba(255,255,255,0.12);color:rgba(255,255,255,0.8)}
+.reply-act-btn.ai:hover{background:#1e2028;color:#fff}
+/* Reply composer */
+.reply-composer{margin-top:10px;display:none}
+.reply-composer.open{display:block}
+.reply-composer-ta{width:100%;min-height:80px;background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r);padding:9px 12px;font:400 12px var(--f-ui);color:var(--text);resize:vertical;outline:none;transition:border-color .13s;line-height:1.5}
+.reply-composer-ta:focus{border-color:var(--gold)}
+.reply-composer-ft{display:flex;align-items:center;justify-content:space-between;margin-top:7px;gap:8px}
+.reply-composer-meta{font:400 9.5px var(--f-ui);color:var(--t4)}
+.reply-send-btn{padding:6px 16px;border-radius:var(--r);background:var(--hdr);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.88);font:600 9px var(--f-ui);letter-spacing:.08em;cursor:pointer;transition:all .15s}
+.reply-send-btn:hover:not(:disabled){background:var(--gold);color:#1A1610;border-color:var(--gold)}
+.reply-send-btn:disabled{opacity:.4;cursor:default}
+.reply-ai-status{font:400 9.5px var(--f-ui);color:var(--gold2);display:none}
 .replies-empty{padding:48px 20px;text-align:center}
 .replies-empty-icon{font-size:28px;margin-bottom:8px;opacity:.4}
 .replies-empty-txt{font:500 12px var(--f-ui);color:var(--t3)}
@@ -1549,9 +1562,8 @@ function renderReplies(){
     const email=r.contact_email||r.from_email||''
     const ts=r.received_at?new Date(r.received_at).toLocaleDateString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}):'—'
     const body=(r.body_plain||'').trim()
-    const id='reply-'+r.id
-    const done=actioned.has(r.id)
-    return`<div class="reply-card${done?' actioned':''}" id="${id}">
+    const done=actioned.has(r.id)||(r.actioned===1)
+    return`<div class="reply-card${done?' actioned':''}" id="reply-${r.id}">
       <div class="reply-av">${initials(name)}</div>
       <div class="reply-body">
         <div class="reply-head">
@@ -1560,19 +1572,89 @@ function renderReplies(){
         </div>
         <div class="reply-email">${E(email)}</div>
         ${r.subject?`<div class="reply-subj">${E(r.subject)}</div>`:''}
-        <div class="reply-text${body?'':' empty'}">${body?E(body):'(no body captured — investor may have replied inline)'}</div>
+        <div class="reply-text${body?'':' empty'}">${body?E(body):'(no body captured yet)'}</div>
         <div class="reply-actions">
           <button class="reply-act-btn${done?' done':''}" onclick="toggleActioned(${r.id})">${done?'✓ Actioned':'Mark Actioned'}</button>
-          ${email?`<button class="reply-act-btn" onclick="window.open('mailto:${E(email)}')">Reply via Email</button>`:''}
+          ${email?`<button class="reply-act-btn" onclick="toggleComposer(${r.id})">↩ Reply</button>`:''}
+          ${email?`<button class="reply-act-btn ai" onclick="aiDraft(${r.id})">✦ AI Draft</button>`:''}
+        </div>
+        <div class="reply-composer" id="composer-${r.id}">
+          <span class="reply-ai-status" id="ai-status-${r.id}">✦ Drafting…</span>
+          <textarea class="reply-composer-ta" id="compose-ta-${r.id}" placeholder="Write your reply to ${E(name)}…"></textarea>
+          <div class="reply-composer-ft">
+            <span class="reply-composer-meta">From: Brian Hampton &lt;bh@oakstcap.com&gt; → ${E(email)}</span>
+            <button class="reply-send-btn" id="send-btn-${r.id}" onclick="sendReply(${r.id},'${E(email)}','${E(name)}','${E(r.subject||'')}')">Send →</button>
+          </div>
         </div>
       </div>
     </div>`
   }).join('')+'</div>'
 }
 
+function toggleComposer(id){
+  const el=document.getElementById('composer-'+id)
+  if(!el) return
+  const open=el.classList.toggle('open')
+  if(open) setTimeout(()=>document.getElementById('compose-ta-'+id)?.focus(),50)
+}
+
 function toggleActioned(id){
   if(actioned.has(id)) actioned.delete(id); else actioned.add(id)
   renderReplies()
+}
+
+async function aiDraft(replyId){
+  const r=repliesData.find(x=>x.id===replyId)
+  if(!r) return
+  const statusEl=document.getElementById('ai-status-'+replyId)
+  const ta=document.getElementById('compose-ta-'+replyId)
+  const composer=document.getElementById('composer-'+replyId)
+  composer.classList.add('open')
+  if(statusEl){statusEl.style.display='block';statusEl.textContent='✦ Drafting…'}
+  if(ta) ta.value=''
+  const name=r.contact_name||r.from_email||'the investor'
+  const body=(r.body_plain||'').trim()
+  const ctx=buildChatContext()
+  const prompt=`You are writing on behalf of Brian Hampton from Oak Street Capital. Draft a short, personable reply email to ${name} who replied to a nurture campaign email with subject "${r.subject||'Are you still actively investing right now?'}".
+
+Their message: ${body||'(no body — they replied but the text was not captured)'}
+
+Campaign context: ${ctx.stats.sent||0} emails sent, ${ctx.stats.click_rate||0}% CTR.
+
+Write ONLY the email body text (no subject line, no "Dear X", no sign-off — Brian will personalize). Keep it 2-3 sentences, conversational, move toward a call or meeting. Do not use em dashes.`
+
+  try{
+    const res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:prompt}],campaign_context:ctx})})
+    const d=await res.json()
+    const draft=(d.text||'').trim()
+    if(ta) ta.value=draft
+    if(statusEl) statusEl.style.display='none'
+  }catch(e){
+    if(statusEl){statusEl.textContent='Draft failed — write manually';statusEl.style.color='var(--red)'}
+  }
+}
+
+async function sendReply(replyId, toEmail, toName, subject){
+  const ta=document.getElementById('compose-ta-'+replyId)
+  const btn=document.getElementById('send-btn-'+replyId)
+  const text=(ta?.value||'').trim()
+  if(!text){alert('Write something first');return}
+  if(btn){btn.textContent='Sending…';btn.disabled=true}
+  try{
+    const r=await fetch('/api/send-reply',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({to_email:toEmail,to_name:toName,subject:subject,body:text,reply_id:replyId})})
+    const d=await r.json()
+    if(d.error) throw new Error(d.error)
+    // Mark actioned
+    actioned.add(replyId)
+    const composer=document.getElementById('composer-'+replyId)
+    if(composer) composer.classList.remove('open')
+    if(btn){btn.textContent='Sent ✓';btn.disabled=false}
+    setTimeout(()=>renderReplies(),800)
+  }catch(e){
+    if(btn){btn.textContent='Failed — retry';btn.disabled=false}
+    alert('Send failed: '+e.message)
+  }
 }
 
 // ── DELIVERABILITY TAB ────────────────────────────────
