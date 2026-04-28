@@ -382,117 +382,80 @@ button{cursor:pointer;font-family:var(--f-ui)}
 .ipr-act-sec:hover{background:rgba(0,0,0,0.07);color:var(--text)}
 
 /* ═══════════════════════════════════════════════════════
-   A/B TEST PANEL
+   WORKFLOW PIPELINE
 ════════════════════════════════════════════════════════ */
-.ab-panel{background:var(--s1);border:1px solid var(--bd2);border-radius:var(--r2);overflow:hidden;margin-bottom:24px}
-.ab-ph{padding:13px 18px;border-bottom:1px solid var(--bd2);background:var(--s3);display:flex;align-items:center;justify-content:space-between}
-.ab-ph-title{font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--t2)}
-.ab-winner-tag{padding:3px 10px;border-radius:var(--r);font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:var(--gb);color:var(--gold2);border:1px solid var(--gb2)}
-.ab-cols{display:grid;grid-template-columns:1fr 1fr}
-.ab-col{padding:18px 20px;position:relative}
-.ab-col+.ab-col{border-left:1px solid var(--bd)}
-.ab-col.lead{background:rgba(122,92,0,0.03)}
-.ab-col.lead::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gd2)}
-.ab-col-hd{font-size:9px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:7px;color:var(--t2)}
-.ab-pill{width:20px;height:20px;border-radius:var(--r);background:var(--s3);border:1px solid var(--bd2);display:inline-flex;align-items:center;justify-content:center;font:700 9px var(--f-mono);color:var(--t2);flex-shrink:0}
-.ab-col.lead .ab-pill{background:var(--gb);border-color:var(--gb2);color:var(--gold2)}
-.ab-krow{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:9px}
-.ab-kl{font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--t3)}
-.ab-kv{font-family:var(--f-mono);font-size:14px;font-weight:600;color:var(--text)}
-.ab-kv.hi{color:var(--gold2)}
-.ab-bar-wrap{margin-top:12px}
-.ab-bar-lbl{font-size:8px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);margin-bottom:4px}
-.ab-bar-bg{height:5px;background:rgba(0,0,0,0.08);border-radius:3px;overflow:hidden}
-.ab-bar-fill{height:100%;background:var(--gd2);border-radius:3px;transition:width .6s ease}
-/* Variant tabs */
-.vt-row{display:flex;align-items:center;gap:14px;margin-bottom:20px}
-.vt-tabs{display:flex;border:1px solid var(--bd2);border-radius:var(--r);overflow:hidden}
-.vt-tab{padding:7px 20px;font:700 10px var(--f-ui);letter-spacing:.16em;text-transform:uppercase;border:none;background:transparent;color:var(--t3);cursor:pointer;transition:all .13s;border-right:1px solid var(--bd2)}
-.vt-tab:last-child{border-right:none}
-.vt-tab.on{background:var(--s3);color:var(--text)}
-.vt-lbl{font-size:10px;color:var(--t3);font-weight:500;letter-spacing:.04em}
-/* Vertical workflow timeline */
-.wf-list{display:flex;flex-direction:column}
-.wf-delay-row{display:flex;align-items:center;gap:10px;padding:8px 0}
-.wf-dline{flex:1;height:1px;background:var(--bd)}
-.wf-dtag{font-size:8.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--t3);white-space:nowrap;padding:3px 10px;border:1px solid var(--bd2);border-radius:var(--r);background:var(--s2)}
-.wf-card{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);cursor:pointer;transition:border-color .15s;overflow:hidden;position:relative}
-.wf-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:transparent;transition:background .15s}
-.wf-card.on{border-color:var(--gold)}
-.wf-card.on::before{background:var(--gd2)}
-.wf-card-top{display:flex;align-items:flex-start;gap:14px;padding:16px 18px}
-.wf-num{width:26px;height:26px;flex-shrink:0;border-radius:var(--r);background:var(--s3);border:1px solid var(--bd2);display:flex;align-items:center;justify-content:center;font:700 10px var(--f-mono);color:var(--t3);margin-top:1px}
-.wf-card.on .wf-num{background:var(--gb);border-color:var(--gb2);color:var(--gold2)}
-.wf-info{flex:1;min-width:0}
-.wf-tag{font-size:8.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--t3);margin-bottom:3px}
-.wf-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:5px}
-.wf-subj{font-size:12px;font-style:italic;color:var(--t2);line-height:1.45;font-weight:400;margin-bottom:9px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:520px}
-.wf-kpis{display:flex;gap:18px;align-items:flex-end}
-.wf-kpi{display:flex;flex-direction:column;gap:1px}
-.wf-kv{font-family:var(--f-mono);font-size:13px;font-weight:600;color:var(--t2)}
-.wf-kv.hi{color:var(--gold2)}
-.wf-kl{font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--t4)}
-.wf-caret{font-size:12px;color:var(--t4);transition:transform .15s;padding-top:3px;flex-shrink:0}
-.wf-card.on .wf-caret{transform:rotate(90deg);color:var(--gold)}
-/* Step expand panel */
-.wf-expand{max-height:0;overflow:hidden;transition:max-height .3s ease}
-.wf-expand.on{max-height:500px}
-.wf-expand-inner{border-top:1px solid var(--bd);padding:16px 18px 18px 58px;background:rgba(0,0,0,0.015)}
-.wf-ex-subj{font-size:14px;font-weight:600;color:var(--text);margin-bottom:14px;letter-spacing:.01em;line-height:1.4}
-.wf-ex-kpis{display:flex;gap:24px;margin-bottom:14px}
-.wf-ex-kpi{display:flex;flex-direction:column;gap:2px}
-.wf-ex-kv{font-family:var(--f-mono);font-size:22px;font-weight:600;color:var(--text)}
-.wf-ex-kv.gold{background:var(--gd2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.wf-ex-kl{font-size:8px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--t3)}
-.wf-ex-bar{height:4px;background:rgba(0,0,0,0.08);border-radius:2px;overflow:hidden;margin-bottom:14px}
-.wf-ex-bar-fill{height:100%;background:var(--gd2);border-radius:2px;transition:width .55s .05s ease}
-.wf-ex-prev{display:inline-flex;align-items:center;gap:6px;padding:6px 16px;border-radius:var(--r);background:var(--gb);border:1px solid var(--gb2);color:var(--gold3);font:600 9.5px var(--f-ui);letter-spacing:.06em;cursor:pointer;transition:all .13s}
-.wf-ex-prev:hover{background:var(--gb2);box-shadow:0 0 10px rgba(122,92,0,0.2)}
+.wf-flow{display:flex;align-items:center;gap:0;overflow-x:auto;padding:2px 0 18px}
+.wf-flow::-webkit-scrollbar{height:4px}
+.wf-flow::-webkit-scrollbar-track{background:transparent}
+.wf-flow::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:2px}
+/* Node */
+.wf-node{width:148px;flex-shrink:0;background:var(--s1);border:1px solid var(--bd);border-radius:10px;padding:13px 13px 11px;cursor:pointer;transition:border-color .15s,box-shadow .15s,transform .12s;position:relative;user-select:none}
+.wf-node:hover:not(.pending){border-color:var(--bd2);box-shadow:0 3px 14px rgba(0,0,0,.08);transform:translateY(-1px)}
+.wf-node.active{border-color:var(--gold);box-shadow:0 0 0 1px rgba(122,92,0,.3),0 4px 20px rgba(122,92,0,.1);transform:none}
+.wf-node.pending{opacity:.38;cursor:default}
+.wf-node-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px}
+.wf-step-num{font:700 8.5px var(--f-mono);letter-spacing:.18em;text-transform:uppercase;color:var(--t3)}
+.wf-var-pill{padding:2px 6px;border-radius:3px;font:700 8px var(--f-mono);letter-spacing:.08em;background:var(--gb);border:1px solid var(--gb2);color:var(--gold2)}
+.wf-node-icon{font-size:18px;margin-bottom:6px;line-height:1;opacity:.75}
+.wf-node.active .wf-node-icon{opacity:1}
+.wf-node-title{font-size:11.5px;font-weight:600;color:var(--text);margin-bottom:10px;line-height:1.3}
+.wf-node-sent{font:600 18px var(--f-mono);color:var(--text);line-height:1}
+.wf-node-sent-l{font:700 8px var(--f-ui);letter-spacing:.14em;text-transform:uppercase;color:var(--t3);margin-top:2px}
+.wf-node-ctr{font:600 11px var(--f-mono);color:var(--gold2);margin-top:5px}
+.wf-node-queued{font:500 10px var(--f-ui);color:var(--t4);margin-top:6px;letter-spacing:.02em}
+/* Active nub — triangle pointing down from node to panel */
+.wf-node.active::after{content:'';position:absolute;bottom:-9px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-top:7px solid var(--gold);z-index:1}
+/* Connector */
+.wf-conn{display:flex;flex-direction:column;align-items:center;gap:4px;padding:0 10px;flex-shrink:0}
+.wf-conn-line{width:32px;height:1px;background:var(--bd2)}
+.wf-conn-arr{color:var(--t4);font-size:11px;line-height:1;margin-top:-2px}
+.wf-conn-delay{font:700 7.5px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--t4);white-space:nowrap;padding:2px 6px;border-radius:2px;background:var(--s3);border:1px solid var(--bd)}
 
-/* ═══════════════════════════════════════════════════════
-   SEQUENCES REDESIGN
-════════════════════════════════════════════════════════ */
-.seq-split{background:var(--s1);border:1px solid var(--bd2);border-radius:var(--r2);overflow:hidden;margin-bottom:24px}
-.split-hd{padding:12px 18px;background:var(--s3);border-bottom:1px solid var(--bd2);display:flex;align-items:center;justify-content:space-between}
-.split-hd-title{font-size:9.5px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--t2)}
-.split-saved{padding:3px 10px;border-radius:var(--r);font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:rgba(22,96,56,.12);color:var(--green);border:1px solid rgba(22,96,56,.2);display:none}
-.split-body{padding:18px 20px 20px}
-.split-bar-row{display:flex;height:40px;border-radius:8px;overflow:hidden;border:1px solid var(--bd2);margin-bottom:14px;cursor:pointer}
-.split-seg{display:flex;align-items:center;justify-content:center;font:700 10px var(--f-mono);letter-spacing:.1em;transition:width .25s ease;min-width:0;overflow:hidden;white-space:nowrap;user-select:none}
-.split-seg-a{background:var(--s3);color:var(--t2);border-right:2px solid var(--bd2)}
-.split-seg-b{background:var(--gb);color:var(--gold2);flex:1}
-.split-seg.all{flex:1;min-width:100%}
-input[type=range].split-range{width:100%;-webkit-appearance:none;appearance:none;height:4px;border-radius:2px;background:linear-gradient(90deg,var(--s3) 0%,var(--gb2) 100%);outline:none;margin-bottom:14px;cursor:pointer}
-input[type=range].split-range::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--hdr);border:2px solid var(--gold);cursor:grab;box-shadow:0 2px 8px rgba(0,0,0,.25)}
-input[type=range].split-range:active::-webkit-slider-thumb{cursor:grabbing}
-.split-foot{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.split-variant-lbl{font-size:10px;font-weight:600;letter-spacing:.06em;color:var(--t3)}
-.split-save-btn{padding:7px 22px;border-radius:var(--r);background:var(--hdr);border:1px solid rgba(255,255,255,0.12);color:#F0EDE7;font:600 9.5px var(--f-ui);letter-spacing:.1em;cursor:pointer;transition:all .15s;flex-shrink:0}
-.split-save-btn:hover{background:var(--gold);border-color:var(--gold);color:#1A1610}
-.split-save-btn:disabled{opacity:.5;cursor:default}
-/* Email variant cards */
-.ev-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:28px}
-.ev-grid.single{grid-template-columns:1fr}
-.ev-card{background:var(--s1);border:1px solid var(--bd);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;transition:border-color .15s}
-.ev-card.lead{border-color:var(--gold)}
-.ev-card-hd{padding:14px 16px 12px;border-bottom:1px solid var(--bd);background:var(--s2);flex-shrink:0}
-.ev-card-hd-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-.ev-badge{width:22px;height:22px;border-radius:4px;background:var(--s3);border:1px solid var(--bd2);display:inline-flex;align-items:center;justify-content:center;font:700 10px var(--f-mono);color:var(--t2);flex-shrink:0}
-.ev-card.lead .ev-badge{background:var(--gb);border-color:var(--gb2);color:var(--gold2)}
-.ev-name{font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--text);margin-left:7px}
-.ev-lead-pill{padding:2px 8px;border-radius:3px;font-size:8px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;background:var(--gb);color:var(--gold2);border:1px solid var(--gb2)}
-.ev-pct-tag{font:600 10px var(--f-mono);color:var(--t3)}
-.ev-stats{display:flex;gap:18px}
-.ev-stat{display:flex;flex-direction:column;gap:1px}
-.ev-sv{font-family:var(--f-mono);font-size:16px;font-weight:600;color:var(--text)}
-.ev-sv.gold{background:var(--gd2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.ev-sl{font-size:8px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--t3)}
-.ev-iframe-wrap{flex:1;position:relative;min-height:460px;max-height:560px;overflow:hidden;background:#fff}
-.ev-iframe-wrap::after{content:'';position:absolute;bottom:0;left:0;right:0;height:40px;background:linear-gradient(transparent,rgba(255,255,255,0.9));pointer-events:none}
-.ev-iframe-wrap iframe{width:100%;height:100%;border:none;display:block}
-.ev-card-ft{padding:10px 14px;border-top:1px solid var(--bd);background:var(--s2);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-.ev-open-btn{font:600 9.5px var(--f-ui);letter-spacing:.08em;color:var(--gold2);text-decoration:none;cursor:pointer;padding:5px 12px;border-radius:var(--r);border:1px solid var(--gb2);background:var(--gb);transition:all .13s}
-.ev-open-btn:hover{background:var(--gb2)}
+/* Expand panel */
+.wf-panel{overflow:hidden;max-height:0;transition:max-height .32s cubic-bezier(.4,0,.2,1),opacity .22s ease;opacity:0}
+.wf-panel.open{max-height:560px;opacity:1}
+.wf-panel-inner{background:var(--s1);border:1px solid var(--bd2);border-top:2px solid var(--gold);border-radius:0 0 var(--r2) var(--r2);overflow:hidden}
+.wf-panel-hd{padding:11px 18px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;background:var(--s2)}
+.wf-panel-title{font:700 9px var(--f-ui);letter-spacing:.2em;text-transform:uppercase;color:var(--t2)}
+.wf-panel-close{font-size:18px;line-height:1;color:var(--t3);cursor:pointer;padding:2px 6px;border-radius:4px;border:none;background:none;transition:color .1s,background .1s}
+.wf-panel-close:hover{color:var(--text);background:var(--s3)}
+/* Allocation bar */
+.wf-alloc{padding:13px 18px 0}
+.wf-alloc-bar{display:flex;height:4px;border-radius:2px;overflow:hidden;gap:1px}
+.wf-alloc-seg{height:100%;transition:width .2s ease;border-radius:1px}
+.wf-alloc-lbls{display:flex;gap:16px;margin-top:6px}
+.wf-alloc-lbl{font:600 9px var(--f-mono);letter-spacing:.06em}
+/* Variant rows */
+.wf-vlist{padding:4px 0 0}
+.wf-vrow{display:flex;align-items:center;gap:0;padding:11px 18px;border-bottom:1px solid var(--bd);transition:background .1s}
+.wf-vrow:hover{background:rgba(0,0,0,.018)}
+.wf-vrow:last-child{border-bottom:none}
+.wf-vbadge{width:22px;height:22px;flex-shrink:0;border-radius:4px;background:var(--s3);border:1px solid var(--bd2);display:flex;align-items:center;justify-content:center;font:700 9.5px var(--f-mono);color:var(--t2)}
+.wf-vbadge.lead{background:var(--gb);border-color:var(--gb2);color:var(--gold2)}
+.wf-vname{flex:1;font-size:12px;font-weight:600;color:var(--text);margin-left:11px;letter-spacing:.01em}
+.wf-vpct-zone{display:flex;align-items:center;gap:7px;margin:0 18px}
+.wf-vpct-bar{width:72px;height:3px;background:rgba(0,0,0,.08);border-radius:2px;overflow:hidden;flex-shrink:0}
+.wf-vpct-fill{height:100%;background:var(--gd2);border-radius:2px;transition:width .18s ease}
+.wf-vpct-inp{width:36px;font:600 13px var(--f-mono);color:var(--text);border:none;border-bottom:1px solid transparent;background:transparent;text-align:right;padding:1px 2px;outline:none;transition:border-color .13s;-moz-appearance:textfield}
+.wf-vpct-inp:focus{border-bottom-color:var(--gold);color:var(--gold2)}
+.wf-vpct-inp::-webkit-inner-spin-button,.wf-vpct-inp::-webkit-outer-spin-button{-webkit-appearance:none}
+.wf-vpct-sym{font:500 11px var(--f-mono);color:var(--t3);margin-left:1px}
+.wf-vstats{display:flex;gap:18px;min-width:148px}
+.wf-vstat{display:flex;flex-direction:column;align-items:flex-end}
+.wf-vsv{font:600 13px var(--f-mono);color:var(--text);line-height:1.2}
+.wf-vsv.gold{background:var(--gd2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.wf-vsl{font:700 7.5px var(--f-ui);letter-spacing:.14em;text-transform:uppercase;color:var(--t4);margin-top:2px}
+.wf-vprev{margin-left:18px;flex-shrink:0}
+.wf-vprev-btn{display:inline-block;padding:5px 11px;border-radius:var(--r);border:1px solid var(--gb2);background:var(--gb);color:var(--gold2);font:600 9px var(--f-ui);letter-spacing:.06em;cursor:pointer;text-decoration:none;transition:all .12s;white-space:nowrap}
+.wf-vprev-btn:hover{background:var(--gb2);box-shadow:0 0 8px rgba(122,92,0,.15)}
+/* Panel footer */
+.wf-panel-ft{padding:11px 18px;border-top:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;background:var(--s2)}
+.wf-total{font:600 10.5px var(--f-mono);color:var(--t3);letter-spacing:.04em}
+.wf-total.ok{color:var(--green)}
+.wf-total.bad{color:var(--red)}
+.wf-save-btn{padding:7px 20px;border-radius:var(--r);background:var(--hdr);border:1px solid rgba(255,255,255,.1);color:#F0EDE7;font:600 9.5px var(--f-ui);letter-spacing:.1em;cursor:pointer;transition:all .15s}
+.wf-save-btn:hover:not(:disabled){background:var(--gold);color:#1A1610;border-color:var(--gold)}
+.wf-save-btn:disabled{opacity:.38;cursor:default}
 
 /* ═══════════════════════════════════════════════════════
    MISC
@@ -699,31 +662,16 @@ input[type=range].split-range:active::-webkit-slider-thumb{cursor:grabbing}
 
       <!-- SEQUENCES TAB -->
       <div id="tab-sequences" class="tabpane">
-        <!-- A/B Split Control -->
-        <div class="seq-split" id="seq-split" style="display:none">
-          <div class="split-hd">
-            <span class="split-hd-title">Send Split</span>
-            <span class="split-saved" id="split-saved">Saved ✓</span>
-          </div>
-          <div class="split-body">
-            <div class="split-bar-row" id="split-bar-row">
-              <div class="split-seg split-seg-a" id="split-seg-a" style="width:0%"></div>
-              <div class="split-seg split-seg-b" id="split-seg-b" style="width:100%">B · 100%</div>
-            </div>
-            <input type="range" class="split-range" id="split-range" min="0" max="100" value="0" oninput="updateSplitUI(this.value)">
-            <div class="split-foot">
-              <span class="split-variant-lbl" id="split-lbl-a">Variant A</span>
-              <button class="split-save-btn" id="split-save-btn" onclick="saveSplit()">Save Split</button>
-              <span class="split-variant-lbl" id="split-lbl-b">Variant B</span>
-            </div>
-          </div>
+        <!-- Workflow pipeline -->
+        <div class="wf-flow" id="wf-flow">
+          <div class="empty">Select a campaign to view workflow.</div>
         </div>
-        <!-- Email Variant Cards -->
-        <div class="ev-grid" id="ev-grid">
-          <div class="empty" style="grid-column:1/-1">Select a campaign to preview emails.</div>
+        <!-- Variant expand panel -->
+        <div class="wf-panel" id="wf-panel">
+          <div class="wf-panel-inner" id="wf-panel-inner"></div>
         </div>
         <!-- Tracking Links -->
-        <div class="seq-section">
+        <div class="seq-section" style="margin-top:28px">
           <div class="sec-head">Tracking Links</div>
           <div style="background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);overflow:hidden" id="seq-links">
             <div class="empty" style="padding:20px">Loading…</div>
@@ -998,9 +946,9 @@ async function openCampaign(slug,name){
   // Reset chat
   document.getElementById('chat-msgs').innerHTML='<div class="chat-empty" id="chat-empty">Ask a question or tap a suggestion below</div>'
   // Reset sequences
-  document.getElementById('ev-grid').innerHTML='<div class="empty" style="grid-column:1/-1">Loading…</div>'
-  document.getElementById('seq-split').style.display='none'
-  selectedStep=null
+  document.getElementById('wf-flow').innerHTML='<div class="empty">Loading…</div>'
+  document.getElementById('wf-panel').classList.remove('open')
+  activeNode=null; selectedStep=null
   // Reset CRM
   document.getElementById('crm-body').innerHTML='<tr><td colspan="6" class="empty">Loading…</td></tr>'
   renderMetrics({})
@@ -1045,113 +993,162 @@ function renderMetrics(st){
 }
 
 // ── SEQUENCES ─────────────────────────────────────────────
+const SEQ_STEPS=[
+  {title:'Initial Outreach',icon:'✉',delay:null},
+  {title:'Follow-Up',icon:'↩',delay:'+3 days'},
+  {title:'Re-Engagement',icon:'⚡',delay:'+7 days'},
+]
 const VARIANT_LABELS={A:'Branded Email',B:'Clean Email'}
+const VAR_COLORS=['var(--gd2)','rgba(122,92,0,.42)','rgba(32,78,128,.7)','rgba(22,96,56,.7)']
+let activeNode=null, variantPcts={}, seqSlug=null, seqAB=null
 
 async function loadSequencesTab(slug, abStats){
-  const hasAB=abStats?.A&&abStats?.B
-  const splitEl=document.getElementById('seq-split')
-  let cfg={A:0,B:100}
-  if(hasAB){
-    splitEl.style.display=''
+  seqSlug=slug; seqAB=abStats; activeNode=null
+  document.getElementById('wf-panel').classList.remove('open')
+  let cfg={B:100}
+  if(abStats?.A||abStats?.B){
     try{ cfg=await get(`/api/ab_config?slug=${encodeURIComponent(slug)}`) }catch(e){}
-    document.getElementById('split-range').value=cfg.A
-    updateSplitUI(cfg.A, abStats)
-    document.getElementById('split-saved').style.display='none'
-  } else {
-    splitEl.style.display='none'
   }
-  renderEmailCards(slug, abStats, cfg)
+  // Init variantPcts from config, defaulting missing keys
+  variantPcts={}
+  if(abStats) Object.keys(abStats).forEach(k=>{ variantPcts[k]=cfg[k]??0 })
+  else variantPcts={B:100}
+  renderWfFlow()
 }
 
-function updateSplitUI(val, abStats){
-  const a=parseInt(val), b=100-a
-  const segA=document.getElementById('split-seg-a')
-  const segB=document.getElementById('split-seg-b')
-  if(a>0){
-    segA.style.width=a+'%'
-    segA.textContent=`A · ${a}%`
-    segA.style.display=''
-  } else {
-    segA.style.width='0'
-    segA.style.display='none'
-  }
-  segB.style.width=b+'%'
-  segB.textContent=`B · ${b}%`
-  document.getElementById('split-saved').style.display='none'
-  document.getElementById('split-save-btn').textContent='Save Split'
+function renderWfFlow(){
+  const ab=seqAB
+  const el=document.getElementById('wf-flow')
+  let html=''
+  SEQ_STEPS.forEach((step,i)=>{
+    if(i>0){
+      html+=`<div class="wf-conn">
+        <div class="wf-conn-line"></div>
+        <div class="wf-conn-arr">›</div>
+        <div class="wf-conn-delay">${step.delay}</div>
+      </div>`
+    }
+    const isActive=activeNode===i
+    const hasData=i===0&&ab
+    const keys=ab?Object.keys(ab):[]
+    const totalSent=keys.reduce((s,k)=>s+(ab[k]?.sent||0),0)
+    const totalClicks=keys.reduce((s,k)=>s+(ab[k]?.clicks||0),0)
+    const blendCTR=totalSent?Math.round(totalClicks/totalSent*1000)/10:0
+    const canOpen=i===0&&hasData&&keys.length
+    html+=`<div class="wf-node${isActive?' active':''}${!canOpen?' pending':''}"
+      id="wfnode-${i}" ${canOpen?`onclick="toggleNode(${i})"`:''}
+      title="${canOpen?'Click to manage variants':'Coming soon'}">
+      <div class="wf-node-top">
+        <span class="wf-step-num">Step ${i+1}</span>
+        ${hasData&&keys.length>1?`<span class="wf-var-pill">${keys.length}</span>`:''}
+      </div>
+      <div class="wf-node-icon">${step.icon}</div>
+      <div class="wf-node-title">${step.title}</div>
+      ${hasData
+        ?`<div class="wf-node-sent">${N(totalSent)}</div>
+          <div class="wf-node-sent-l">sent</div>
+          <div class="wf-node-ctr">${P(blendCTR)} CTR</div>`
+        :`<div class="wf-node-queued">queued</div>`}
+    </div>`
+  })
+  el.innerHTML=html
 }
 
-async function saveSplit(){
-  const slug=currentCampaign?.slug
-  if(!slug) return
-  const a=parseInt(document.getElementById('split-range').value)
-  const b=100-a
-  const btn=document.getElementById('split-save-btn')
-  btn.textContent='Saving…'; btn.disabled=true
+function toggleNode(i){
+  if(activeNode===i){
+    activeNode=null
+    document.getElementById('wf-panel').classList.remove('open')
+    renderWfFlow()
+    return
+  }
+  activeNode=i
+  renderWfFlow()
+  renderPanel(i)
+  document.getElementById('wf-panel').classList.add('open')
+}
+
+function renderPanel(stepIdx){
+  const ab=seqAB, slug=seqSlug, step=SEQ_STEPS[stepIdx]
+  if(!ab||!slug) return
+  const keys=Object.keys(variantPcts)
+  const total=keys.reduce((s,k)=>s+(variantPcts[k]||0),0)
+  const maxCTR=Math.max(...keys.map(k=>+(ab[k]?.click_rate||0)),.01)
+  const okTotal=total===100
+
+  const allocBar=keys.map((k,i)=>
+    `<div class="wf-alloc-seg" style="width:${variantPcts[k]||0}%;background:${VAR_COLORS[i]||VAR_COLORS[0]};flex-shrink:0"></div>`
+  ).join('')
+
+  const allocLbls=keys.map((k,i)=>
+    `<span class="wf-alloc-lbl" style="color:${VAR_COLORS[i]||VAR_COLORS[0]}">${k} · ${variantPcts[k]||0}%</span>`
+  ).join('')
+
+  const rows=keys.map((k,i)=>{
+    const st=ab[k]||{}, pct=variantPcts[k]||0
+    const ctr=+(st.click_rate||0), isLead=ctr>=maxCTR&&ctr>0
+    return`<div class="wf-vrow">
+      <span class="wf-vbadge${isLead?' lead':''}">${k}</span>
+      <span class="wf-vname">${E(VARIANT_LABELS[k]||`Variant ${k}`)}</span>
+      <div class="wf-vpct-zone">
+        <div class="wf-vpct-bar"><div class="wf-vpct-fill" style="width:${pct}%"></div></div>
+        <input class="wf-vpct-inp" type="number" min="0" max="100" value="${pct}"
+          oninput="setPct('${k}',this.value)" onchange="setPct('${k}',this.value)">
+        <span class="wf-vpct-sym">%</span>
+      </div>
+      <div class="wf-vstats">
+        <div class="wf-vstat">
+          <span class="wf-vsv">${N(st.sent||0)}</span>
+          <span class="wf-vsl">Sent</span>
+        </div>
+        <div class="wf-vstat">
+          <span class="wf-vsv${isLead?' gold':''}">${P(ctr)}</span>
+          <span class="wf-vsl">CTR</span>
+        </div>
+      </div>
+      <div class="wf-vprev">
+        <a class="wf-vprev-btn" href="/api/preview?slug=${encodeURIComponent(slug)}&variant=${k}" target="_blank">Preview ↗</a>
+      </div>
+    </div>`
+  }).join('')
+
+  document.getElementById('wf-panel-inner').innerHTML=`
+    <div class="wf-panel-hd">
+      <span class="wf-panel-title">Step ${stepIdx+1} · ${step.title}</span>
+      <button class="wf-panel-close" onclick="toggleNode(${stepIdx})">×</button>
+    </div>
+    <div class="wf-alloc">
+      <div class="wf-alloc-bar">${allocBar}</div>
+      <div class="wf-alloc-lbls">${allocLbls}</div>
+    </div>
+    <div class="wf-vlist">${rows}</div>
+    <div class="wf-panel-ft">
+      <span class="wf-total ${okTotal?'ok':'bad'}">${okTotal?'Split is 100% ✓':`Total: ${total}% — must equal 100%`}</span>
+      <button class="wf-save-btn" id="wf-save-btn" onclick="saveVariantSplit()" ${okTotal?'':'disabled'}>Save Split</button>
+    </div>`
+}
+
+function setPct(key,val){
+  variantPcts[key]=Math.max(0,Math.min(100,parseInt(val)||0))
+  if(activeNode!==null) renderPanel(activeNode)
+}
+
+async function saveVariantSplit(){
+  const slug=seqSlug; if(!slug) return
+  const btn=document.getElementById('wf-save-btn')
+  if(btn){btn.textContent='Saving…';btn.disabled=true}
   try{
     const r=await fetch(`/api/ab_config?slug=${encodeURIComponent(slug)}`,{
       method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({A:a,B:b})
+      body:JSON.stringify(variantPcts)
     })
     if(!r.ok) throw new Error(r.status)
-    btn.textContent='Saved ✓'
-    document.getElementById('split-saved').style.display=''
-  } catch(e){
-    btn.textContent='Error — retry'
-  } finally {
-    btn.disabled=false
-    setTimeout(()=>{if(btn.textContent==='Saved ✓') btn.textContent='Save Split'},2500)
+    if(btn){btn.textContent='Saved ✓';btn.disabled=false}
+    setTimeout(()=>{if(btn&&btn.textContent==='Saved ✓')btn.textContent='Save Split'},2000)
+  }catch(e){
+    if(btn){btn.textContent='Error — retry';btn.disabled=false}
   }
 }
 
-function renderEmailCards(slug, abStats, cfg){
-  const el=document.getElementById('ev-grid')
-  const hasAB=abStats?.A&&abStats?.B
-  if(hasAB){
-    el.className='ev-grid'
-    const aRate=+(abStats.A.click_rate||0), bRate=+(abStats.B.click_rate||0)
-    const aLeads=aRate>=bRate
-    el.innerHTML=
-      buildEmailCard(slug,'A',VARIANT_LABELS.A,abStats.A,aLeads,cfg.A||0)+
-      buildEmailCard(slug,'B',VARIANT_LABELS.B,abStats.B,!aLeads,cfg.B||100)
-  } else {
-    el.className='ev-grid single'
-    el.innerHTML=buildEmailCard(slug,'B',VARIANT_LABELS.B||'Outreach Email',null,false,100)
-  }
-}
-
-function buildEmailCard(slug,variant,label,stats,isLead,pct){
-  const sent=stats?N(stats.sent):'—'
-  const ctr=stats?P(stats.click_rate):'—'
-  const clicks=stats?N(stats.clicks||stats.clickers||0):'—'
-  return`<div class="ev-card${isLead?' lead':''}">
-    <div class="ev-card-hd">
-      <div class="ev-card-hd-top">
-        <div style="display:flex;align-items:center;gap:7px">
-          <span class="ev-badge">${variant}</span>
-          <span class="ev-name">${E(label)}</span>
-          ${isLead?'<span class="ev-lead-pill">Leading</span>':''}
-        </div>
-        <span class="ev-pct-tag">${pct}% of sends</span>
-      </div>
-      <div class="ev-stats">
-        <div class="ev-stat"><span class="ev-sv">${sent}</span><span class="ev-sl">Sent</span></div>
-        <div class="ev-stat"><span class="ev-sv ${isLead?'gold':''}">${ctr}</span><span class="ev-sl">CTR</span></div>
-        <div class="ev-stat"><span class="ev-sv">${clicks}</span><span class="ev-sl">Clicks</span></div>
-      </div>
-    </div>
-    <div class="ev-iframe-wrap">
-      <iframe src="/api/preview?slug=${encodeURIComponent(slug)}&variant=${variant}"
-        loading="lazy" title="Variant ${variant} preview" scrolling="yes"></iframe>
-    </div>
-    <div class="ev-card-ft">
-      <span style="font-size:10px;color:var(--t3)">Scroll to preview</span>
-      <a class="ev-open-btn" href="/api/preview?slug=${encodeURIComponent(slug)}&variant=${variant}" target="_blank">Open Full ↗</a>
-    </div>
-  </div>`
-}
-
-// ── SEQUENCES (legacy stubs — no longer used) ─────────────
 function buildWorkflowVariants(d){}
 
 // ── LINKS ─────────────────────────────────────────────────
