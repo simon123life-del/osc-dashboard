@@ -458,6 +458,92 @@ button{cursor:pointer;font-family:var(--f-ui)}
 .wf-save-btn:disabled{opacity:.38;cursor:default}
 
 /* ═══════════════════════════════════════════════════════
+   PACING BANNER
+════════════════════════════════════════════════════════ */
+.pacing-banner{margin:0 0 0;padding:14px 20px 16px;background:var(--hdr);border-radius:var(--r2);border:1px solid rgba(255,255,255,0.07);position:relative;overflow:hidden}
+.pacing-banner::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 0% 50%,rgba(184,146,12,0.09) 0%,transparent 60%);pointer-events:none}
+.pacing-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px}
+.pacing-lbl{font:700 8.5px var(--f-ui);letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:3px}
+.pacing-remaining{font:600 28px var(--f-mono);background:var(--gd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
+.pacing-sub{font:500 10.5px var(--f-ui);color:rgba(255,255,255,0.45);margin-top:2px}
+.pacing-meta{display:flex;gap:20px;flex-shrink:0}
+.pacing-m{display:flex;flex-direction:column;align-items:flex-end;gap:1px}
+.pacing-mv{font:600 14px var(--f-mono);color:rgba(255,255,255,0.85);line-height:1.2}
+.pacing-ml{font:700 7.5px var(--f-ui);letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,0.32);margin-top:1px}
+.pacing-mv.accent{background:var(--gd2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.pacing-bar-wrap{position:relative}
+.pacing-bar-bg{height:3px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden}
+.pacing-bar-fill{height:100%;background:var(--gd2);border-radius:2px;transition:width .4s ease}
+.pacing-bar-lbl{display:flex;justify-content:space-between;margin-top:4px}
+.pacing-bar-lbl span{font:500 9px var(--f-mono);color:rgba(255,255,255,0.3)}
+
+/* ═══════════════════════════════════════════════════════
+   REPLIES TAB
+════════════════════════════════════════════════════════ */
+.reply-list{display:flex;flex-direction:column;gap:0}
+.reply-card{padding:14px 18px;border-bottom:1px solid var(--bd);display:flex;gap:13px;align-items:flex-start;transition:background .1s;cursor:default}
+.reply-card:last-child{border-bottom:none}
+.reply-card:hover{background:rgba(0,0,0,0.015)}
+.reply-card.actioned{opacity:.55}
+.reply-av{width:32px;height:32px;border-radius:50%;background:var(--gd2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font:700 11px var(--f-mono);color:#F0EDE7}
+.reply-body{flex:1;min-width:0}
+.reply-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:2px}
+.reply-name{font:600 12.5px var(--f-ui);color:var(--text)}
+.reply-ts{font:400 9px var(--f-mono);color:var(--t4);flex-shrink:0}
+.reply-email{font:400 10px var(--f-ui);color:var(--t3);margin-bottom:4px}
+.reply-subj{font:600 10.5px var(--f-ui);color:var(--t2);margin-bottom:3px}
+.reply-text{font:400 11px var(--f-ui);color:var(--t3);line-height:1.55;white-space:pre-wrap;word-break:break-word}
+.reply-text.empty{color:var(--t4);font-style:italic}
+.reply-actions{display:flex;gap:7px;margin-top:8px}
+.reply-act-btn{padding:3px 10px;border-radius:4px;font:600 8.5px var(--f-ui);letter-spacing:.05em;border:1px solid var(--bd2);background:var(--s2);color:var(--t2);cursor:pointer;transition:all .12s}
+.reply-act-btn:hover{background:var(--s3);color:var(--text)}
+.reply-act-btn.done{background:var(--gb);border-color:var(--gb2);color:var(--gold2)}
+.replies-empty{padding:48px 20px;text-align:center}
+.replies-empty-icon{font-size:28px;margin-bottom:8px;opacity:.4}
+.replies-empty-txt{font:500 12px var(--f-ui);color:var(--t3)}
+.replies-empty-sub{font:400 10.5px var(--f-ui);color:var(--t4);margin-top:4px}
+
+/* ═══════════════════════════════════════════════════════
+   DELIVERABILITY TAB
+════════════════════════════════════════════════════════ */
+.dv-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+@media(max-width:700px){.dv-grid{grid-template-columns:repeat(2,1fr)}}
+.dv-card{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);padding:13px 15px}
+.dv-card.hi{border-color:var(--gb2);background:var(--gb)}
+.dv-lbl{font:700 8px var(--f-ui);letter-spacing:.18em;text-transform:uppercase;color:var(--t3);margin-bottom:6px}
+.dv-val{font:600 22px var(--f-mono);color:var(--text);line-height:1}
+.dv-val.green{color:var(--green)}
+.dv-val.red{color:var(--red)}
+.dv-val.gold{background:var(--gd2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.dv-sub{font:400 9.5px var(--f-ui);color:var(--t4);margin-top:3px}
+.dv-domain-row{display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);margin-bottom:16px}
+.dv-domain-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.dv-domain-dot.ok{background:var(--green);box-shadow:0 0 6px rgba(22,96,56,.4)}
+.dv-domain-dot.bad{background:var(--red)}
+.dv-domain-text{flex:1}
+.dv-domain-name{font:600 12px var(--f-mono);color:var(--text)}
+.dv-domain-state{font:400 10px var(--f-ui);color:var(--t3);margin-top:1px}
+.dv-domain-label{font:700 8px var(--f-ui);letter-spacing:.14em;text-transform:uppercase;color:var(--t4)}
+
+/* ═══════════════════════════════════════════════════════
+   CONTACT TIMELINE
+════════════════════════════════════════════════════════ */
+.tl-list{position:relative;padding-left:22px}
+.tl-list::before{content:'';position:absolute;left:7px;top:4px;bottom:4px;width:1px;background:var(--bd2)}
+.tl-item{position:relative;padding:0 0 14px;display:flex;flex-direction:column;gap:1px}
+.tl-item:last-child{padding-bottom:0}
+.tl-dot{position:absolute;left:-17px;top:3px;width:9px;height:9px;border-radius:50%;border:1.5px solid var(--s1);flex-shrink:0}
+.tl-dot.sent{background:var(--t3)}
+.tl-dot.delivered{background:var(--green)}
+.tl-dot.clicked{background:var(--gold2)}
+.tl-dot.replied{background:var(--blue)}
+.tl-dot.bounced{background:var(--red)}
+.tl-evt{font:600 10px var(--f-ui);letter-spacing:.04em;color:var(--text);text-transform:capitalize}
+.tl-ts{font:400 9px var(--f-mono);color:var(--t4)}
+.tl-detail{font:400 10.5px var(--f-ui);color:var(--t3);margin-top:1px;word-break:break-word}
+.tl-body{font:400 10px var(--f-ui);color:var(--t3);margin-top:2px;padding:5px 8px;background:var(--s2);border-radius:3px;line-height:1.45;word-break:break-word;max-height:60px;overflow:hidden}
+
+/* ═══════════════════════════════════════════════════════
    MISC
 ════════════════════════════════════════════════════════ */
 @keyframes fadeSlideUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
@@ -619,6 +705,12 @@ button{cursor:pointer;font-family:var(--f-ui)}
         <button class="cds-nav-item" data-tab="contacts" onclick="switchTab(this,'contacts')">
           <span class="nav-icon">⊞</span> Contacts
         </button>
+        <button class="cds-nav-item" data-tab="replies" onclick="switchTab(this,'replies')">
+          <span class="nav-icon">↩</span> Replies
+        </button>
+        <button class="cds-nav-item" data-tab="delivery" onclick="switchTab(this,'delivery')">
+          <span class="nav-icon">◎</span> Delivery
+        </button>
       </nav>
       <div class="cds-footer">
         <div class="cds-status"><span class="dot-g" style="animation:none;background:var(--green)"></span>Live Data</div>
@@ -638,6 +730,9 @@ button{cursor:pointer;font-family:var(--f-ui)}
           <div class="mc"><div class="mc-l">Replies</div><div class="mc-v sk" style="height:26px;width:55px;margin-top:6px"></div></div>
           <div class="mc"><div class="mc-l">Bounced</div><div class="mc-v sk" style="height:26px;width:55px;margin-top:6px"></div></div>
         </div>
+        <!-- PACING BANNER -->
+        <div id="pacing-banner" style="display:none;margin:18px 0 0"></div>
+
         <div class="chat-section">
           <div class="chat-head">
             <span class="chat-head-title">Campaign Assistant</span>
@@ -710,6 +805,24 @@ button{cursor:pointer;font-family:var(--f-ui)}
         </div>
       </div>
 
+      <!-- REPLIES TAB -->
+      <div id="tab-replies" class="tabpane">
+        <div class="seq-section">
+          <div class="sec-head">Investor Replies</div>
+          <div style="background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);overflow:hidden" id="replies-list">
+            <div class="empty">Loading…</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DELIVERY TAB -->
+      <div id="tab-delivery" class="tabpane">
+        <div class="seq-section">
+          <div class="sec-head">Deliverability Health</div>
+          <div id="delivery-content"><div class="empty">Loading…</div></div>
+        </div>
+      </div>
+
     </div><!-- /cd-main -->
   </div><!-- /v-campaign -->
 
@@ -764,6 +877,10 @@ button{cursor:pointer;font-family:var(--f-ui)}
     <div class="ipr-section">
       <div class="ipr-sec-label">Signal Analysis</div>
       <div id="ipr-signals"></div>
+    </div>
+    <div class="ipr-section">
+      <div class="ipr-sec-label">Activity Timeline</div>
+      <div id="ipr-timeline"><div style="font:400 10.5px var(--f-ui);color:var(--t4)">Loading…</div></div>
     </div>
   </div>
   <div class="ipr-actions">
@@ -842,11 +959,13 @@ function goToCampaign(){
   document.getElementById('hdr-stats').style.display=''
 }
 
+let deliveryLoaded=false
 function switchTab(btn, tab){
   document.querySelectorAll('.cds-nav-item').forEach(x=>x.classList.remove('on'))
   document.querySelectorAll('.tabpane').forEach(x=>x.classList.remove('on'))
   btn.classList.add('on')
   document.getElementById('tab-'+tab).classList.add('on')
+  if(tab==='delivery'&&!deliveryLoaded){ deliveryLoaded=true; loadDeliveryTab() }
 }
 
 // ── DATA LOAD ─────────────────────────────────────────────
@@ -948,9 +1067,13 @@ async function openCampaign(slug,name){
   // Reset sequences
   document.getElementById('wf-flow').innerHTML='<div class="empty">Loading…</div>'
   document.getElementById('wf-panel').classList.remove('open')
-  activeNode=null; selectedStep=null
-  // Reset CRM
+  activeNode=null; selectedStep=null; deliveryLoaded=false
+  repliesData=[]; actioned=new Set()
+  // Reset CRM + pacing + replies
   document.getElementById('crm-body').innerHTML='<tr><td colspan="6" class="empty">Loading…</td></tr>'
+  document.getElementById('pacing-banner').style.display='none'
+  document.getElementById('replies-list').innerHTML='<div class="empty">Loading…</div>'
+  document.getElementById('delivery-content').innerHTML='<div class="empty">Loading…</div>'
   renderMetrics({})
   try{
     const d=await get('/api/campaign?slug='+encodeURIComponent(slug))
@@ -975,6 +1098,8 @@ async function openCampaign(slug,name){
     const statsEntry=(S?.campaigns||S?.deals||[]).find(c=>c.slug===slug)
     const abStats=statsEntry?.ab_stats||null
     loadSequencesTab(slug, abStats)
+    loadRepliesTab(slug)
+    loadPacing(slug)
     renderLinks(cdLinks,slug)
     renderCRM()
   }catch(e){renderMetrics({})}
@@ -1330,6 +1455,8 @@ function openProfile(contact){
 
   document.getElementById('ipr-overlay').classList.add('on')
   document.getElementById('ipr-drawer').classList.add('on')
+  if(contact.contact_id) loadTimeline(contact.contact_id)
+  else document.getElementById('ipr-timeline').innerHTML='<div style="font:400 10.5px var(--f-ui);color:var(--t4)">No contact ID available</div>'
 }
 
 function closeProfile(){
@@ -1345,6 +1472,202 @@ function profileQuickChat(){
   if(btn) switchTab(btn,'overview')
   const q=`Tell me about this investor: ${activeContact.name||activeContact.email} from ${activeContact.company||'unknown company'}. They have clicked ${activeContact.click_count||0} times and their status is ${activeContact.tier}. What should my next step be?`
   quickChat(q)
+}
+
+// ── PACING ────────────────────────────────────────────
+async function loadPacing(slug){
+  const banner=document.getElementById('pacing-banner')
+  if(!banner) return
+  try{
+    const d=await get('/api/pacing?slug='+encodeURIComponent(slug))
+    if(!d.pool_size){ banner.style.display='none'; return }
+    const pct=d.pct_done||0
+    const sentFmt=N(d.sent_count)
+    const totalFmt=N(d.pool_size)
+    banner.style.display='block'
+    banner.innerHTML=`
+      <div class="pacing-banner">
+        <div class="pacing-top">
+          <div>
+            <div class="pacing-lbl">Campaign Pacing</div>
+            <div class="pacing-remaining">${N(d.remaining)}</div>
+            <div class="pacing-sub">contacts remaining${d.eta_date&&d.eta_date!=='—'?' — est. complete '+d.eta_date:''}</div>
+          </div>
+          <div class="pacing-meta">
+            <div class="pacing-m">
+              <span class="pacing-mv accent">${d.daily_rate>0?d.daily_rate+'/day':'—'}</span>
+              <span class="pacing-ml">Daily Rate</span>
+            </div>
+            <div class="pacing-m">
+              <span class="pacing-mv">${sentFmt}</span>
+              <span class="pacing-ml">Sent</span>
+            </div>
+            <div class="pacing-m">
+              <span class="pacing-mv">${totalFmt}</span>
+              <span class="pacing-ml">Total Pool</span>
+            </div>
+          </div>
+        </div>
+        <div class="pacing-bar-wrap">
+          <div class="pacing-bar-bg"><div class="pacing-bar-fill" style="width:${pct}%"></div></div>
+          <div class="pacing-bar-lbl"><span>${pct}% complete</span><span>${d.eta_date&&d.eta_date!=='—'?'ETA: '+d.eta_date:''}</span></div>
+        </div>
+      </div>`
+  }catch(e){ banner.style.display='none' }
+}
+
+// ── REPLIES TAB ───────────────────────────────────────
+let repliesData=[]
+let actioned=new Set()
+
+async function loadRepliesTab(slug){
+  const el=document.getElementById('replies-list')
+  if(!el) return
+  el.innerHTML='<div class="empty">Loading…</div>'
+  try{
+    const d=await get('/api/replies?slug='+encodeURIComponent(slug))
+    repliesData=d.replies||[]
+    renderReplies()
+  }catch(e){
+    el.innerHTML='<div class="empty">Could not load replies</div>'
+  }
+}
+
+function renderReplies(){
+  const el=document.getElementById('replies-list')
+  if(!el) return
+  if(!repliesData.length){
+    el.innerHTML=`<div class="replies-empty">
+      <div class="replies-empty-icon">↩</div>
+      <div class="replies-empty-txt">No replies yet</div>
+      <div class="replies-empty-sub">Replies will appear here as investors respond</div>
+    </div>`
+    return
+  }
+  el.innerHTML='<div class="reply-list">'+repliesData.map(r=>{
+    const name=r.contact_name||r.from_email||r.contact_email||'Investor'
+    const email=r.contact_email||r.from_email||''
+    const ts=r.received_at?new Date(r.received_at).toLocaleDateString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}):'—'
+    const body=(r.body_plain||'').trim()
+    const id='reply-'+r.id
+    const done=actioned.has(r.id)
+    return`<div class="reply-card${done?' actioned':''}" id="${id}">
+      <div class="reply-av">${initials(name)}</div>
+      <div class="reply-body">
+        <div class="reply-head">
+          <span class="reply-name">${E(name)}</span>
+          <span class="reply-ts">${ts}</span>
+        </div>
+        <div class="reply-email">${E(email)}</div>
+        ${r.subject?`<div class="reply-subj">${E(r.subject)}</div>`:''}
+        <div class="reply-text${body?'':' empty'}">${body?E(body):'(no body captured — investor may have replied inline)'}</div>
+        <div class="reply-actions">
+          <button class="reply-act-btn${done?' done':''}" onclick="toggleActioned(${r.id})">${done?'✓ Actioned':'Mark Actioned'}</button>
+          ${email?`<button class="reply-act-btn" onclick="window.open('mailto:${E(email)}')">Reply via Email</button>`:''}
+        </div>
+      </div>
+    </div>`
+  }).join('')+'</div>'
+}
+
+function toggleActioned(id){
+  if(actioned.has(id)) actioned.delete(id); else actioned.add(id)
+  renderReplies()
+}
+
+// ── DELIVERABILITY TAB ────────────────────────────────
+async function loadDeliveryTab(){
+  const el=document.getElementById('delivery-content')
+  if(!el) return
+  el.innerHTML='<div class="empty">Loading…</div>'
+  try{
+    const d=await get('/api/deliverability')
+    renderDelivery(d)
+  }catch(e){
+    el.innerHTML='<div class="empty">Could not load deliverability data</div>'
+  }
+}
+
+function renderDelivery(d){
+  const el=document.getElementById('delivery-content')
+  if(!el) return
+  const h=d.last_24h||{}
+  const mg=d.mailgun||{}
+  const ok=mg.ok===true
+  const dr=h.delivery_rate!=null?h.delivery_rate+'%':'—'
+  const br=h.bounce_rate!=null?h.bounce_rate+'%':'—'
+  const cr=h.complaint_rate!=null?h.complaint_rate+'%':'—'
+  const sends=h.sends!=null?N(h.sends):'—'
+  el.innerHTML=`
+    <div class="dv-domain-row">
+      <div class="dv-domain-dot ${ok?'ok':'bad'}"></div>
+      <div class="dv-domain-text">
+        <div class="dv-domain-name">${E(mg.domain||'—')}</div>
+        <div class="dv-domain-state">${mg.state||'Unknown state'}</div>
+      </div>
+      <div class="dv-domain-label">${ok?'Domain Active':'Domain Issue'}</div>
+    </div>
+    <div class="dv-grid">
+      <div class="dv-card hi">
+        <div class="dv-lbl">Delivery Rate</div>
+        <div class="dv-val gold">${dr}</div>
+        <div class="dv-sub">Last 24 hours</div>
+      </div>
+      <div class="dv-card">
+        <div class="dv-lbl">Total Sent</div>
+        <div class="dv-val">${sends}</div>
+        <div class="dv-sub">Last 24 hours</div>
+      </div>
+      <div class="dv-card">
+        <div class="dv-lbl">Bounce Rate</div>
+        <div class="dv-val ${(h.bounce_rate||0)>3?'red':''}">${br}</div>
+        <div class="dv-sub">Hard + soft</div>
+      </div>
+      <div class="dv-card">
+        <div class="dv-lbl">Complaint Rate</div>
+        <div class="dv-val ${(h.complaint_rate||0)>0.1?'red':''}">${cr}</div>
+        <div class="dv-sub">Spam reports</div>
+      </div>
+    </div>
+    <p style="font:400 10.5px var(--f-ui);color:var(--t3);margin-top:8px">Google Postmaster Tools integration coming — will show domain reputation, spam folder rate, and DMARC compliance when wired.</p>`
+}
+
+// ── CONTACT TIMELINE ──────────────────────────────────
+async function loadTimeline(contactId){
+  const el=document.getElementById('ipr-timeline')
+  if(!el) return
+  el.innerHTML='<div style="font:400 10.5px var(--f-ui);color:var(--t4)">Loading…</div>'
+  try{
+    const d=await get('/api/timeline?contact_id='+encodeURIComponent(contactId))
+    renderTimeline(d.events||[])
+  }catch(e){
+    el.innerHTML='<div style="font:400 10.5px var(--f-ui);color:var(--t4)">Timeline unavailable</div>'
+  }
+}
+
+function renderTimeline(events){
+  const el=document.getElementById('ipr-timeline')
+  if(!el) return
+  if(!events.length){
+    el.innerHTML='<div style="font:400 10.5px var(--f-ui);color:var(--t4)">No events recorded yet</div>'
+    return
+  }
+  const LABELS={sent:'Email Sent',delivered:'Delivered',clicked:'Link Clicked',replied:'Replied',bounced:'Bounced'}
+  const ts=e=>{
+    if(!e.ts) return ''
+    try{return new Date(e.ts).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'2-digit',hour:'2-digit',minute:'2-digit'})}
+    catch{return e.ts.slice(0,16).replace('T',' ')}
+  }
+  el.innerHTML='<div class="tl-list">'+events.map(e=>`
+    <div class="tl-item">
+      <div class="tl-dot ${e.type}"></div>
+      <div class="tl-evt">${LABELS[e.type]||e.type}</div>
+      <div class="tl-ts">${ts(e)}</div>
+      ${e.subject?`<div class="tl-detail">${E(e.subject)}</div>`:''}
+      ${e.url?`<div class="tl-detail" style="color:var(--gold2)">${E(e.url.replace(/^https?:\/\//,''))}</div>`:''}
+      ${e.body?`<div class="tl-body">${E(e.body.slice(0,200))}</div>`:''}
+    </div>
+  `).join('')+'</div>'
 }
 
 // ── EMAIL PREVIEW MODAL ───────────────────────────────────
