@@ -382,53 +382,67 @@ button{cursor:pointer;font-family:var(--f-ui)}
 .ipr-act-sec:hover{background:rgba(0,0,0,0.07);color:var(--text)}
 
 /* ═══════════════════════════════════════════════════════
-   WORKFLOW PIPELINE
+   SEQUENCE TIMELINE
 ════════════════════════════════════════════════════════ */
-.wf-flow{display:flex;align-items:center;gap:0;overflow-x:auto;padding:2px 0 18px}
-.wf-flow::-webkit-scrollbar{height:4px}
-.wf-flow::-webkit-scrollbar-track{background:transparent}
-.wf-flow::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:2px}
-/* Node */
-.wf-node{width:148px;flex-shrink:0;background:var(--s1);border:1px solid var(--bd);border-radius:10px;padding:13px 13px 11px;cursor:pointer;transition:border-color .15s,box-shadow .15s,transform .12s;position:relative;user-select:none}
-.wf-node:hover:not(.pending){border-color:var(--bd2);box-shadow:0 3px 14px rgba(0,0,0,.08);transform:translateY(-1px)}
-.wf-node.active{border-color:var(--gold);box-shadow:0 0 0 1px rgba(122,92,0,.3),0 4px 20px rgba(122,92,0,.1);transform:none}
-.wf-node.pending{opacity:.38;cursor:default}
-.wf-node-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px}
-.wf-step-num{font:700 8.5px var(--f-mono);letter-spacing:.18em;text-transform:uppercase;color:var(--t3)}
-.wf-var-pill{padding:2px 6px;border-radius:3px;font:700 8px var(--f-mono);letter-spacing:.08em;background:var(--gb);border:1px solid var(--gb2);color:var(--gold2)}
-.wf-node-icon{font-size:18px;margin-bottom:6px;line-height:1;opacity:.75}
-.wf-node.active .wf-node-icon{opacity:1}
-.wf-node-title{font-size:11.5px;font-weight:600;color:var(--text);margin-bottom:10px;line-height:1.3}
-.wf-node-sent{font:600 18px var(--f-mono);color:var(--text);line-height:1}
-.wf-node-sent-l{font:700 8px var(--f-ui);letter-spacing:.14em;text-transform:uppercase;color:var(--t3);margin-top:2px}
-.wf-node-ctr{font:600 11px var(--f-mono);color:var(--gold2);margin-top:5px}
-.wf-node-queued{font:500 10px var(--f-ui);color:var(--t4);margin-top:6px;letter-spacing:.02em}
-/* Active nub — triangle pointing down from node to panel */
-.wf-node.active::after{content:'';position:absolute;bottom:-9px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-top:7px solid var(--gold);z-index:1}
-/* Connector */
-.wf-conn{display:flex;flex-direction:column;align-items:center;gap:4px;padding:0 10px;flex-shrink:0}
-.wf-conn-line{width:32px;height:1px;background:var(--bd2)}
-.wf-conn-arr{color:var(--t4);font-size:11px;line-height:1;margin-top:-2px}
-.wf-conn-delay{font:700 7.5px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--t4);white-space:nowrap;padding:2px 6px;border-radius:2px;background:var(--s3);border:1px solid var(--bd)}
+/* Keep these minimal refs for backward compat with panel code */
+.wf-flow{display:none}
+.wf-panel{display:none}
 
-/* Expand panel */
-.wf-panel{overflow:hidden;max-height:0;transition:max-height .32s cubic-bezier(.4,0,.2,1),opacity .22s ease;opacity:0}
-.wf-panel.open{max-height:560px;opacity:1}
-.wf-panel-inner{background:var(--s1);border:1px solid var(--bd2);border-top:2px solid var(--gold);border-radius:0 0 var(--r2) var(--r2);overflow:hidden}
-.wf-panel-hd{padding:11px 18px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;background:var(--s2)}
-.wf-panel-title{font:700 9px var(--f-ui);letter-spacing:.2em;text-transform:uppercase;color:var(--t2)}
-.wf-panel-close{font-size:18px;line-height:1;color:var(--t3);cursor:pointer;padding:2px 6px;border-radius:4px;border:none;background:none;transition:color .1s,background .1s}
-.wf-panel-close:hover{color:var(--text);background:var(--s3)}
-/* Allocation bar */
-.wf-alloc{padding:13px 18px 0}
+/* Sequence summary bar */
+.seq-summary{display:flex;gap:0;background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);margin-bottom:20px;overflow:hidden}
+.seq-sum-cell{flex:1;padding:14px 18px;border-right:1px solid var(--bd);text-align:center}
+.seq-sum-cell:last-child{border-right:none}
+.seq-sum-v{font:700 22px var(--f-mono);color:var(--text);line-height:1}
+.seq-sum-v.gold{background:var(--gd2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.seq-sum-v.green{color:var(--green)}
+.seq-sum-l{font:700 8px var(--f-ui);letter-spacing:.18em;text-transform:uppercase;color:var(--t4);margin-top:4px}
+
+/* Vertical timeline */
+.seq-timeline{display:flex;flex-direction:column;gap:0}
+.seq-connector{display:flex;align-items:center;gap:10px;padding:0 0 0 28px;height:36px}
+.seq-conn-line{width:1px;height:36px;background:var(--bd2);margin-left:15px;flex-shrink:0;align-self:stretch}
+.seq-conn-delay{font:700 8px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--t3);padding:2px 8px;border-radius:3px;background:var(--s3);border:1px solid var(--bd)}
+
+/* Step card */
+.seq-step{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);transition:border-color .15s,box-shadow .15s}
+.seq-step.active{border-color:var(--gold);box-shadow:0 0 0 1px rgba(122,92,0,.22),0 4px 20px rgba(0,0,0,.06)}
+.seq-step-hd{display:flex;align-items:center;gap:14px;padding:16px 20px;cursor:pointer;user-select:none}
+.seq-step-hd:hover .seq-step-toggle{opacity:1}
+.seq-step-icon{width:36px;height:36px;flex-shrink:0;border-radius:8px;background:var(--s2);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:16px;transition:background .15s}
+.seq-step.active .seq-step-icon{background:var(--gb);border-color:var(--gb2)}
+.seq-step-meta{flex:1;min-width:0}
+.seq-step-label{font:700 9px var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--t4);margin-bottom:3px}
+.seq-step-title{font-size:13px;font-weight:600;color:var(--text);line-height:1.2}
+.seq-step-stats{display:flex;gap:20px;margin-left:auto;flex-shrink:0}
+.seq-step-stat{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.seq-step-sv{font:700 16px var(--f-mono);color:var(--text);line-height:1}
+.seq-step-sv.gold{background:var(--gd2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.seq-step-sl{font:700 7.5px var(--f-ui);letter-spacing:.14em;text-transform:uppercase;color:var(--t4)}
+.seq-step-badges{display:flex;align-items:center;gap:6px;margin-left:14px;flex-shrink:0}
+.seq-badge{padding:3px 8px;border-radius:3px;font:700 8px var(--f-mono);letter-spacing:.08em;border:1px solid}
+.seq-badge-active{background:rgba(26,127,75,.1);border-color:rgba(26,127,75,.3);color:var(--green)}
+.seq-badge-queued{background:var(--s3);border-color:var(--bd);color:var(--t4)}
+.seq-badge-ab{background:var(--gb);border-color:var(--gb2);color:var(--gold2)}
+.seq-step-toggle{font-size:13px;color:var(--t3);opacity:.5;transition:opacity .1s,transform .2s;margin-left:8px;flex-shrink:0}
+.seq-step.active .seq-step-toggle{opacity:1;transform:rotate(180deg)}
+
+/* Step body (expanded) */
+.seq-step-body{overflow:hidden;max-height:0;opacity:0;transition:max-height .3s cubic-bezier(.4,0,.2,1),opacity .22s ease}
+.seq-step.active .seq-step-body{max-height:600px;opacity:1}
+.seq-step-body-inner{padding:0 20px 20px;border-top:1px solid var(--bd)}
+
+/* Funnel bar */
+.seq-funnel{display:flex;gap:0;margin:16px 0 12px;border-radius:6px;overflow:hidden;height:6px;background:var(--s3)}
+.seq-funnel-seg{height:100%;transition:width .3s ease}
+
+/* Variant rows inside expanded step */
+.wf-alloc{padding:13px 0 0}
 .wf-alloc-bar{display:flex;height:4px;border-radius:2px;overflow:hidden;gap:1px}
 .wf-alloc-seg{height:100%;transition:width .2s ease;border-radius:1px}
 .wf-alloc-lbls{display:flex;gap:16px;margin-top:6px}
 .wf-alloc-lbl{font:600 9px var(--f-mono);letter-spacing:.06em}
-/* Variant rows */
 .wf-vlist{padding:4px 0 0}
-.wf-vrow{display:flex;align-items:center;gap:0;padding:11px 18px;border-bottom:1px solid var(--bd);transition:background .1s}
-.wf-vrow:hover{background:rgba(0,0,0,.018)}
+.wf-vrow{display:flex;align-items:center;gap:0;padding:11px 0;border-bottom:1px solid var(--bd);transition:background .1s}
 .wf-vrow:last-child{border-bottom:none}
 .wf-vbadge{width:22px;height:22px;flex-shrink:0;border-radius:4px;background:var(--s3);border:1px solid var(--bd2);display:flex;align-items:center;justify-content:center;font:700 9.5px var(--f-mono);color:var(--t2)}
 .wf-vbadge.lead{background:var(--gb);border-color:var(--gb2);color:var(--gold2)}
@@ -448,14 +462,24 @@ button{cursor:pointer;font-family:var(--f-ui)}
 .wf-vprev{margin-left:18px;flex-shrink:0}
 .wf-vprev-btn{display:inline-block;padding:5px 11px;border-radius:var(--r);border:1px solid var(--gb2);background:var(--gb);color:var(--gold2);font:600 9px var(--f-ui);letter-spacing:.06em;cursor:pointer;text-decoration:none;transition:all .12s;white-space:nowrap}
 .wf-vprev-btn:hover{background:var(--gb2);box-shadow:0 0 8px rgba(122,92,0,.15)}
-/* Panel footer */
-.wf-panel-ft{padding:11px 18px;border-top:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;background:var(--s2)}
+.wf-panel-ft{padding:14px 0 0;display:flex;align-items:center;justify-content:space-between}
 .wf-total{font:600 10.5px var(--f-mono);color:var(--t3);letter-spacing:.04em}
 .wf-total.ok{color:var(--green)}
 .wf-total.bad{color:var(--red)}
 .wf-save-btn{padding:7px 20px;border-radius:var(--r);background:var(--hdr);border:1px solid rgba(255,255,255,.1);color:#F0EDE7;font:600 9.5px var(--f-ui);letter-spacing:.1em;cursor:pointer;transition:all .15s}
 .wf-save-btn:hover:not(:disabled){background:var(--gold);color:#1A1610;border-color:var(--gold)}
 .wf-save-btn:disabled{opacity:.38;cursor:default}
+
+/* Tracking links - redesigned */
+.seq-link-row{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--bd)}
+.seq-link-row:last-child{border-bottom:none}
+.seq-link-url{flex:1;font-size:12px;color:var(--t1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.seq-link-bar-wrap{width:80px;flex-shrink:0}
+.seq-link-bar-bg{height:3px;background:var(--s3);border-radius:2px;overflow:hidden}
+.seq-link-bar-fill{height:100%;background:var(--gd2);border-radius:2px;transition:width .3s ease}
+.seq-link-clicks{font:700 11px var(--f-mono);color:var(--t2);white-space:nowrap;min-width:52px;text-align:right}
+.seq-link-edit{padding:4px 10px;border-radius:5px;background:transparent;border:1px solid var(--bd);color:var(--t3);font:500 9px var(--f-ui);cursor:pointer;transition:all .12s;white-space:nowrap}
+.seq-link-edit:hover{border-color:var(--bd2);color:var(--t1)}
 
 /* ═══════════════════════════════════════════════════════
    PACING BANNER
@@ -790,16 +814,37 @@ button{cursor:pointer;font-family:var(--f-ui)}
 
       <!-- SEQUENCES TAB -->
       <div id="tab-sequences" class="tabpane">
-        <!-- Workflow pipeline -->
-        <div class="wf-flow" id="wf-flow">
-          <div class="empty">Select a campaign to view workflow.</div>
+        <!-- Hidden legacy elements (referenced by old JS) -->
+        <div class="wf-flow" id="wf-flow" style="display:none"></div>
+        <div class="wf-panel" id="wf-panel" style="display:none"><div class="wf-panel-inner" id="wf-panel-inner"></div></div>
+
+        <!-- Sequence Summary -->
+        <div class="seq-summary" id="seq-summary" style="display:none">
+          <div class="seq-sum-cell">
+            <div class="seq-sum-v" id="seq-sum-sent">—</div>
+            <div class="seq-sum-l">Total Sent</div>
+          </div>
+          <div class="seq-sum-cell">
+            <div class="seq-sum-v gold" id="seq-sum-ctr">—</div>
+            <div class="seq-sum-l">Avg CTR</div>
+          </div>
+          <div class="seq-sum-cell">
+            <div class="seq-sum-v" id="seq-sum-steps">—</div>
+            <div class="seq-sum-l">Steps</div>
+          </div>
+          <div class="seq-sum-cell">
+            <div class="seq-sum-v" id="seq-sum-variants">—</div>
+            <div class="seq-sum-l">A/B Variants</div>
+          </div>
         </div>
-        <!-- Variant expand panel -->
-        <div class="wf-panel" id="wf-panel">
-          <div class="wf-panel-inner" id="wf-panel-inner"></div>
+
+        <!-- Vertical Timeline -->
+        <div class="seq-timeline" id="seq-timeline">
+          <div class="empty">Select a campaign to view the sequence.</div>
         </div>
+
         <!-- Tracking Links -->
-        <div class="seq-section" style="margin-top:28px">
+        <div class="seq-section" style="margin-top:24px">
           <div class="sec-head">Tracking Links</div>
           <div style="background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);overflow:hidden" id="seq-links">
             <div class="empty" style="padding:20px">Loading…</div>
@@ -1171,8 +1216,10 @@ async function openCampaign(slug,name){
   // Reset chat
   document.getElementById('chat-msgs').innerHTML='<div class="chat-empty" id="chat-empty">Ask a question or tap a suggestion below</div>'
   // Reset sequences
-  document.getElementById('wf-flow').innerHTML='<div class="empty">Loading…</div>'
-  document.getElementById('wf-panel').classList.remove('open')
+  const seqTL=document.getElementById('seq-timeline')
+  if(seqTL) seqTL.innerHTML='<div class="empty">Loading…</div>'
+  const seqSum=document.getElementById('seq-summary')
+  if(seqSum) seqSum.style.display='none'
   activeNode=null; selectedStep=null; deliveryLoaded=false
   repliesData=[]; actioned=new Set()
   // Reset CRM + pacing + replies
@@ -1250,58 +1297,102 @@ async function loadSequencesTab(slug, abStats){
 
 function renderWfFlow(){
   const ab=seqAB
-  const el=document.getElementById('wf-flow')
+  const timeline=document.getElementById('seq-timeline')
+  const summary=document.getElementById('seq-summary')
+  if(!timeline) return
+
+  // Compute overall stats for summary bar
+  const keys=ab?Object.keys(ab):[]
+  const totalSent=keys.reduce((s,k)=>s+(ab[k]?.sent||0),0)
+  const totalClicks=keys.reduce((s,k)=>s+(ab[k]?.clicks||0),0)
+  const blendCTR=totalSent?Math.round(totalClicks/totalSent*1000)/10:0
+
+  if(summary&&ab){
+    summary.style.display='flex'
+    const sv=document.getElementById('seq-sum-sent'); if(sv) sv.textContent=N(totalSent)
+    const cv=document.getElementById('seq-sum-ctr'); if(cv) cv.textContent=P(blendCTR)
+    const stv=document.getElementById('seq-sum-steps'); if(stv) stv.textContent=SEQ_STEPS.length
+    const vv=document.getElementById('seq-sum-variants'); if(vv) vv.textContent=keys.length>0?keys.join(' / '):'—'
+  }
+
   let html=''
   SEQ_STEPS.forEach((step,i)=>{
     if(i>0){
-      html+=`<div class="wf-conn">
-        <div class="wf-conn-line"></div>
-        <div class="wf-conn-arr">›</div>
-        <div class="wf-conn-delay">${step.delay}</div>
+      html+=`<div style="display:flex;align-items:center;gap:10px;padding:0 20px;height:32px">
+        <div style="width:1px;height:32px;background:var(--bd2);margin-left:17px;flex-shrink:0"></div>
+        <span style="font:700 8px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--t4);padding:2px 7px;border-radius:3px;background:var(--s3);border:1px solid var(--bd)">${step.delay}</span>
       </div>`
     }
+
     const isActive=activeNode===i
-    const hasData=i===0&&ab
-    const keys=ab?Object.keys(ab):[]
-    const totalSent=keys.reduce((s,k)=>s+(ab[k]?.sent||0),0)
-    const totalClicks=keys.reduce((s,k)=>s+(ab[k]?.clicks||0),0)
-    const blendCTR=totalSent?Math.round(totalClicks/totalSent*1000)/10:0
-    const canOpen=i===0&&hasData&&keys.length
-    html+=`<div class="wf-node${isActive?' active':''}${!canOpen?' pending':''}"
-      id="wfnode-${i}" ${canOpen?`onclick="toggleNode(${i})"`:''}
-      title="${canOpen?'Click to manage variants':'Coming soon'}">
-      <div class="wf-node-top">
-        <span class="wf-step-num">Step ${i+1}</span>
-        ${hasData&&keys.length>1?`<span class="wf-var-pill">${keys.length}</span>`:''}
+    const hasData=i===0&&ab&&keys.length
+    const stepSent=hasData?totalSent:0
+    const stepClicks=hasData?totalClicks:0
+    const stepCTR=stepSent?Math.round(stepClicks/stepSent*1000)/10:0
+    const canOpen=i===0&&hasData
+
+    const statusBadge=hasData
+      ?`<span class="seq-badge seq-badge-active">Active</span>`
+      :`<span class="seq-badge seq-badge-queued">Queued</span>`
+    const abBadge=hasData&&keys.length>1
+      ?`<span class="seq-badge seq-badge-ab">A/B · ${keys.length}</span>`
+      :''
+
+    html+=`<div class="seq-step${isActive?' active':''}" id="seqstep-${i}">
+      <div class="seq-step-hd" ${canOpen?`onclick="toggleSeqStep(${i})"`:'style="cursor:default"'}>
+        <div class="seq-step-icon">${step.icon}</div>
+        <div class="seq-step-meta">
+          <div class="seq-step-label">Step ${i+1}</div>
+          <div class="seq-step-title">${step.title}</div>
+        </div>
+        ${hasData?`
+        <div class="seq-step-stats">
+          <div class="seq-step-stat">
+            <div class="seq-step-sv">${N(stepSent)}</div>
+            <div class="seq-step-sl">Sent</div>
+          </div>
+          <div class="seq-step-stat">
+            <div class="seq-step-sv gold">${P(stepCTR)}</div>
+            <div class="seq-step-sl">CTR</div>
+          </div>
+        </div>`:''}
+        <div class="seq-step-badges">${statusBadge}${abBadge}</div>
+        ${canOpen?`<div class="seq-step-toggle">▾</div>`:''}
       </div>
-      <div class="wf-node-icon">${step.icon}</div>
-      <div class="wf-node-title">${step.title}</div>
-      ${hasData
-        ?`<div class="wf-node-sent">${N(totalSent)}</div>
-          <div class="wf-node-sent-l">sent</div>
-          <div class="wf-node-ctr">${P(blendCTR)} CTR</div>`
-        :`<div class="wf-node-queued">queued</div>`}
+      ${canOpen?`<div class="seq-step-body" id="seqbody-${i}">
+        <div class="seq-step-body-inner" id="seqbody-inner-${i}"></div>
+      </div>`:''}
     </div>`
   })
-  el.innerHTML=html
+
+  timeline.innerHTML=html
+
+  // Re-open active node
+  if(activeNode!==null&&document.getElementById(`seqbody-${activeNode}`)){
+    document.getElementById(`seqstep-${activeNode}`).classList.add('active')
+    document.getElementById(`seqbody-${activeNode}`).style.maxHeight='600px'
+    document.getElementById(`seqbody-${activeNode}`).style.opacity='1'
+    renderSeqPanel(activeNode)
+  }
 }
 
-function toggleNode(i){
+function toggleSeqStep(i){
   if(activeNode===i){
     activeNode=null
-    document.getElementById('wf-panel').classList.remove('open')
+    document.getElementById(`seqstep-${i}`)?.classList.remove('active')
     renderWfFlow()
     return
   }
   activeNode=i
   renderWfFlow()
-  renderPanel(i)
-  document.getElementById('wf-panel').classList.add('open')
 }
 
-function renderPanel(stepIdx){
+function renderSeqPanel(stepIdx){
   const ab=seqAB, slug=seqSlug, step=SEQ_STEPS[stepIdx]
   if(!ab||!slug) return
+  const inner=document.getElementById(`seqbody-inner-${stepIdx}`)
+  if(!inner) return
+
   const keys=Object.keys(variantPcts)
   const total=keys.reduce((s,k)=>s+(variantPcts[k]||0),0)
   const maxCTR=Math.max(...keys.map(k=>+(ab[k]?.click_rate||0)),.01)
@@ -1310,7 +1401,6 @@ function renderPanel(stepIdx){
   const allocBar=keys.map((k,i)=>
     `<div class="wf-alloc-seg" style="width:${variantPcts[k]||0}%;background:${VAR_COLORS[i]||VAR_COLORS[0]};flex-shrink:0"></div>`
   ).join('')
-
   const allocLbls=keys.map((k,i)=>
     `<span class="wf-alloc-lbl" style="color:${VAR_COLORS[i]||VAR_COLORS[0]}">${k} · ${variantPcts[k]||0}%</span>`
   ).join('')
@@ -1320,7 +1410,7 @@ function renderPanel(stepIdx){
     const ctr=+(st.click_rate||0), isLead=ctr>=maxCTR&&ctr>0
     return`<div class="wf-vrow">
       <span class="wf-vbadge${isLead?' lead':''}">${k}</span>
-      <span class="wf-vname">${E(VARIANT_LABELS[k]||`Variant ${k}`)}</span>
+      <span class="wf-vname">${E(VARIANT_LABELS[k]||`Variant ${k}`)}${isLead?` <span style="font-size:9px;color:var(--gold2)">★ leader</span>`:''}</span>
       <div class="wf-vpct-zone">
         <div class="wf-vpct-bar"><div class="wf-vpct-fill" style="width:${pct}%"></div></div>
         <input class="wf-vpct-inp" type="number" min="0" max="100" value="${pct}"
@@ -1343,15 +1433,10 @@ function renderPanel(stepIdx){
     </div>`
   }).join('')
 
-  document.getElementById('wf-panel-inner').innerHTML=`
-    <div class="wf-panel-hd">
-      <span class="wf-panel-title">Step ${stepIdx+1} · ${step.title}</span>
-      <button class="wf-panel-close" onclick="toggleNode(${stepIdx})">×</button>
-    </div>
-    <div class="wf-alloc">
-      <div class="wf-alloc-bar">${allocBar}</div>
-      <div class="wf-alloc-lbls">${allocLbls}</div>
-    </div>
+  inner.innerHTML=`
+    <div style="font:700 9px var(--f-ui);letter-spacing:.18em;text-transform:uppercase;color:var(--t3);margin:14px 0 10px">A/B Split Allocation</div>
+    <div class="wf-alloc-bar">${allocBar}</div>
+    <div class="wf-alloc-lbls">${allocLbls}</div>
     <div class="wf-vlist">${rows}</div>
     <div class="wf-panel-ft">
       <span class="wf-total ${okTotal?'ok':'bad'}">${okTotal?'Split is 100% ✓':`Total: ${total}% — must equal 100%`}</span>
@@ -1359,9 +1444,12 @@ function renderPanel(stepIdx){
     </div>`
 }
 
+function toggleNode(i){ toggleSeqStep(i) }
+function renderPanel(stepIdx){ renderSeqPanel(stepIdx) }
+
 function setPct(key,val){
   variantPcts[key]=Math.max(0,Math.min(100,parseInt(val)||0))
-  if(activeNode!==null) renderPanel(activeNode)
+  if(activeNode!==null) renderSeqPanel(activeNode)
 }
 
 async function saveVariantSplit(){
@@ -1387,13 +1475,18 @@ function buildWorkflowVariants(d){}
 function renderLinks(links,slug){
   const el=document.getElementById('seq-links')
   if(!links.length){el.innerHTML='<div class="empty" style="padding:20px">No tracking links</div>';return}
-  el.innerHTML=links.map(lnk=>`
-    <div style="display:flex;align-items:center;gap:12px;padding:11px 16px;border-bottom:1px solid var(--bd)">
-      <span style="font-size:12px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${E(lnk.url)}</span>
-      <span style="font:500 10.5px var(--f-mono);color:var(--t2);white-space:nowrap">${N(lnk.clicks)} clicks</span>
-      <button style="padding:3px 10px;border-radius:6px;background:rgba(0,0,0,0.04);border:1px solid var(--bd);color:var(--t2);font:500 9px var(--f-ui);cursor:pointer" onclick="openLinkEdit('${E(lnk.url)}','${E(slug)}')">Edit URL</button>
-    </div>
-  `).join('')
+  const maxClicks=Math.max(...links.map(l=>l.clicks||0),1)
+  el.innerHTML=links.map(lnk=>{
+    const pct=Math.round((lnk.clicks||0)/maxClicks*100)
+    return`<div class="seq-link-row">
+      <span class="seq-link-url" title="${E(lnk.url)}">${E(lnk.url)}</span>
+      <div class="seq-link-bar-wrap">
+        <div class="seq-link-bar-bg"><div class="seq-link-bar-fill" style="width:${pct}%"></div></div>
+      </div>
+      <span class="seq-link-clicks">${N(lnk.clicks||0)} clicks</span>
+      <button class="seq-link-edit" onclick="openLinkEdit('${E(lnk.url)}','${E(slug)}')">Edit URL</button>
+    </div>`
+  }).join('')
 }
 
 // ── CHATBOT ───────────────────────────────────────────────
