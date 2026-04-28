@@ -7,1274 +7,655 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-:root {
-  --bg:           #04040A;
-  --surface:      #080810;
-  --surface-2:    #0C0C18;
-  --surface-3:    #101020;
-  --border:       rgba(255,255,255,0.06);
-  --border-2:     rgba(255,255,255,0.10);
-  --gold:         #C9A84C;
-  --gold-2:       #E8C96A;
-  --gold-3:       #F5DFA0;
-  --gold-dim:     rgba(201,168,76,0.08);
-  --gold-glow:    rgba(201,168,76,0.18);
-  --gold-ring:    rgba(201,168,76,0.35);
-  --text:         #F2EFE8;
-  --text-2:       #9C9585;
-  --text-3:       #5A5448;
-  --green:        #4DB87A;
-  --red:          #E05252;
-  --warn:         #E09B3A;
-  --sidebar-w:    240px;
-  --font:         'Montserrat', system-ui, sans-serif;
-  --r:            8px;
-  --r-lg:         12px;
-}
-
-html, body {
-  height: 100%;
-  overflow: hidden;
-  font-family: var(--font);
-  font-size: 14px;
-  background: var(--bg);
-  color: var(--text);
-  -webkit-font-smoothing: antialiased;
-}
-
-body { display: flex; }
-
-/* ── AMBIENT GLOW ── */
-body::before {
-  content: '';
-  position: fixed;
-  top: -200px; left: 50%;
-  transform: translateX(-50%);
-  width: 800px; height: 600px;
-  background: radial-gradient(ellipse, rgba(201,168,76,0.04) 0%, transparent 70%);
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* ──────────────────────────────────────────────────────── SIDEBAR */
-.sidebar {
-  width: var(--sidebar-w);
-  height: 100vh;
-  background: linear-gradient(180deg, #060610 0%, #04040C 100%);
-  border-right: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  flex-shrink: 0;
-  z-index: 100;
-  position: relative;
-}
-
-.sidebar::after {
-  content: '';
-  position: absolute;
-  top: 0; right: 0;
-  width: 1px; height: 100%;
-  background: linear-gradient(180deg,
-    transparent 0%,
-    rgba(201,168,76,0.3) 30%,
-    rgba(201,168,76,0.15) 60%,
-    transparent 100%
-  );
-}
-
-.sidebar-logo {
-  padding: 28px 24px 26px;
-  border-bottom: 1px solid var(--border);
-}
-
-.logo-mark {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 6px;
-}
-
-.logo-icon {
-  width: 30px; height: 30px;
-  border-radius: 6px;
-  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-2) 100%);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 13px; font-weight: 800;
-  color: #0A0806;
-  flex-shrink: 0;
-  box-shadow: 0 0 16px rgba(201,168,76,0.25);
-}
-
-.wordmark {
-  font-size: 17px;
-  font-weight: 800;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-2) 60%, var(--gold-3) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.client-name {
-  font-size: 9.5px;
-  font-weight: 500;
-  color: var(--text-3);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.sidebar-nav { flex: 1; padding: 16px 0; overflow-y: auto; }
-
-.nav-group-label {
-  padding: 14px 20px 6px;
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--text-3);
-}
-
-.nav-item {
-  display: flex;
-  align-items: center;
-  gap: 11px;
-  padding: 10px 20px;
-  font-size: 12.5px;
-  font-weight: 500;
-  color: var(--text-3);
-  cursor: pointer;
-  transition: all 0.15s;
-  user-select: none;
-  position: relative;
-  margin: 1px 8px;
-  border-radius: var(--r);
-}
-
-.nav-item:hover {
-  color: var(--text-2);
-  background: rgba(255,255,255,0.03);
-}
-
-.nav-item.active {
-  color: var(--gold-2);
-  background: var(--gold-dim);
-}
-
-.nav-item.active::before {
-  content: '';
-  position: absolute;
-  left: 0; top: 20%; bottom: 20%;
-  width: 2px;
-  background: linear-gradient(180deg, var(--gold), var(--gold-2));
-  border-radius: 2px;
-}
-
-.nav-icon {
-  width: 18px;
-  text-align: center;
-  font-size: 13px;
-  flex-shrink: 0;
-}
-
-.sidebar-footer {
-  padding: 16px 20px;
-  border-top: 1px solid var(--border);
-}
-
-.pulse-dot {
-  display: inline-block;
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: var(--green);
-  margin-right: 6px;
-  animation: pulse 2s infinite;
-}
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.35; }
-}
-.status-text {
-  font-size: 10px;
-  color: var(--text-3);
-  letter-spacing: 0.03em;
-}
-
-/* ──────────────────────────────────────────────────────── MAIN */
-.main {
-  flex: 1;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  background: radial-gradient(ellipse 80% 50% at 60% -10%, rgba(201,168,76,0.045) 0%, transparent 70%),
-              var(--bg);
-  position: relative;
-  z-index: 1;
-}
-
-/* ── TOPBAR ── */
-.topbar {
-  height: 56px;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 32px;
-  border-bottom: 1px solid var(--border);
-  background: rgba(4,4,10,0.8);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-
-.topbar-left { display: flex; align-items: center; gap: 10px; }
-
-.topbar-breadcrumb {
-  font-size: 11px;
-  color: var(--text-3);
-  letter-spacing: 0.04em;
-}
-.topbar-breadcrumb span {
-  color: var(--text-2);
-  font-weight: 500;
-}
-.topbar-sep { color: var(--text-3); margin: 0 6px; }
-
-.topbar-right { display: flex; gap: 8px; align-items: center; }
-
-.btn {
-  padding: 7px 18px;
-  border-radius: var(--r);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  cursor: pointer;
-  border: none;
-  transition: all 0.15s;
-  font-family: var(--font);
-}
-.btn-gold {
-  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-2) 100%);
-  color: #06040A;
-  box-shadow: 0 0 20px rgba(201,168,76,0.2);
-}
-.btn-gold:hover { box-shadow: 0 0 28px rgba(201,168,76,0.35); transform: translateY(-1px); }
-.btn-ghost {
-  background: rgba(255,255,255,0.04);
-  color: var(--text-2);
-  border: 1px solid var(--border);
-}
-.btn-ghost:hover { background: rgba(255,255,255,0.07); color: var(--text); }
-
-/* ── CONTENT AREA ── */
-.content {
-  flex: 1;
-  overflow-y: auto;
-  padding: 28px 32px 40px;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255,255,255,0.08) transparent;
-}
-.content::-webkit-scrollbar { width: 4px; }
-.content::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 4px; }
-
-/* ── VIEWS ── */
-.view { display: none; }
-.view.active { display: block; }
-
-/* ── PAGE HEADER ── */
-.page-header {
-  margin-bottom: 26px;
-}
-.page-title {
-  font-size: 22px;
-  font-weight: 700;
-  color: var(--text);
-  letter-spacing: -0.01em;
-}
-.page-sub {
-  font-size: 12px;
-  color: var(--text-3);
-  margin-top: 4px;
-}
-
-/* ────────────────────────────────────── METRIC CARDS */
-.metrics-row {
-  display: grid;
-  gap: 16px;
-  margin-bottom: 28px;
-}
-.metrics-row.cols-4 { grid-template-columns: repeat(4, 1fr); }
-.metrics-row.cols-3 { grid-template-columns: repeat(3, 1fr); }
-.metrics-row.cols-6 { grid-template-columns: repeat(6, 1fr); }
-
-.metric-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r-lg);
-  padding: 22px 24px;
-  position: relative;
-  overflow: hidden;
-  transition: border-color 0.2s, transform 0.15s;
-}
-
-.metric-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,0.025) 0%, transparent 60%);
-  pointer-events: none;
-}
-
-.metric-card:hover {
-  border-color: var(--border-2);
-  transform: translateY(-1px);
-}
-
-.metric-card.highlight {
-  border-color: var(--gold-glow);
-  background: linear-gradient(135deg, rgba(201,168,76,0.05) 0%, var(--surface) 60%);
-}
-
-.metric-card.highlight::after {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--gold-ring), transparent);
-}
-
-.metric-icon {
-  font-size: 15px;
-  margin-bottom: 14px;
-  opacity: 0.7;
-}
-
-.metric-label {
-  font-size: 9.5px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--text-3);
-  margin-bottom: 8px;
-}
-
-.metric-value {
-  font-size: 30px;
-  font-weight: 800;
-  line-height: 1;
-  color: var(--text);
-  letter-spacing: -0.02em;
-}
-
-.metric-card.highlight .metric-value {
-  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-2) 60%, var(--gold-3) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.metric-sub {
-  font-size: 10.5px;
-  color: var(--text-3);
-  margin-top: 6px;
-}
-
-.metric-trend {
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-  font-size: 10px;
-  font-weight: 600;
-  margin-top: 6px;
-}
-.metric-trend.up { color: var(--green); }
-.metric-trend.neutral { color: var(--text-3); }
-
-/* ────────────────────────────────────── SECTIONS */
-.section { margin-bottom: 28px; }
-
-.section-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 14px;
-}
-
-.section-title {
-  font-size: 10.5px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--text-2);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.section-title::before {
-  content: '';
-  display: inline-block;
-  width: 3px; height: 12px;
-  background: linear-gradient(180deg, var(--gold), var(--gold-2));
-  border-radius: 2px;
-}
-
-.section-badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 2px 8px;
-  background: var(--gold-dim);
-  border: 1px solid var(--gold-glow);
-  border-radius: 20px;
-  font-size: 9.5px;
-  font-weight: 600;
-  color: var(--gold);
-  letter-spacing: 0.06em;
-}
-
-/* ────────────────────────────────────── TABLE */
-.table-wrap {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r-lg);
-  overflow: hidden;
-}
-
-table { width: 100%; border-collapse: collapse; }
-
-thead th {
-  padding: 11px 18px;
-  text-align: left;
-  font-size: 9.5px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--text-3);
-  background: var(--surface-2);
-  border-bottom: 1px solid var(--border);
-  white-space: nowrap;
-}
-
-tbody tr {
-  border-bottom: 1px solid var(--border);
-  transition: background 0.1s;
-}
-tbody tr:last-child { border-bottom: none; }
-tbody tr:hover { background: rgba(255,255,255,0.025); }
-
-tbody td {
-  padding: 13px 18px;
-  font-size: 12.5px;
-  color: var(--text);
-  vertical-align: middle;
-}
-
-.td-dim { color: var(--text-2); }
-.td-muted { color: var(--text-3); font-size: 11.5px; }
-.td-gold { color: var(--gold); font-weight: 600; }
-
-tr.clickable { cursor: pointer; }
-tr.clickable:hover td:first-child { color: var(--gold-2); }
-
-/* ────────────────────────────────────── BADGES */
-.badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 2px 9px;
-  border-radius: 20px;
-  font-size: 9.5px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-.badge-gold   { background: var(--gold-dim);                color: var(--gold);  border: 1px solid var(--gold-glow); }
-.badge-green  { background: rgba(77,184,122,0.1);           color: var(--green); border: 1px solid rgba(77,184,122,0.2); }
-.badge-red    { background: rgba(224,82,82,0.1);            color: var(--red);   border: 1px solid rgba(224,82,82,0.2); }
-.badge-muted  { background: rgba(255,255,255,0.04);         color: var(--text-3);border: 1px solid var(--border); }
-.badge-blue   { background: rgba(100,140,220,0.1);          color: #7FA0E8;      border: 1px solid rgba(100,140,220,0.2); }
-
-/* ────────────────────────────────────── CAMPAIGN CARDS */
-.campaign-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-  gap: 16px;
-}
-
-.campaign-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r-lg);
-  padding: 22px 24px;
-  transition: all 0.2s;
-  position: relative;
-  overflow: hidden;
-}
-
-.campaign-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,0.02) 0%, transparent 50%);
-  pointer-events: none;
-}
-
-.campaign-card:hover {
-  border-color: var(--border-2);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-}
-
-.campaign-card.is-active {
-  border-color: var(--gold-glow);
-}
-
-.campaign-card.is-active::after {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent 0%, var(--gold-ring) 50%, transparent 100%);
-}
-
-.cc-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 18px;
-}
-
-.cc-name {
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--text);
-  line-height: 1.35;
-  letter-spacing: -0.01em;
-  max-width: 240px;
-}
-
-.cc-type {
-  font-size: 10px;
-  color: var(--text-3);
-  margin-top: 4px;
-  letter-spacing: 0.04em;
-}
-
-.cc-stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0;
-  border-top: 1px solid var(--border);
-  padding-top: 16px;
-  margin-top: 2px;
-}
-
-.cc-stat {
-  text-align: center;
-  padding: 0 8px;
-  border-right: 1px solid var(--border);
-}
-.cc-stat:last-child { border-right: none; }
-.cc-stat:first-child { text-align: left; padding-left: 0; }
-
-.cc-stat-label {
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-3);
-  margin-bottom: 4px;
-}
-
-.cc-stat-val {
-  font-size: 20px;
-  font-weight: 800;
-  color: var(--text);
-  letter-spacing: -0.02em;
-}
-
-.cc-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--gold);
-  text-decoration: none;
-  margin-top: 14px;
-  opacity: 0.8;
-  transition: opacity 0.15s;
-  letter-spacing: 0.02em;
-}
-.cc-link:hover { opacity: 1; }
-
-/* ────────────────────────────────────── HOT LEAD BADGE */
-.heat-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 3px 9px;
-  background: rgba(224,82,82,0.1);
-  border: 1px solid rgba(224,82,82,0.25);
-  border-radius: 20px;
-  font-size: 10px;
-  font-weight: 700;
-  color: #E87070;
-  letter-spacing: 0.04em;
-}
-
-/* ────────────────────────────────────── SEQ PROGRESS */
-.prog-wrap {
-  background: rgba(255,255,255,0.06);
-  border-radius: 4px;
-  height: 4px;
-  flex: 1;
-  overflow: hidden;
-}
-
-.prog-bar {
-  height: 100%;
-  border-radius: 4px;
-  background: linear-gradient(90deg, var(--gold) 0%, var(--gold-2) 100%);
-  transition: width 0.5s ease;
-}
-
-/* ────────────────────────────────────── INVESTOR ROW */
-.investor-name { font-weight: 600; font-size: 13px; }
-.investor-email { font-size: 10.5px; color: var(--text-3); margin-top: 2px; }
-
-/* ────────────────────────────────────── MODAL */
-#reply-modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  z-index: 999;
-  background: rgba(0,0,0,0.7);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  align-items: center;
-  justify-content: center;
-}
-#reply-modal.open { display: flex; }
-
-.modal-box {
-  background: var(--surface);
-  border: 1px solid rgba(201,168,76,0.2);
-  border-radius: 14px;
-  width: 640px;
-  max-width: 94vw;
-  max-height: 80vh;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 32px 80px rgba(0,0,0,0.7), 0 0 60px rgba(201,168,76,0.06);
-  overflow: hidden;
-}
-
-.modal-header {
-  padding: 20px 24px 16px;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  background: var(--surface-2);
-}
-
-.modal-title { font-size: 14px; font-weight: 700; color: var(--text); }
-.modal-sub { font-size: 11px; color: var(--text-3); margin-top: 4px; }
-
-.modal-close {
-  background: rgba(255,255,255,0.06);
-  border: 1px solid var(--border);
-  color: var(--text-3);
-  font-size: 14px;
-  width: 28px; height: 28px;
-  border-radius: 6px;
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: all 0.15s;
-  flex-shrink: 0;
-}
-.modal-close:hover { background: rgba(255,255,255,0.1); color: var(--text); }
-
-.modal-body {
-  padding: 22px 24px;
-  overflow-y: auto;
-  flex: 1;
-}
-
-.modal-body pre {
-  font-family: var(--font);
-  font-size: 13px;
-  line-height: 1.75;
-  color: var(--text-2);
-  white-space: pre-wrap;
-  word-break: break-word;
-}
-
-/* ────────────────────────────────────── EMPTY / LOADING */
-.empty {
-  padding: 48px 32px;
-  text-align: center;
-  color: var(--text-3);
-  font-size: 12px;
-  letter-spacing: 0.04em;
-}
-
-.skeleton {
-  background: linear-gradient(90deg,
-    rgba(255,255,255,0.04) 25%,
-    rgba(255,255,255,0.08) 50%,
-    rgba(255,255,255,0.04) 75%
-  );
-  background-size: 300% 100%;
-  animation: shimmer 1.6s infinite;
-  border-radius: 6px;
-}
-@keyframes shimmer {
-  0%   { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
-
-/* ────────────────────────────────────── DIVIDER */
-.divider {
-  border: none;
-  border-top: 1px solid var(--border);
-  margin: 24px 0;
-}
-
-/* ────────────────────────────────────── OVERVIEW LAYOUT */
-.overview-hero {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  gap: 16px;
-  margin-bottom: 28px;
-}
-
-/* ────────────────────────────────────── SCROLLBAR FOR TABLES */
-.table-wrap {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255,255,255,0.06) transparent;
-}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --gold:    #C9A84C;
+  --gold2:   #E5C96B;
+  --gold3:   #F5DFA0;
+  --gd:      linear-gradient(135deg,#C9A84C 0%,#E5C96B 55%,#F5DFA0 100%);
+  --bg:      #040408;
+  --s1:      #08080F;
+  --s2:      #0C0C16;
+  --s3:      #10101C;
+  --border:  rgba(255,255,255,0.07);
+  --b2:      rgba(255,255,255,0.12);
+  --gb:      rgba(201,168,76,0.12);
+  --gb2:     rgba(201,168,76,0.22);
+  --text:    #EDE9E0;
+  --t2:      #9A9385;
+  --t3:      #58524A;
+  --green:   #52C97A;
+  --red:     #E06060;
+  --font:    'Montserrat',system-ui,sans-serif;
+  --sw:      240px;
+  --th:      56px;
+}
+
+html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+
+/* ── root shell ── */
+#shell{position:fixed;inset:0;display:flex;overflow:hidden}
+
+/* ── sidebar ── */
+#sidebar{
+  width:var(--sw);flex-shrink:0;
+  display:flex;flex-direction:column;
+  background:linear-gradient(180deg,#060610 0%,#04040C 100%);
+  border-right:1px solid var(--border);
+  position:relative;overflow:hidden;
+}
+#sidebar::after{
+  content:'';position:absolute;top:0;right:0;width:1px;height:100%;
+  background:linear-gradient(180deg,transparent 0%,rgba(201,168,76,0.4) 35%,rgba(201,168,76,0.15) 65%,transparent 100%);
+}
+
+.sb-top{padding:26px 22px 22px;border-bottom:1px solid var(--border)}
+.sb-logo{display:flex;align-items:center;gap:10px;margin-bottom:5px}
+.sb-icon{
+  width:32px;height:32px;border-radius:7px;flex-shrink:0;
+  background:var(--gd);
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:800;color:#05030A;
+  box-shadow:0 0 18px rgba(201,168,76,0.3);
+}
+.sb-word{font-size:17px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;background:var(--gd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sb-client{font-size:9.5px;font-weight:500;color:var(--t3);letter-spacing:.12em;text-transform:uppercase}
+
+.sb-nav{flex:1;padding:12px 10px;overflow-y:auto}
+.sb-nav::-webkit-scrollbar{width:0}
+
+.nav-group{font-size:8.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--t3);padding:14px 10px 5px}
+
+.nav-item{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 12px;border-radius:7px;margin:1px 0;
+  font-size:12.5px;font-weight:500;color:var(--t3);
+  cursor:pointer;transition:all .14s;user-select:none;position:relative;
+}
+.nav-item:hover{color:var(--t2);background:rgba(255,255,255,0.03)}
+.nav-item.on{color:var(--gold2);background:var(--gb)}
+.nav-item.on::before{
+  content:'';position:absolute;left:0;top:20%;bottom:20%;width:2.5px;
+  background:var(--gd);border-radius:2px;
+}
+.nav-ic{width:16px;text-align:center;font-size:13px;flex-shrink:0}
+
+.sb-foot{padding:14px 18px;border-top:1px solid var(--border);display:flex;align-items:center;gap:7px}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0;animation:blink 2.2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.sb-time{font-size:9.5px;color:var(--t3);letter-spacing:.02em}
+
+/* ── body ── */
+#body{flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden;position:relative}
+#body::before{
+  content:'';position:absolute;top:-120px;left:30%;width:700px;height:500px;
+  background:radial-gradient(ellipse,rgba(201,168,76,0.04) 0%,transparent 68%);
+  pointer-events:none;
+}
+
+/* ── topbar ── */
+#topbar{
+  height:var(--th);flex-shrink:0;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 32px;
+  border-bottom:1px solid var(--border);
+  background:rgba(4,4,8,0.85);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  position:relative;z-index:10;
+}
+.tb-trail{font-size:11px;color:var(--t3);letter-spacing:.04em}
+.tb-trail b{color:var(--t2);font-weight:500}
+.tb-right{display:flex;gap:8px;align-items:center}
+
+.btn{
+  padding:7px 18px;border-radius:7px;border:none;cursor:pointer;
+  font:600 10.5px/1 var(--font);letter-spacing:.07em;text-transform:uppercase;
+  transition:all .14s;
+}
+.btn-ghost{background:rgba(255,255,255,0.04);color:var(--t2);border:1px solid var(--border)}
+.btn-ghost:hover{background:rgba(255,255,255,0.08);color:var(--text)}
+.btn-gold{background:var(--gd);color:#05030A;box-shadow:0 0 18px rgba(201,168,76,0.2)}
+.btn-gold:hover{box-shadow:0 0 26px rgba(201,168,76,0.38);transform:translateY(-1px)}
+
+/* ── content scroll ── */
+#scroll{flex:1;overflow-y:auto;padding:30px 32px 48px;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,0.07) transparent}
+#scroll::-webkit-scrollbar{width:4px}
+#scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.07);border-radius:4px}
+
+/* ── views ── */
+.view{display:none}.view.on{display:block}
+
+/* ── page head ── */
+.ph{margin-bottom:24px}
+.ph-title{font-size:22px;font-weight:800;letter-spacing:-.02em;color:var(--text)}
+.ph-sub{font-size:12px;color:var(--t3);margin-top:5px}
+
+/* ── metric cards ── */
+.mc-grid{display:grid;gap:14px;margin-bottom:26px}
+.mc-grid.g4{grid-template-columns:repeat(4,1fr)}
+.mc-grid.g3{grid-template-columns:repeat(3,1fr)}
+.mc-grid.g3-max{grid-template-columns:repeat(3,1fr);max-width:620px}
+
+.mc{
+  background:var(--s1);border:1px solid var(--border);border-radius:11px;
+  padding:20px 22px;position:relative;overflow:hidden;transition:border-color .18s,transform .14s;
+}
+.mc::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.02) 0%,transparent 55%);pointer-events:none}
+.mc:hover{border-color:var(--b2);transform:translateY(-1px)}
+.mc.hi{border-color:var(--gb2)}
+.mc.hi::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 0%,rgba(201,168,76,.5) 50%,transparent 100%)}
+
+.mc-lbl{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);margin-bottom:10px}
+.mc-val{font-size:30px;font-weight:800;letter-spacing:-.03em;line-height:1;color:var(--text)}
+.mc.hi .mc-val{background:var(--gd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.mc-sub{font-size:10.5px;color:var(--t3);margin-top:6px}
+
+/* ── section header ── */
+.sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px}
+.sh-title{
+  font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--t2);
+  display:flex;align-items:center;gap:8px;
+}
+.sh-title::before{content:'';display:inline-block;width:3px;height:13px;background:var(--gd);border-radius:2px}
+.sh-badge{
+  padding:2px 9px;border-radius:20px;background:var(--gb);border:1px solid var(--gb2);
+  font-size:9px;font-weight:700;letter-spacing:.07em;color:var(--gold);
+}
+.section{margin-bottom:28px}
+
+/* ── table ── */
+.tw{background:var(--s1);border:1px solid var(--border);border-radius:11px;overflow:hidden}
+table{width:100%;border-collapse:collapse}
+thead th{
+  padding:10px 16px;text-align:left;
+  font-size:9px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--t3);background:var(--s2);border-bottom:1px solid var(--border);
+  white-space:nowrap;
+}
+tbody tr{border-bottom:1px solid var(--border);transition:background .1s}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:rgba(255,255,255,0.025)}
+tbody td{padding:12px 16px;font-size:12.5px;color:var(--text);vertical-align:middle}
+.td2{color:var(--t2)}.td3{color:var(--t3);font-size:11.5px}.tdg{color:var(--gold);font-weight:600}
+tr.cp{cursor:pointer}
+tr.cp:hover .inv-name{color:var(--gold2)}
+
+/* ── investor name block ── */
+.inv-name{font-weight:600;font-size:13px;transition:color .12s}
+.inv-email{font-size:10.5px;color:var(--t3);margin-top:2px}
+
+/* ── badges ── */
+.badge{
+  display:inline-flex;align-items:center;
+  padding:2px 9px;border-radius:20px;
+  font-size:9px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;white-space:nowrap;
+}
+.b-gold{background:var(--gb);color:var(--gold);border:1px solid var(--gb2)}
+.b-green{background:rgba(82,201,122,.1);color:var(--green);border:1px solid rgba(82,201,122,.22)}
+.b-red{background:rgba(224,96,96,.1);color:var(--red);border:1px solid rgba(224,96,96,.22)}
+.b-muted{background:rgba(255,255,255,.04);color:var(--t3);border:1px solid var(--border)}
+
+/* ── campaign cards ── */
+.cg{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:15px}
+.cc{
+  background:var(--s1);border:1px solid var(--border);border-radius:11px;
+  padding:22px 24px;position:relative;overflow:hidden;transition:all .18s;
+}
+.cc::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.018) 0%,transparent 50%);pointer-events:none}
+.cc:hover{border-color:var(--b2);transform:translateY(-2px);box-shadow:0 10px 36px rgba(0,0,0,0.45)}
+.cc.act{border-color:var(--gb2)}
+.cc.act::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.5),transparent)}
+.cc-hd{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px}
+.cc-name{font-size:14px;font-weight:700;letter-spacing:-.01em;line-height:1.3;max-width:250px}
+.cc-type{font-size:10px;color:var(--t3);margin-top:4px;letter-spacing:.03em}
+.cc-stats{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--border);padding-top:16px;margin-top:4px}
+.cc-s{padding:0 10px;border-right:1px solid var(--border);text-align:center}
+.cc-s:first-child{padding-left:0;text-align:left}
+.cc-s:last-child{border-right:none}
+.cc-sl{font-size:8.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);margin-bottom:4px}
+.cc-sv{font-size:20px;font-weight:800;letter-spacing:-.02em}
+.cc-link{
+  display:inline-flex;align-items:center;gap:5px;margin-top:14px;
+  font-size:11px;font-weight:600;color:var(--gold);text-decoration:none;opacity:.8;transition:opacity .14s;
+}
+.cc-link:hover{opacity:1}
+
+/* ── heat badge ── */
+.heat{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:3px 9px;border-radius:20px;
+  background:rgba(224,96,96,.1);border:1px solid rgba(224,96,96,.25);
+  font-size:9.5px;font-weight:700;color:#E87070;letter-spacing:.04em;
+}
+
+/* ── progress bar ── */
+.pb-wrap{background:rgba(255,255,255,0.07);border-radius:4px;height:4px;flex:1;overflow:hidden}
+.pb{height:100%;border-radius:4px;background:var(--gd);transition:width .5s ease}
+
+/* ── empty / skeleton ── */
+.empty{padding:46px 24px;text-align:center;color:var(--t3);font-size:11.5px;letter-spacing:.04em}
+.sk{
+  background:linear-gradient(90deg,rgba(255,255,255,.04) 25%,rgba(255,255,255,.08) 50%,rgba(255,255,255,.04) 75%);
+  background-size:300% 100%;animation:sh 1.6s infinite;border-radius:6px;
+}
+@keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* ── modal ── */
+#modal{
+  display:none;position:fixed;inset:0;z-index:999;
+  background:rgba(0,0,0,0.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  align-items:center;justify-content:center;
+}
+#modal.on{display:flex}
+.mb{
+  background:var(--s1);border:1px solid rgba(201,168,76,0.22);border-radius:14px;
+  width:640px;max-width:93vw;max-height:82vh;
+  display:flex;flex-direction:column;overflow:hidden;
+  box-shadow:0 32px 80px rgba(0,0,0,.75),0 0 60px rgba(201,168,76,0.05);
+}
+.mb-head{
+  padding:20px 24px 17px;border-bottom:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:flex-start;
+  background:var(--s2);
+}
+.mb-title{font-size:14px;font-weight:700}
+.mb-sub{font-size:11px;color:var(--t3);margin-top:4px}
+.mb-x{
+  width:28px;height:28px;border-radius:6px;cursor:pointer;flex-shrink:0;
+  background:rgba(255,255,255,0.05);border:1px solid var(--border);
+  color:var(--t3);font-size:13px;display:flex;align-items:center;justify-content:center;transition:all .13s;
+}
+.mb-x:hover{background:rgba(255,255,255,.1);color:var(--text)}
+.mb-body{padding:22px 24px;overflow-y:auto;flex:1}
+.mb-body pre{font-family:var(--font);font-size:13px;line-height:1.8;color:var(--t2);white-space:pre-wrap;word-break:break-word}
+
+/* ── divider ── */
+hr.div{border:none;border-top:1px solid var(--border);margin:22px 0}
 </style>
 </head>
 <body>
+<div id="shell">
 
-<!-- ──────── SIDEBAR ──────── -->
-<aside class="sidebar">
-  <div class="sidebar-logo">
-    <div class="logo-mark">
-      <div class="logo-icon">L</div>
-      <div class="wordmark">Ledger</div>
-    </div>
-    <div class="client-name">Oak Street Capital</div>
-  </div>
-
-  <nav class="sidebar-nav">
-    <div class="nav-group-label">Analytics</div>
-    <div class="nav-item active" data-view="overview">
-      <span class="nav-icon">▦</span> Overview
-    </div>
-    <div class="nav-item" data-view="pipeline">
-      <span class="nav-icon">◈</span> Pipeline
+  <!-- SIDEBAR -->
+  <aside id="sidebar">
+    <div class="sb-top">
+      <div class="sb-logo">
+        <div class="sb-icon">L</div>
+        <div class="sb-word">Ledger</div>
+      </div>
+      <div class="sb-client">Oak Street Capital</div>
     </div>
 
-    <div class="nav-group-label">Engagement</div>
-    <div class="nav-item" data-view="hotleads">
-      <span class="nav-icon">⚡</span> Hot Leads
-    </div>
-    <div class="nav-item" data-view="replies">
-      <span class="nav-icon">◷</span> Replies
-    </div>
-    <div class="nav-item" data-view="sequences">
-      <span class="nav-icon">⟳</span> Sequences
-    </div>
-  </nav>
+    <nav class="sb-nav">
+      <div class="nav-group">Analytics</div>
+      <div class="nav-item on"  data-v="overview"><span class="nav-ic">▦</span>Overview</div>
+      <div class="nav-item"     data-v="pipeline"><span class="nav-ic">◈</span>Pipeline</div>
 
-  <div class="sidebar-footer">
-    <span class="pulse-dot"></span>
-    <span class="status-text" id="last-updated">Connecting…</span>
-  </div>
-</aside>
+      <div class="nav-group">Engagement</div>
+      <div class="nav-item"     data-v="hotleads"><span class="nav-ic">⚡</span>Hot Leads</div>
+      <div class="nav-item"     data-v="replies"><span class="nav-ic">◷</span>Replies</div>
+      <div class="nav-item"     data-v="sequences"><span class="nav-ic">⟳</span>Sequences</div>
+    </nav>
 
-<!-- ──────── MAIN ──────── -->
-<div class="main">
+    <div class="sb-foot">
+      <span class="dot"></span>
+      <span class="sb-time" id="ts">Connecting…</span>
+    </div>
+  </aside>
 
-  <!-- TOPBAR -->
-  <div class="topbar">
-    <div class="topbar-left">
-      <div class="topbar-breadcrumb">
-        Ledger <span class="topbar-sep">/</span>
-        <span id="view-title">Overview</span>
+  <!-- BODY -->
+  <div id="body">
+
+    <!-- TOPBAR -->
+    <div id="topbar">
+      <div class="tb-trail">Ledger &nbsp;/&nbsp; <b id="vt">Overview</b></div>
+      <div class="tb-right">
+        <button class="btn btn-ghost" onclick="load()">↻ Refresh</button>
       </div>
     </div>
-    <div class="topbar-right">
-      <button class="btn btn-ghost" onclick="refreshAll()">↻ Refresh</button>
-    </div>
-  </div>
 
-  <!-- CONTENT -->
-  <div class="content">
+    <!-- SCROLL AREA -->
+    <div id="scroll">
 
-    <!-- ══════════════════════════════ OVERVIEW -->
-    <div id="view-overview" class="view active">
-      <div class="page-header">
-        <div class="page-title">Investor Overview</div>
-        <div class="page-sub">Real-time campaign performance and engagement signals</div>
-      </div>
-
-      <div class="overview-hero" id="stats-grid">
-        <div class="metric-card highlight"><div class="skeleton" style="height:26px;width:80px;margin-top:14px"></div></div>
-        <div class="metric-card"><div class="skeleton" style="height:26px;width:80px;margin-top:14px"></div></div>
-        <div class="metric-card"><div class="skeleton" style="height:26px;width:80px;margin-top:14px"></div></div>
-        <div class="metric-card"><div class="skeleton" style="height:26px;width:80px;margin-top:14px"></div></div>
-      </div>
-
-      <div class="section">
-        <div class="section-header">
-          <div class="section-title">Active Campaigns</div>
+      <!-- ════ OVERVIEW ════ -->
+      <div id="v-overview" class="view on">
+        <div class="ph">
+          <div class="ph-title">Investor Overview</div>
+          <div class="ph-sub">Campaign performance and live engagement signals</div>
         </div>
-        <div class="campaign-grid" id="campaign-grid">
-          <div class="campaign-card"><div class="skeleton" style="height:100px"></div></div>
-          <div class="campaign-card"><div class="skeleton" style="height:100px"></div></div>
+
+        <div class="mc-grid g4" id="sg">
+          <div class="mc hi"><div class="sk" style="height:26px;width:90px;margin-top:12px"></div></div>
+          <div class="mc"><div class="sk" style="height:26px;width:90px;margin-top:12px"></div></div>
+          <div class="mc"><div class="sk" style="height:26px;width:90px;margin-top:12px"></div></div>
+          <div class="mc"><div class="sk" style="height:26px;width:90px;margin-top:12px"></div></div>
+        </div>
+
+        <div class="section">
+          <div class="sh"><div class="sh-title">Active Campaigns</div></div>
+          <div class="cg" id="cg"><div class="cc"><div class="sk" style="height:110px"></div></div><div class="cc"><div class="sk" style="height:110px"></div></div></div>
+        </div>
+
+        <div class="section">
+          <div class="sh">
+            <div class="sh-title">Recent Replies</div>
+            <span class="sh-badge" id="rb">—</span>
+          </div>
+          <div class="tw" id="ort"><div class="empty">Loading…</div></div>
         </div>
       </div>
 
-      <div class="section">
-        <div class="section-header">
-          <div class="section-title">Recent Replies</div>
-          <span class="section-badge" id="replies-badge">—</span>
+      <!-- ════ PIPELINE ════ -->
+      <div id="v-pipeline" class="view">
+        <div class="ph">
+          <div class="ph-title">Deal Pipeline</div>
+          <div class="ph-sub">All campaigns and deal status</div>
         </div>
-        <div class="table-wrap" id="overview-replies-table">
-          <div class="empty">Loading…</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ══════════════════════════════ PIPELINE -->
-    <div id="view-pipeline" class="view">
-      <div class="page-header">
-        <div class="page-title">Deal Pipeline</div>
-        <div class="page-sub">Campaign performance and deal status</div>
-      </div>
-      <div class="campaign-grid" id="pipeline-grid">
-        <div class="empty">Loading…</div>
-      </div>
-    </div>
-
-    <!-- ══════════════════════════════ HOT LEADS -->
-    <div id="view-hotleads" class="view">
-      <div class="page-header">
-        <div class="page-title">Hot Leads</div>
-        <div class="page-sub">Investors with 2+ tracked link clicks — highest engagement signals</div>
+        <div class="cg" id="pg"><div class="empty">Loading…</div></div>
       </div>
 
-      <div class="metrics-row cols-3" style="max-width:640px; margin-bottom:24px">
-        <div class="metric-card highlight" id="hl-total-card">
-          <div class="metric-label">Total Hot Leads</div>
-          <div class="metric-value" id="hl-total">—</div>
-          <div class="metric-sub">engaged investors</div>
+      <!-- ════ HOT LEADS ════ -->
+      <div id="v-hotleads" class="view">
+        <div class="ph">
+          <div class="ph-title">Hot Leads</div>
+          <div class="ph-sub">Investors with 2 or more tracked link clicks — highest engagement</div>
         </div>
-        <div class="metric-card">
-          <div class="metric-label">Avg Clicks</div>
-          <div class="metric-value" id="hl-avg">—</div>
-          <div class="metric-sub">per hot lead</div>
+        <div class="mc-grid g3-max" style="margin-bottom:22px">
+          <div class="mc hi"><div class="mc-lbl">Total Hot Leads</div><div class="mc-val" id="hl-n">—</div><div class="mc-sub">engaged investors</div></div>
+          <div class="mc"><div class="mc-lbl">Avg Clicks</div><div class="mc-val" id="hl-avg">—</div><div class="mc-sub">per hot lead</div></div>
+          <div class="mc"><div class="mc-lbl">Top Clicks</div><div class="mc-val" id="hl-top">—</div><div class="mc-sub">single contact</div></div>
         </div>
-        <div class="metric-card">
-          <div class="metric-label">Top Clicks</div>
-          <div class="metric-value" id="hl-top">—</div>
-          <div class="metric-sub">highest single contact</div>
-        </div>
-      </div>
-
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Investor</th>
-              <th>Company</th>
-              <th>Campaign</th>
-              <th>Clicks</th>
-              <th>Last Activity</th>
-            </tr>
-          </thead>
-          <tbody id="hotleads-tbody">
-            <tr><td colspan="5" class="empty">Loading…</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- ══════════════════════════════ REPLIES -->
-    <div id="view-replies" class="view">
-      <div class="page-header">
-        <div class="page-title">Investor Replies</div>
-        <div class="page-sub">Inbound messages from investors — click a row to view full reply</div>
-      </div>
-
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Investor</th>
-              <th>Company</th>
-              <th>Campaign</th>
-              <th>Subject</th>
-              <th>Preview</th>
-            </tr>
-          </thead>
-          <tbody id="replies-tbody">
-            <tr><td colspan="6" class="empty">Loading…</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- ══════════════════════════════ SEQUENCES -->
-    <div id="view-sequences" class="view">
-      <div class="page-header">
-        <div class="page-title">Sequences</div>
-        <div class="page-sub">Multi-touch nurture automation and enrollment status</div>
-      </div>
-
-      <div class="metrics-row cols-3" style="max-width:640px; margin-bottom:24px">
-        <div class="metric-card highlight">
-          <div class="metric-label">Total Enrolled</div>
-          <div class="metric-value" id="seq-total">—</div>
-          <div class="metric-sub">active contacts</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-label">Due Today</div>
-          <div class="metric-value" id="seq-due">—</div>
-          <div class="metric-sub">pending sends</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-label">Replied</div>
-          <div class="metric-value" id="seq-replied">—</div>
-          <div class="metric-sub">paused — replied</div>
-        </div>
-      </div>
-
-      <div class="section">
-        <div class="section-header">
-          <div class="section-title">Sequence Templates</div>
-        </div>
-        <div class="table-wrap">
+        <div class="tw">
           <table>
-            <thead>
-              <tr>
-                <th>Template</th>
-                <th>Active</th>
-                <th>Completed</th>
-                <th>Replied</th>
-                <th style="min-width:160px">Completion</th>
-              </tr>
-            </thead>
-            <tbody id="seq-tbody">
-              <tr><td colspan="5" class="empty">Loading…</td></tr>
-            </tbody>
+            <thead><tr><th>Investor</th><th>Company</th><th>Campaign</th><th>Clicks</th><th>Last Activity</th></tr></thead>
+            <tbody id="hlt"><tr><td colspan="5" class="empty">Loading…</td></tr></tbody>
           </table>
         </div>
       </div>
-    </div>
 
-  </div><!-- /content -->
-</div><!-- /main -->
-
-<!-- ──────── REPLY MODAL ──────── -->
-<div id="reply-modal">
-  <div class="modal-box">
-    <div class="modal-header">
-      <div>
-        <div class="modal-title" id="modal-title">Reply</div>
-        <div class="modal-sub" id="modal-sub"></div>
+      <!-- ════ REPLIES ════ -->
+      <div id="v-replies" class="view">
+        <div class="ph">
+          <div class="ph-title">Investor Replies</div>
+          <div class="ph-sub">Inbound messages — click a row to read the full reply</div>
+        </div>
+        <div class="tw">
+          <table>
+            <thead><tr><th>Date</th><th>Investor</th><th>Company</th><th>Campaign</th><th>Subject</th><th>Preview</th></tr></thead>
+            <tbody id="rt"><tr><td colspan="6" class="empty">Loading…</td></tr></tbody>
+          </table>
+        </div>
       </div>
-      <button class="modal-close" onclick="closeModal()">✕</button>
+
+      <!-- ════ SEQUENCES ════ -->
+      <div id="v-sequences" class="view">
+        <div class="ph">
+          <div class="ph-title">Sequences</div>
+          <div class="ph-sub">Multi-touch nurture automation and enrollment status</div>
+        </div>
+        <div class="mc-grid g3-max" style="margin-bottom:22px">
+          <div class="mc hi"><div class="mc-lbl">Total Enrolled</div><div class="mc-val" id="sq-n">—</div><div class="mc-sub">in active sequences</div></div>
+          <div class="mc"><div class="mc-lbl">Due Today</div><div class="mc-val" id="sq-d">—</div><div class="mc-sub">pending sends</div></div>
+          <div class="mc"><div class="mc-lbl">Replied</div><div class="mc-val" id="sq-r">—</div><div class="mc-sub">paused — replied</div></div>
+        </div>
+        <div class="section">
+          <div class="sh"><div class="sh-title">Templates</div></div>
+          <div class="tw">
+            <table>
+              <thead><tr><th>Template</th><th>Active</th><th>Completed</th><th>Replied</th><th style="min-width:160px">Progress</th></tr></thead>
+              <tbody id="sbt"><tr><td colspan="5" class="empty">Loading…</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /scroll -->
+  </div><!-- /body -->
+</div><!-- /shell -->
+
+<!-- MODAL -->
+<div id="modal">
+  <div class="mb">
+    <div class="mb-head">
+      <div>
+        <div class="mb-title" id="m-title"></div>
+        <div class="mb-sub"   id="m-sub"></div>
+      </div>
+      <button class="mb-x" onclick="closeM()">✕</button>
     </div>
-    <div class="modal-body">
-      <pre id="modal-body-text"></pre>
-    </div>
+    <div class="mb-body"><pre id="m-body"></pre></div>
   </div>
 </div>
 
 <script>
-// ── STATE ──────────────────────────────────────────────────
-let _stats = null, _leads = [], _hotleads = [], _seqs = null;
+// ── state
+let S = null, leads = [], hotleads = [], seqs = null
 
-const VIEW_LABELS = {
-  overview:  'Overview',
-  pipeline:  'Pipeline',
-  hotleads:  'Hot Leads',
-  replies:   'Replies',
-  sequences: 'Sequences',
-};
+const LABELS = {overview:'Overview',pipeline:'Pipeline',hotleads:'Hot Leads',replies:'Replies',sequences:'Sequences'}
 
-// ── NAVIGATION ─────────────────────────────────────────────
+// ── nav
 document.querySelectorAll('.nav-item').forEach(el => {
   el.addEventListener('click', () => {
-    const v = el.dataset.view;
-    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    document.querySelectorAll('.view').forEach(x => x.classList.remove('active'));
-    el.classList.add('active');
-    document.getElementById('view-' + v).classList.add('active');
-    document.getElementById('view-title').textContent = VIEW_LABELS[v] || v;
-  });
-});
+    const v = el.dataset.v
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('on'))
+    document.querySelectorAll('.view').forEach(x => x.classList.remove('on'))
+    el.classList.add('on')
+    document.getElementById('v-' + v).classList.add('on')
+    document.getElementById('vt').textContent = LABELS[v] || v
+  })
+})
 
-// ── FETCH ──────────────────────────────────────────────────
-async function j(url) {
-  const r = await fetch(url);
-  if (!r.ok) throw new Error(url + ' ' + r.status);
-  return r.json();
+// ── fetch
+async function get(u) {
+  const r = await fetch(u)
+  if (!r.ok) throw new Error(u + ' ' + r.status)
+  return r.json()
 }
 
-async function fetchAll() {
+async function load() {
   await Promise.all([
-    j('/api/stats').then(d => { _stats = d; _leads = []; }).catch(() => {}),
-    j('/api/leads?limit=200').then(d => { _leads = d.leads || []; }).catch(() => {}),
-    j('/api/hotleads').then(d => { _hotleads = d.leads || []; }).catch(() => {}),
-    j('/api/sequences').then(d => { _seqs = d; }).catch(() => {}),
-  ]);
-  renderAll();
-  const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  document.getElementById('last-updated').textContent = 'Live · ' + now;
+    get('/api/stats').then(d => { S = d }).catch(() => {}),
+    get('/api/leads?limit=200').then(d => { leads = d.leads || [] }).catch(() => {}),
+    get('/api/hotleads').then(d => { hotleads = d.leads || [] }).catch(() => {}),
+    get('/api/sequences').then(d => { seqs = d }).catch(() => {}),
+  ])
+  render()
+  const t = new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})
+  document.getElementById('ts').textContent = 'Live · ' + t
 }
 
-// ── RENDER ─────────────────────────────────────────────────
-function renderAll() {
-  renderOverviewStats();
-  renderCampaigns('campaign-grid');
-  renderCampaigns('pipeline-grid');
-  renderOverviewReplies();
-  renderAllReplies();
-  renderHotLeads();
-  renderSequences();
+// ── helpers
+function n(v){ return (v ?? 0).toLocaleString() }
+function pct(v){ return (v ?? 0) + '%' }
+function e(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') }
+
+// ── render all
+function render() {
+  renderStats()
+  renderCampaigns('cg')
+  renderCampaigns('pg')
+  renderOvrReplies()
+  renderReplies()
+  renderHotLeads()
+  renderSeqs()
 }
 
-function n(v) { return (v ?? 0).toLocaleString(); }
-function pct(v) { return (v ?? 0) + '%'; }
+function renderStats() {
+  if (!S) return
+  const deals = S.deals || []
+  const sent   = deals.reduce((a,d) => a + (d.emails_sent || 0), 0)
+  const clicks = deals.reduce((a,d) => a + (d.unique_clickers || 0), 0)
+  const rate   = sent > 0 ? Math.round(clicks / sent * 100) : 0
+  const replyN = leads.filter(l => l.type === 'reply').length
 
-function renderOverviewStats() {
-  if (!_stats) return;
-  const deals = _stats.deals || [];
-  const totalSent = deals.reduce((s, d) => s + (d.emails_sent || 0), 0);
-  const totalClick = deals.reduce((s, d) => s + (d.unique_clickers || 0), 0);
-  const clickRate = totalSent > 0 ? Math.round(totalClick / totalSent * 100) : 0;
-  const replies = _leads.filter(l => l.type === 'reply').length;
-
-  document.getElementById('stats-grid').innerHTML = `
-    <div class="metric-card highlight">
-      <div class="metric-label">Investor Database</div>
-      <div class="metric-value">${n(_stats.total_contacts)}</div>
-      <div class="metric-sub">contacts in CRM</div>
+  document.getElementById('sg').innerHTML = `
+    <div class="mc hi">
+      <div class="mc-lbl">Investor Database</div>
+      <div class="mc-val">${n(S.total_contacts)}</div>
+      <div class="mc-sub">contacts in CRM</div>
     </div>
-    <div class="metric-card">
-      <div class="metric-label">Emails Delivered</div>
-      <div class="metric-value">${n(totalSent)}</div>
-      <div class="metric-sub">across all campaigns</div>
+    <div class="mc">
+      <div class="mc-lbl">Emails Delivered</div>
+      <div class="mc-val">${n(sent)}</div>
+      <div class="mc-sub">across all campaigns</div>
     </div>
-    <div class="metric-card">
-      <div class="metric-label">Engagement Rate</div>
-      <div class="metric-value">${pct(clickRate)}</div>
-      <div class="metric-sub">${n(totalClick)} unique clickers</div>
+    <div class="mc">
+      <div class="mc-lbl">Engagement Rate</div>
+      <div class="mc-val">${pct(rate)}</div>
+      <div class="mc-sub">${n(clicks)} unique clickers</div>
     </div>
-    <div class="metric-card ${_hotleads.length > 0 ? 'highlight' : ''}">
-      <div class="metric-label">Hot Leads</div>
-      <div class="metric-value">${n(_hotleads.length)}</div>
-      <div class="metric-sub">${n(replies)} inbound replies</div>
+    <div class="mc ${hotleads.length > 0 ? 'hi' : ''}">
+      <div class="mc-lbl">Hot Leads</div>
+      <div class="mc-val">${n(hotleads.length)}</div>
+      <div class="mc-sub">${n(replyN)} inbound replies</div>
     </div>
-  `;
+  `
 }
 
 function renderCampaigns(id) {
-  if (!_stats) return;
-  const el = document.getElementById(id);
-  if (!el) return;
-  const deals = _stats.deals || [];
-  if (!deals.length) { el.innerHTML = '<div class="empty">No campaigns found</div>'; return; }
-
+  if (!S) return
+  const el = document.getElementById(id)
+  if (!el) return
+  const deals = S.deals || []
+  if (!deals.length) { el.innerHTML = '<div class="empty">No campaigns found</div>'; return }
   el.innerHTML = deals.map(d => {
-    const active = d.status === 'SENT';
-    const typeLabel = d.campaign_type === 'nurture' ? 'Nurture Campaign' : (d.asset_type || 'Deal Campaign');
+    const active = d.status === 'SENT'
+    const typeLabel = d.campaign_type === 'nurture' ? 'Nurture Campaign' : (d.asset_type || 'Deal Campaign')
+    const meta = [d.location, d.raise_target].filter(Boolean).join(' · ')
     const badge = active
-      ? '<span class="badge badge-green">Active</span>'
-      : '<span class="badge badge-muted">Pending</span>';
-    const meta = [d.location, d.raise_target].filter(Boolean).join(' · ');
+      ? '<span class="badge b-green">Sent</span>'
+      : '<span class="badge b-muted">Pending</span>'
     return `
-      <div class="campaign-card ${active ? 'is-active' : ''}">
-        <div class="cc-header">
+      <div class="cc ${active ? 'act' : ''}">
+        <div class="cc-hd">
           <div>
-            <div class="cc-name">${d.name}</div>
-            <div class="cc-type">${typeLabel}${meta ? ' · ' + meta : ''}</div>
+            <div class="cc-name">${e(d.name)}</div>
+            <div class="cc-type">${e(typeLabel)}${meta ? ' · ' + e(meta) : ''}</div>
           </div>
           ${badge}
         </div>
         <div class="cc-stats">
-          <div class="cc-stat">
-            <div class="cc-stat-label">Sent</div>
-            <div class="cc-stat-val">${n(d.emails_sent)}</div>
-          </div>
-          <div class="cc-stat">
-            <div class="cc-stat-label">Clicked</div>
-            <div class="cc-stat-val">${n(d.unique_clickers)}</div>
-          </div>
-          <div class="cc-stat">
-            <div class="cc-stat-label">Click Rate</div>
-            <div class="cc-stat-val">${pct(d.click_rate)}</div>
-          </div>
+          <div class="cc-s"><div class="cc-sl">Sent</div><div class="cc-sv">${n(d.emails_sent)}</div></div>
+          <div class="cc-s"><div class="cc-sl">Clicked</div><div class="cc-sv">${n(d.unique_clickers)}</div></div>
+          <div class="cc-s"><div class="cc-sl">Rate</div><div class="cc-sv">${pct(d.click_rate)}</div></div>
         </div>
-        ${d.memo_url ? `<a class="cc-link" href="${d.memo_url}" target="_blank">View Deal Memo →</a>` : ''}
+        ${d.memo_url ? `<a class="cc-link" href="${e(d.memo_url)}" target="_blank">View Deal Memo →</a>` : ''}
       </div>
-    `;
-  }).join('');
+    `
+  }).join('')
 }
 
-function _mkReplyRow(lead, clickable, extraCol) {
-  const from = esc(lead.contact_name || lead.contact_email || '—');
-  const preview = esc(lead.body_preview || '').slice(0, 100);
-  const tr = document.createElement('tr');
-  if (clickable && lead.type === 'reply') tr.classList.add('clickable');
+function mkRow(l, extraCo) {
+  const tr = document.createElement('tr')
+  if (l.type === 'reply') tr.classList.add('cp')
+  const preview = e(l.body_preview || '').slice(0, 90)
   tr.innerHTML = `
-    <td class="td-muted">${lead.ts_display || '—'}</td>
-    <td>
-      <div class="investor-name">${from}</div>
-      <div class="investor-email">${esc(lead.contact_email || '')}</div>
-    </td>
-    ${extraCol ? `<td class="td-dim">${esc(lead.company || '—')}</td>` : ''}
-    <td class="td-muted">${esc(lead.campaign_slug || '—')}</td>
-    <td>${esc(lead.subject || '—')}</td>
-    <td class="td-muted" style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${preview}</td>
-  `;
-  if (clickable && lead.type === 'reply') tr.onclick = () => openModal(lead);
-  return tr;
+    <td class="td3">${e(l.ts_display || '—')}</td>
+    <td><div class="inv-name">${e(l.contact_name || l.contact_email || '—')}</div><div class="inv-email">${e(l.contact_email || '')}</div></td>
+    ${extraCo ? `<td class="td2">${e(l.company || '—')}</td>` : ''}
+    <td class="td3">${e(l.campaign_slug || '—')}</td>
+    <td class="td2">${e(l.subject || '—')}</td>
+    <td class="td3" style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${preview}</td>
+  `
+  if (l.type === 'reply') tr.onclick = () => openM(l)
+  return tr
 }
 
-function esc(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+function renderOvrReplies() {
+  const el = document.getElementById('ort')
+  const rs = leads.filter(l => l.type === 'reply').slice(0, 8)
+  document.getElementById('rb').textContent = rs.length + ' recent'
+  if (!rs.length) { el.innerHTML = '<div class="empty">No replies yet</div>'; return }
+  const t = document.createElement('table')
+  t.innerHTML = '<thead><tr><th>Date</th><th>Investor</th><th>Campaign</th><th>Subject</th><th>Preview</th></tr></thead>'
+  const tb = t.createTBody()
+  rs.forEach(l => tb.appendChild(mkRow(l, false)))
+  el.innerHTML = ''; el.appendChild(t)
 }
 
-function renderOverviewReplies() {
-  const el = document.getElementById('overview-replies-table');
-  const replies = _leads.filter(l => l.type === 'reply').slice(0, 8);
-  document.getElementById('replies-badge').textContent = replies.length + ' recent';
-  if (!replies.length) { el.innerHTML = '<div class="empty">No replies yet</div>'; return; }
-  const t = document.createElement('table');
-  t.innerHTML = '<thead><tr><th>Date</th><th>Investor</th><th>Campaign</th><th>Subject</th><th>Preview</th></tr></thead>';
-  const tb = document.createElement('tbody');
-  replies.forEach(l => tb.appendChild(_mkReplyRow(l, true, false)));
-  t.appendChild(tb);
-  el.innerHTML = '';
-  el.appendChild(t);
-}
-
-function renderAllReplies() {
-  const tbody = document.getElementById('replies-tbody');
-  const replies = _leads.filter(l => l.type === 'reply');
-  if (!replies.length) {
-    tbody.innerHTML = '<tr><td colspan="6" class="empty">No replies recorded yet</td></tr>';
-    return;
-  }
-  tbody.innerHTML = '';
-  replies.forEach(l => tbody.appendChild(_mkReplyRow(l, true, true)));
+function renderReplies() {
+  const tb = document.getElementById('rt')
+  const rs = leads.filter(l => l.type === 'reply')
+  if (!rs.length) { tb.innerHTML = '<tr><td colspan="6" class="empty">No replies recorded yet</td></tr>'; return }
+  tb.innerHTML = ''
+  rs.forEach(l => tb.appendChild(mkRow(l, true)))
 }
 
 function renderHotLeads() {
-  const tbody = document.getElementById('hotleads-tbody');
-  if (!_hotleads.length) {
-    tbody.innerHTML = '<tr><td colspan="5" class="empty">No hot leads detected yet</td></tr>';
-    document.getElementById('hl-total').textContent = '0';
-    document.getElementById('hl-avg').textContent = '—';
-    document.getElementById('hl-top').textContent = '—';
-    return;
+  const tb = document.getElementById('hlt')
+  if (!hotleads.length) {
+    tb.innerHTML = '<tr><td colspan="5" class="empty">No hot leads detected yet</td></tr>'
+    document.getElementById('hl-n').textContent = '0'
+    document.getElementById('hl-avg').textContent = '—'
+    document.getElementById('hl-top').textContent = '—'
+    return
   }
-
-  const total = _hotleads.length;
-  const avgClicks = Math.round(_hotleads.reduce((s, l) => s + (l.click_count || 0), 0) / total);
-  const topClicks = Math.max(..._hotleads.map(l => l.click_count || 0));
-
-  document.getElementById('hl-total').textContent = n(total);
-  document.getElementById('hl-avg').textContent = avgClicks;
-  document.getElementById('hl-top').textContent = topClicks;
-
-  tbody.innerHTML = '';
-  _hotleads.forEach(l => {
-    const tr = document.createElement('tr');
+  const total = hotleads.length
+  const avg = Math.round(hotleads.reduce((s,l) => s + (l.click_count || 0), 0) / total)
+  const top = Math.max(...hotleads.map(l => l.click_count || 0))
+  document.getElementById('hl-n').textContent = n(total)
+  document.getElementById('hl-avg').textContent = avg
+  document.getElementById('hl-top').textContent = top
+  tb.innerHTML = ''
+  hotleads.forEach(l => {
+    const tr = document.createElement('tr')
     tr.innerHTML = `
-      <td>
-        <div class="investor-name">${esc(l.name || '—')}</div>
-        <div class="investor-email">${esc(l.email || '')}</div>
-      </td>
-      <td class="td-dim">${esc(l.company || '—')}</td>
-      <td class="td-muted">${esc(l.campaign || '—')}</td>
-      <td><span class="heat-badge">⚡ ${l.click_count}</span></td>
-      <td class="td-muted">${esc(l.last_click || '—')}</td>
-    `;
-    tbody.appendChild(tr);
-  });
+      <td><div class="inv-name">${e(l.name || '—')}</div><div class="inv-email">${e(l.email || '')}</div></td>
+      <td class="td2">${e(l.company || '—')}</td>
+      <td class="td3">${e(l.campaign || '—')}</td>
+      <td><span class="heat">⚡ ${l.click_count}</span></td>
+      <td class="td3">${e(l.last_click || '—')}</td>
+    `
+    tb.appendChild(tr)
+  })
 }
 
-function renderSequences() {
-  if (!_seqs) return;
-  const templates = _seqs.templates || [];
-  const totalReplied = templates.reduce((s, t) => s + (t.replied || 0), 0);
-
-  document.getElementById('seq-total').textContent = n(_seqs.total_enrolled);
-  document.getElementById('seq-due').textContent = n(_seqs.due_now);
-  document.getElementById('seq-replied').textContent = n(totalReplied);
-
-  const tbody = document.getElementById('seq-tbody');
-  if (!templates.length) {
-    tbody.innerHTML = '<tr><td colspan="5" class="empty">No sequences configured yet</td></tr>';
-    return;
-  }
-
-  tbody.innerHTML = '';
+function renderSeqs() {
+  if (!seqs) return
+  const templates = seqs.templates || []
+  const replied = templates.reduce((s,t) => s + (t.replied || 0), 0)
+  document.getElementById('sq-n').textContent = n(seqs.total_enrolled)
+  document.getElementById('sq-d').textContent = n(seqs.due_now)
+  document.getElementById('sq-r').textContent = n(replied)
+  const tb = document.getElementById('sbt')
+  if (!templates.length) { tb.innerHTML = '<tr><td colspan="5" class="empty">No sequences configured</td></tr>'; return }
+  tb.innerHTML = ''
   templates.forEach(t => {
-    const total = (t.active || 0) + (t.completed || 0) + (t.replied || 0);
-    const pctDone = total > 0 ? Math.round(((t.completed || 0) + (t.replied || 0)) / total * 100) : 0;
-    const tr = document.createElement('tr');
+    const total = (t.active||0)+(t.completed||0)+(t.replied||0)
+    const p = total > 0 ? Math.round(((t.completed||0)+(t.replied||0))/total*100) : 0
+    const tr = document.createElement('tr')
     tr.innerHTML = `
-      <td style="font-weight:600">${esc(t.template_slug)}</td>
-      <td><span class="badge badge-gold">${n(t.active)}</span></td>
-      <td><span class="badge badge-green">${n(t.completed)}</span></td>
-      <td><span class="badge badge-muted">${n(t.replied)}</span></td>
+      <td style="font-weight:600">${e(t.template_slug)}</td>
+      <td><span class="badge b-gold">${n(t.active)}</span></td>
+      <td><span class="badge b-green">${n(t.completed)}</span></td>
+      <td><span class="badge b-muted">${n(t.replied)}</span></td>
       <td>
         <div style="display:flex;align-items:center;gap:10px">
-          <div class="prog-wrap"><div class="prog-bar" style="width:${pctDone}%"></div></div>
-          <span style="font-size:11px;color:var(--text-3);white-space:nowrap;min-width:30px">${pctDone}%</span>
+          <div class="pb-wrap"><div class="pb" style="width:${p}%"></div></div>
+          <span style="font-size:11px;color:var(--t3);min-width:30px">${p}%</span>
         </div>
       </td>
-    `;
-    tbody.appendChild(tr);
-  });
+    `
+    tb.appendChild(tr)
+  })
 }
 
-// ── MODAL ──────────────────────────────────────────────────
-function openModal(lead) {
-  document.getElementById('modal-title').textContent = lead.subject || '(no subject)';
-  document.getElementById('modal-sub').textContent =
-    [lead.contact_name || lead.contact_email, lead.ts_display].filter(Boolean).join('  ·  ');
-  document.getElementById('modal-body-text').textContent =
-    lead.body_plain || lead.body_preview || '(no content)';
-  document.getElementById('reply-modal').classList.add('open');
+// ── modal
+function openM(l) {
+  document.getElementById('m-title').textContent = l.subject || '(no subject)'
+  document.getElementById('m-sub').textContent = [l.contact_name || l.contact_email, l.ts_display].filter(Boolean).join('  ·  ')
+  document.getElementById('m-body').textContent = l.body_plain || l.body_preview || '(no content)'
+  document.getElementById('modal').classList.add('on')
 }
+function closeM() { document.getElementById('modal').classList.remove('on') }
+document.getElementById('modal').addEventListener('click', e => { if (e.target === document.getElementById('modal')) closeM() })
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeM() })
 
-function closeModal() {
-  document.getElementById('reply-modal').classList.remove('open');
-}
-
-document.getElementById('reply-modal').addEventListener('click', e => {
-  if (e.target === document.getElementById('reply-modal')) closeModal();
-});
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-
-// ── BOOT ───────────────────────────────────────────────────
-function refreshAll() { fetchAll(); }
-fetchAll();
-setInterval(fetchAll, 90000);
+// ── boot
+load()
+setInterval(load, 90000)
 </script>
 </body>
 </html>
