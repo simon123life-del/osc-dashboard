@@ -661,10 +661,13 @@ button{cursor:pointer;font-family:var(--f-ui)}
           <div class="vt-tabs" id="vt-tabs"></div>
           <span class="vt-lbl" id="vt-lbl"></span>
         </div>
-        <!-- Workflow Timeline -->
+        <!-- Workflow Nodes (horizontal) -->
         <div class="seq-section">
           <div class="sec-head">Email Sequence</div>
-          <div class="wf-list" id="wf-list"><div class="empty">Loading workflow…</div></div>
+          <div class="flow-viewport" id="flow-viewport">
+            <div class="flow-row" id="flow-row"><div class="empty">Loading workflow…</div></div>
+          </div>
+          <div id="email-reveal" style="display:none"></div>
         </div>
         <!-- Tracking Links -->
         <div class="seq-section" style="margin-top:28px">
@@ -942,7 +945,8 @@ async function openCampaign(slug,name){
   // Reset chat
   document.getElementById('chat-msgs').innerHTML='<div class="chat-empty" id="chat-empty">Ask a question or tap a suggestion below</div>'
   // Reset sequences
-  document.getElementById('wf-list').innerHTML='<div class="empty">Loading…</div>'
+  document.getElementById('flow-row').innerHTML='<div class="empty">Loading…</div>'
+  document.getElementById('email-reveal').style.display='none'
   document.getElementById('ab-panel').style.display='none'
   document.getElementById('vt-row').style.display='none'
   selectedStep=null
@@ -1068,98 +1072,97 @@ function renderVariantTabs(){
 function gotoVariant(idx){
   if(idx===variantIdx) return
   variantIdx=idx; selectedStep=null
-  renderVariantTabs(); renderWorkflowTimeline()
+  document.getElementById('email-reveal').style.display='none'
+  renderVariantTabs(); renderVariantSlide()
 }
 function nextVariant(){if(variantIdx<variants.length-1)gotoVariant(variantIdx+1)}
 function prevVariant(){if(variantIdx>0)gotoVariant(variantIdx-1)}
 
-function renderWorkflowTimeline(){
+const STEP_DEFS=[
+  {title:'Initial Outreach',icon:'✉',delay:null},
+  {title:'Follow-Up',icon:'↩',delay:'+3 days'},
+  {title:'Re-Engagement',icon:'⚡',delay:'+7 days'},
+]
+
+function renderVariantSlide(){
   const v=variants[variantIdx]
-  if(!v){document.getElementById('wf-list').innerHTML='<div class="empty">No workflow data</div>';return}
+  if(!v){document.getElementById('flow-row').innerHTML='<div class="empty">No sequence data</div>';return}
   const steps=v.steps||[]
   const st=currentCampaign?.stats||{}
   let html=''
   for(let i=0;i<3;i++){
     const real=steps[i]||null
-    const sd=WF_STEPS[i]
-    const subject=real?.subject||''
+    const sd=STEP_DEFS[i]
     const sent=+(real?.sent||(i===0?(st.sent||0):0))
     const clickers=+(real?.clickers||real?.unique_clickers||(i===0?(st.unique_clickers||0):0))
     const rate=+(real?.click_rate||(i===0?(st.click_rate||0):0))
     const isPending=i>0&&!real
-    const isOn=selectedStep===i
-    if(i>0&&sd.delay){
-      html+=`<div class="wf-delay-row"><div class="wf-dline"></div><span class="wf-dtag">${sd.delay}</span><div class="wf-dline"></div></div>`
+    const isSelected=selectedStep===i
+    if(i>0){
+      html+=`<div class="fconn">
+        <div class="fconn-arr">→</div>
+        <div class="fconn-delay">${sd.delay}</div>
+      </div>`
     }
-    html+=`<div class="wf-card ${isOn?'on':''}" id="wfc-${i}" onclick="selectWfStep(${i})">
-      <div class="wf-card-top">
-        <div class="wf-num">${i+1}</div>
-        <div class="wf-info">
-          <div class="wf-tag">Step ${i+1} · ${sd.title}</div>
-          ${subject?`<div class="wf-subj">${E(subject)}</div>`:''}
-          <div class="wf-kpis">
-            ${isPending
-              ?`<span style="font-size:11px;color:var(--t3);font-weight:500;font-style:italic">Queued — pending send</span>`
-              :`<div class="wf-kpi"><div class="wf-kv">${N(sent)}</div><div class="wf-kl">Sent</div></div>
-                <div class="wf-kpi"><div class="wf-kv">${N(clickers)}</div><div class="wf-kl">Clicked</div></div>
-                <div class="wf-kpi"><div class="wf-kv hi">${P(rate)}</div><div class="wf-kl">CTR</div></div>`
-            }
-          </div>
-        </div>
-        <div class="wf-caret">›</div>
-      </div>
-      <div class="wf-expand ${isOn?'on':''}" id="wfe-${i}">
-        ${isOn?buildWfExpandHTML(i,real,sent,clickers,rate,subject):''}
-      </div>
+    html+=`<div class="fnode ${isSelected?'selected':''}" id="fnode-${i}" onclick="selectStep(${i})">
+      <div class="fn-step">Step ${i+1}</div>
+      <div class="fn-icon">${sd.icon}</div>
+      <div class="fn-title">${sd.title}</div>
+      ${isPending
+        ?`<div class="fn-stat" style="font-size:14px;opacity:.5">—</div><div class="fn-stat-l">queued</div>`
+        :`<div class="fn-stat">${N(sent)}</div><div class="fn-stat-l">enrolled</div>
+          <div style="margin-top:8px;font-family:var(--f-mono);font-size:11px;color:var(--gold3)">${P(rate)} CTR</div>`
+      }
     </div>`
   }
-  document.getElementById('wf-list').innerHTML=html
+  document.getElementById('flow-row').innerHTML=html
 }
 
-function buildWfExpandHTML(idx,real,sent,clickers,rate,subject){
-  const slug=currentCampaign?.slug
-  const st=currentCampaign?.stats||{}
-  const barW=Math.min((rate||0)*8,100)
-  const hasPreview=idx===0&&slug
-  return`<div class="wf-expand-inner">
-    ${subject?`<div class="wf-ex-subj">"${E(subject)}"</div>`:''}
-    <div class="wf-ex-kpis">
-      <div class="wf-ex-kpi"><div class="wf-ex-kv">${N(sent)}</div><div class="wf-ex-kl">Sent</div></div>
-      <div class="wf-ex-kpi"><div class="wf-ex-kv">${N(clickers)}</div><div class="wf-ex-kl">Clicked</div></div>
-      <div class="wf-ex-kpi"><div class="wf-ex-kv gold">${P(rate)}</div><div class="wf-ex-kl">Click Rate</div></div>
-      ${(st.replies>0&&idx===0)?`<div class="wf-ex-kpi"><div class="wf-ex-kv">${N(st.replies)}</div><div class="wf-ex-kl">Replies</div></div>`:''}
-    </div>
-    <div class="wf-ex-bar"><div class="wf-ex-bar-fill" style="width:${barW}%"></div></div>
-    ${hasPreview?`<button class="wf-ex-prev" onclick="event.stopPropagation();openPreview('${E(slug)}','${E(subject)}')">View Full Email →</button>`:''}
-  </div>`
-}
-
-function selectWfStep(idx){
+function selectStep(idx){
   if(selectedStep===idx){
     selectedStep=null
-    const card=document.getElementById('wfc-'+idx), exp=document.getElementById('wfe-'+idx)
-    if(card)card.classList.remove('on')
-    if(exp){exp.classList.remove('on');setTimeout(()=>{exp.innerHTML=''},300)}
+    document.querySelectorAll('.fnode').forEach(n=>n.classList.remove('selected'))
+    document.getElementById('email-reveal').style.display='none'
     return
   }
-  if(selectedStep!==null){
-    const pc=document.getElementById('wfc-'+selectedStep), pe=document.getElementById('wfe-'+selectedStep)
-    if(pc)pc.classList.remove('on')
-    if(pe){pe.classList.remove('on');setTimeout(()=>{pe.innerHTML=''},300)}
-  }
   selectedStep=idx
-  const v=variants[variantIdx]; const steps=v?.steps||[]; const st=currentCampaign?.stats||{}
-  const real=steps[idx]||null
-  const sent=+(real?.sent||(idx===0?(st.sent||0):0))
-  const clickers=+(real?.clickers||real?.unique_clickers||(idx===0?(st.unique_clickers||0):0))
-  const rate=+(real?.click_rate||(idx===0?(st.click_rate||0):0))
-  const subject=real?.subject||''
-  const card=document.getElementById('wfc-'+idx), exp=document.getElementById('wfe-'+idx)
-  if(card)card.classList.add('on')
-  if(exp){
-    exp.innerHTML=buildWfExpandHTML(idx,real,sent,clickers,rate,subject)
-    requestAnimationFrame(()=>exp.classList.add('on'))
-  }
+  document.querySelectorAll('.fnode').forEach((n,i)=>n.classList.toggle('selected',i===idx))
+  renderEmailReveal(idx)
+}
+
+function renderEmailReveal(idx){
+  const v=variants[variantIdx]
+  const step=v?.steps?.[idx]
+  const slug=currentCampaign?.slug
+  const st=currentCampaign?.stats||{}
+  const er=document.getElementById('email-reveal')
+  const subject=step?.subject||`Step ${idx+1}`
+  const sent=+(step?.sent||st.sent||0)
+  const clickers=+(step?.clickers||step?.unique_clickers||st.unique_clickers||0)
+  const rate=+(step?.click_rate||st.click_rate||0)
+  const barW=Math.min(rate*8,100)
+  const hasPreview=idx===0&&slug
+  const varLabel=v?.ab?`Variant ${v.ab}`:v?.label||'Email'
+  er.style.display='block'
+  er.innerHTML=`<div class="email-reveal">
+    <div class="er-head">
+      <div>
+        <div class="er-step-label">Step ${idx+1} · ${varLabel}</div>
+        <div class="er-subject">${E(subject)}</div>
+      </div>
+    </div>
+    <div class="er-stats">
+      <div class="er-stat"><div class="er-sv">${N(sent)}</div><div class="er-sl">Sent</div></div>
+      <div class="er-stat"><div class="er-sv">${N(clickers)}</div><div class="er-sl">Clicked</div></div>
+      <div class="er-stat"><div class="er-sv gold">${P(rate)}</div><div class="er-sl">Click Rate</div></div>
+      ${st.replies>0&&idx===0?`<div class="er-stat"><div class="er-sv">${N(st.replies)}</div><div class="er-sl">Replies</div></div>`:''}
+    </div>
+    <div class="er-bar-row">
+      <div class="er-bar-bg"><div class="er-bar-fill" style="width:${barW}%"></div></div>
+      <span class="er-bar-pct">${P(rate)} CTR</span>
+    </div>
+    ${hasPreview?`<div class="er-actions"><button class="er-preview-btn" onclick="openPreview('${E(slug)}','${E(subject)}')">View Full Email →</button></div>`:''}
+  </div>`
 }
 
 // ── LINKS ─────────────────────────────────────────────────
