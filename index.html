@@ -318,6 +318,69 @@ button{cursor:pointer;font-family:var(--f-ui)}
 .crm-foot{padding:8px 14px;border-top:1px solid var(--bd);background:var(--s2);font-size:10px;color:var(--t3);display:flex;justify-content:space-between}
 
 /* ═══════════════════════════════════════════════════════
+   INVESTOR PROFILE DRAWER
+════════════════════════════════════════════════════════ */
+#ipr-overlay{display:none;position:fixed;inset:0;z-index:800;background:rgba(0,0,0,0.55);backdrop-filter:blur(4px)}
+#ipr-overlay.on{display:block}
+#ipr-drawer{position:fixed;top:0;right:0;bottom:0;width:380px;max-width:92vw;z-index:801;background:var(--s1);border-left:1px solid var(--bd2);display:flex;flex-direction:column;transform:translateX(100%);transition:transform .28s cubic-bezier(0.4,0,0.2,1);overflow:hidden}
+#ipr-drawer.on{transform:translateX(0)}
+#ipr-drawer::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gd2);z-index:1}
+
+/* Drawer header */
+.ipr-hdr{padding:20px 20px 16px;border-bottom:1px solid var(--bd);background:var(--s2);flex-shrink:0}
+.ipr-hdr-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.ipr-avatar{width:44px;height:44px;border-radius:50%;background:var(--gd2);display:flex;align-items:center;justify-content:center;font:700 16px/1 var(--f-ui);color:#06050C;flex-shrink:0}
+.ipr-identity{flex:1;min-width:0}
+.ipr-name{font-family:var(--f-display);font-size:18px;font-weight:700;letter-spacing:.01em;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ipr-email{font:400 10.5px var(--f-mono);color:var(--t3);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ipr-close{width:28px;height:28px;border-radius:6px;background:rgba(255,255,255,0.05);border:1px solid var(--bd);color:var(--t2);font-size:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .12s}
+.ipr-close:hover{background:rgba(255,255,255,.09);color:var(--text)}
+.ipr-tier-row{display:flex;gap:8px;margin-top:10px;align-items:center}
+.ipr-company-tag{font-size:10.5px;color:var(--t2);font-weight:500}
+
+/* Drawer body */
+.ipr-body{flex:1;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,0.04) transparent}
+.ipr-body::-webkit-scrollbar{width:3px}
+.ipr-body::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.06);border-radius:3px}
+
+/* GS-style data section */
+.ipr-section{border-bottom:1px solid var(--bd);padding:18px 20px}
+.ipr-section:last-child{border-bottom:none}
+.ipr-sec-label{font-size:7.5px;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:var(--t3);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.ipr-sec-label::after{content:'';flex:1;height:1px;background:var(--bd)}
+
+/* Data row GS style */
+.ipr-row{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px;gap:12px}
+.ipr-row:last-child{margin-bottom:0}
+.ipr-k{font-size:9px;font-weight:600;letter-spacing:.08em;color:var(--t3);text-transform:uppercase;flex-shrink:0;white-space:nowrap}
+.ipr-v{font:400 11.5px var(--f-mono);color:var(--text);text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ipr-v.hi{color:var(--gold2);font-weight:500}
+.ipr-v.green{color:var(--green)}
+.ipr-v.dim{color:var(--t3)}
+
+/* Engagement score bar */
+.ipr-score-wrap{margin-top:12px}
+.ipr-score-label{display:flex;justify-content:space-between;margin-bottom:6px}
+.ipr-score-k{font-size:8px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t3)}
+.ipr-score-v{font:500 11px var(--f-mono);color:var(--gold2)}
+.ipr-score-bg{height:6px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden}
+.ipr-score-fill{height:100%;background:var(--gd2);border-radius:4px;transition:width .5s ease}
+
+/* Engagement tier meter */
+.ipr-tier-meter{display:flex;gap:3px;margin-top:8px}
+.ipr-tier-seg{flex:1;height:5px;border-radius:2px;background:rgba(255,255,255,0.07);transition:background .3s}
+.ipr-tier-seg.lit{background:var(--gold2)}
+.ipr-tier-seg.hot-lit{background:var(--red)}
+
+/* Action buttons in drawer */
+.ipr-actions{padding:16px 20px;border-top:1px solid var(--bd);display:flex;gap:8px;flex-shrink:0;background:var(--s2)}
+.ipr-act-btn{flex:1;padding:8px 14px;border-radius:8px;font:600 10px var(--f-ui);letter-spacing:.06em;transition:all .13s;border:1px solid var(--bd);cursor:pointer}
+.ipr-act-primary{background:var(--gd2);color:#06050C;border-color:transparent}
+.ipr-act-primary:hover{box-shadow:0 0 14px rgba(201,151,31,0.3)}
+.ipr-act-sec{background:rgba(255,255,255,0.04);color:var(--t2)}
+.ipr-act-sec:hover{background:rgba(255,255,255,0.08);color:var(--text)}
+
+/* ═══════════════════════════════════════════════════════
    MISC
 ════════════════════════════════════════════════════════ */
 @keyframes fadeSlideUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
@@ -583,6 +646,62 @@ button{cursor:pointer;font-family:var(--f-ui)}
 
 </div><!-- /body -->
 </div><!-- /shell -->
+
+<!-- INVESTOR PROFILE DRAWER -->
+<div id="ipr-overlay" onclick="closeProfile()"></div>
+<div id="ipr-drawer">
+  <div class="ipr-hdr">
+    <div class="ipr-hdr-row">
+      <div class="ipr-avatar" id="ipr-av">?</div>
+      <div class="ipr-identity">
+        <div class="ipr-name" id="ipr-name">—</div>
+        <div class="ipr-email" id="ipr-email">—</div>
+      </div>
+      <button class="ipr-close" onclick="closeProfile()">✕</button>
+    </div>
+    <div class="ipr-tier-row">
+      <span id="ipr-tier-badge"></span>
+      <span class="ipr-company-tag" id="ipr-co">—</span>
+    </div>
+  </div>
+  <div class="ipr-body">
+    <div class="ipr-section">
+      <div class="ipr-sec-label">Engagement Overview</div>
+      <div class="ipr-row"><span class="ipr-k">Link Clicks</span><span class="ipr-v hi" id="ipr-clicks">0</span></div>
+      <div class="ipr-row"><span class="ipr-k">Engagement Tier</span><span class="ipr-v" id="ipr-tier-v">—</span></div>
+      <div class="ipr-row"><span class="ipr-k">Last Outreach</span><span class="ipr-v" id="ipr-sent">—</span></div>
+      <div class="ipr-score-wrap">
+        <div class="ipr-score-label">
+          <span class="ipr-score-k">Engagement Score</span>
+          <span class="ipr-score-v" id="ipr-score-pct">0%</span>
+        </div>
+        <div class="ipr-score-bg"><div class="ipr-score-fill" id="ipr-score-fill" style="width:0%"></div></div>
+      </div>
+      <div class="ipr-tier-meter" id="ipr-tier-meter"></div>
+    </div>
+    <div class="ipr-section">
+      <div class="ipr-sec-label">Contact Information</div>
+      <div class="ipr-row"><span class="ipr-k">Full Name</span><span class="ipr-v" id="ipr-fullname">—</span></div>
+      <div class="ipr-row"><span class="ipr-k">Email Address</span><span class="ipr-v dim" id="ipr-email2">—</span></div>
+      <div class="ipr-row"><span class="ipr-k">Organization</span><span class="ipr-v" id="ipr-org">—</span></div>
+    </div>
+    <div class="ipr-section">
+      <div class="ipr-sec-label">Campaign Activity</div>
+      <div class="ipr-row"><span class="ipr-k">Campaign</span><span class="ipr-v" id="ipr-camp">—</span></div>
+      <div class="ipr-row"><span class="ipr-k">Status</span><span class="ipr-v green" id="ipr-status">—</span></div>
+      <div class="ipr-row"><span class="ipr-k">Total Touches</span><span class="ipr-v" id="ipr-touches">1</span></div>
+      <div class="ipr-row"><span class="ipr-k">Investor Class</span><span class="ipr-v" id="ipr-class">Prospective LP</span></div>
+    </div>
+    <div class="ipr-section">
+      <div class="ipr-sec-label">Signal Analysis</div>
+      <div id="ipr-signals"></div>
+    </div>
+  </div>
+  <div class="ipr-actions">
+    <button class="ipr-act-btn ipr-act-primary" onclick="profileQuickChat()">Ask AI About This Investor</button>
+    <button class="ipr-act-btn ipr-act-sec" onclick="closeProfile()">Close</button>
+  </div>
+</div>
 
 <!-- EMAIL PREVIEW MODAL -->
 <div class="mbg" id="ep-modal">
@@ -1026,6 +1145,7 @@ function renderCRM(){
   tbody.innerHTML=''
   rows.forEach(c=>{
     const tr=document.createElement('tr')
+    tr.style.cursor='pointer'
     const av=initials(c.name||c.email||'?')
     const tierMap={hot:'<span class="tier-hot">🔥 Hot</span>',clicked:'<span class="tier-clicked">👁 Clicked</span>',replied:'<span class="tier-replied">↩ Replied</span>',delivered:'<span class="tier-delivered">✉ Delivered</span>',bounced:'<span class="tier-bounced">✕ Bounced</span>'}
     tr.innerHTML=`
@@ -1036,8 +1156,87 @@ function renderCRM(){
       <td><b style="font-family:var(--f-mono);font-size:13px;font-weight:500;${c.click_count>0?'color:var(--gold2)':''}">${c.click_count||0}</b></td>
       <td style="font:400 10.5px var(--f-mono);color:var(--t3)">${c.sent_at||'—'}</td>
     `
+    tr.addEventListener('click',()=>openProfile(c))
     tbody.appendChild(tr)
   })
+}
+
+// ── INVESTOR PROFILE DRAWER ───────────────────────────────
+let activeContact=null
+
+function openProfile(contact){
+  activeContact=contact
+  const av=initials(contact.name||contact.email||'?')
+  document.getElementById('ipr-av').textContent=av
+  document.getElementById('ipr-name').textContent=contact.name||'Unknown Investor'
+  document.getElementById('ipr-email').textContent=contact.email||'—'
+  document.getElementById('ipr-fullname').textContent=contact.name||'—'
+  document.getElementById('ipr-email2').textContent=contact.email||'—'
+  document.getElementById('ipr-org').textContent=contact.company||'—'
+  document.getElementById('ipr-co').textContent=contact.company||'Independent'
+  document.getElementById('ipr-clicks').textContent=contact.click_count||0
+  document.getElementById('ipr-sent').textContent=contact.sent_at||'—'
+  document.getElementById('ipr-camp').textContent=currentCampaign?.name||'—'
+  document.getElementById('ipr-touches').textContent='1'
+
+  // Tier
+  const tierLabels={hot:'🔥 Hot — High Intent',clicked:'👁 Clicked — Engaged',replied:'↩ Replied — Responsive',delivered:'✉ Delivered — Pending',bounced:'✕ Bounced — Unreachable'}
+  const tierColors={hot:'var(--red)',clicked:'var(--gold2)',replied:'var(--green)',delivered:'var(--t2)',bounced:'var(--red)'}
+  const tierBadges={hot:`<span class="tier-hot">🔥 Hot</span>`,clicked:`<span class="tier-clicked">👁 Clicked</span>`,replied:`<span class="tier-replied">↩ Replied</span>`,delivered:`<span class="tier-delivered">✉ Delivered</span>`,bounced:`<span class="tier-bounced">✕ Bounced</span>`}
+  document.getElementById('ipr-tier-badge').innerHTML=tierBadges[contact.tier]||''
+  document.getElementById('ipr-tier-v').textContent=tierLabels[contact.tier]||contact.tier||'—'
+  document.getElementById('ipr-tier-v').style.color=tierColors[contact.tier]||'var(--text)'
+  document.getElementById('ipr-status').textContent=contact.tier==='bounced'?'Undeliverable':contact.tier==='hot'?'High Engagement':contact.tier==='replied'?'Responded':'Active'
+
+  // Engagement score (0–100)
+  const tierScore={hot:90,clicked:55,replied:80,delivered:15,bounced:0}
+  const clickBonus=Math.min((contact.click_count||0)*8,40)
+  const score=Math.min((tierScore[contact.tier]||0)+clickBonus,100)
+  document.getElementById('ipr-score-pct').textContent=score+'%'
+  document.getElementById('ipr-score-fill').style.width=score+'%'
+
+  // Tier meter (5 segments)
+  const segments=5, lit=Math.round(score/100*segments)
+  const isHot=contact.tier==='hot'
+  document.getElementById('ipr-tier-meter').innerHTML=Array.from({length:segments},(_,i)=>`<div class="ipr-tier-seg ${i<lit?(isHot?'hot-lit':'lit'):''}"></div>`).join('')
+
+  // Investor class
+  const classes={hot:'Priority LP Target',clicked:'Engaged Prospect',replied:'Active Prospect',delivered:'Cold Prospect',bounced:'Invalid Contact'}
+  document.getElementById('ipr-class').textContent=classes[contact.tier]||'Prospective LP'
+
+  // Signal analysis
+  const signals=[]
+  if(contact.click_count>2) signals.push({icon:'▲',txt:`Clicked ${contact.click_count}x — strong deal interest signal`,color:'var(--gold2)'})
+  if(contact.click_count===1) signals.push({icon:'◆',txt:'Single click — initial interest registered',color:'var(--blue)'})
+  if(contact.tier==='replied') signals.push({icon:'★',txt:'Direct reply — investor initiated contact',color:'var(--green)'})
+  if(contact.tier==='bounced') signals.push({icon:'✕',txt:'Email undeliverable — update contact info',color:'var(--red)'})
+  if(contact.tier==='delivered'&&!contact.click_count) signals.push({icon:'○',txt:'Delivered but no engagement — consider re-touch',color:'var(--t2)'})
+  if(!signals.length) signals.push({icon:'—',txt:'No additional signals detected',color:'var(--t3)'})
+
+  document.getElementById('ipr-signals').innerHTML=signals.map(s=>`
+    <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:10px">
+      <span style="font:700 9px var(--f-mono);color:${s.color};flex-shrink:0;margin-top:2px;min-width:12px">${s.icon}</span>
+      <span style="font-size:11px;color:var(--t2);line-height:1.5">${s.txt}</span>
+    </div>
+  `).join('')
+
+  document.getElementById('ipr-overlay').classList.add('on')
+  document.getElementById('ipr-drawer').classList.add('on')
+}
+
+function closeProfile(){
+  document.getElementById('ipr-overlay').classList.remove('on')
+  document.getElementById('ipr-drawer').classList.remove('on')
+}
+
+function profileQuickChat(){
+  if(!activeContact) return
+  closeProfile()
+  // Switch to overview tab
+  const btn=document.querySelector('.cds-nav-item[data-tab="overview"]')
+  if(btn) switchTab(btn,'overview')
+  const q=`Tell me about this investor: ${activeContact.name||activeContact.email} from ${activeContact.company||'unknown company'}. They have clicked ${activeContact.click_count||0} times and their status is ${activeContact.tier}. What should my next step be?`
+  quickChat(q)
 }
 
 // ── EMAIL PREVIEW MODAL ───────────────────────────────────
@@ -1077,7 +1276,7 @@ async function saveLink(){
 // ── MODAL CLOSE HANDLERS ──────────────────────────────────
 document.getElementById('ep-modal').addEventListener('click',e=>{if(e.target===document.getElementById('ep-modal'))closePreview()})
 document.getElementById('lm-modal').addEventListener('click',e=>{if(e.target===document.getElementById('lm-modal'))closeLinkModal()})
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){closePreview();closeLinkModal()}})
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closePreview();closeLinkModal();closeProfile()}})
 
 // ── BOOT ─────────────────────────────────────────────────
 load()
