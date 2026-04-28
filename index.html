@@ -821,7 +821,10 @@ button{cursor:pointer;font-family:var(--f-ui)}
       <!-- REPLIES TAB -->
       <div id="tab-replies" class="tabpane">
         <div class="seq-section">
-          <div class="sec-head">Investor Replies</div>
+          <div class="sec-head" style="display:flex;align-items:center;justify-content:space-between">
+            <span>Investor Replies</span>
+            <button id="repair-btn" onclick="repairReplies()" style="font-size:11px;padding:4px 10px;background:var(--s2);border:1px solid var(--bd);border-radius:6px;color:var(--t2);cursor:pointer">⟳ Repair Bodies</button>
+          </div>
           <div style="background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);overflow:hidden" id="replies-list">
             <div class="empty">Loading…</div>
           </div>
@@ -944,6 +947,7 @@ function P(v){return(v??0)+'%'}
 function E(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 function initials(n){if(!n||n==='—')return'?';const p=n.trim().split(/\s+/);return(p.length>1?p[0][0]+p[p.length-1][0]:p[0].slice(0,2)).toUpperCase()}
 async function get(u){const r=await fetch(u,{cache:'no-store'});if(!r.ok)throw new Error(r.status);return r.json()}
+async function post(u,body){const r=await fetch(u,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r.ok)throw new Error(r.status);return r.json()}
 
 // ── SPLASH ────────────────────────────────────────────────
 function hideSplash(){
@@ -1543,6 +1547,21 @@ async function loadRepliesTab(slug){
     renderReplies()
   }catch(e){
     el.innerHTML='<div class="empty">Could not load replies</div>'
+  }
+}
+
+async function repairReplies(){
+  const btn=document.getElementById('repair-btn')
+  if(btn){btn.disabled=true;btn.textContent='⟳ Repairing…'}
+  try{
+    const d=await post('/api/repair-replies',{})
+    if(btn) btn.textContent=`✓ ${d.repaired||0} repaired`
+    if(d.repaired>0){
+      setTimeout(()=>loadRepliesTab(currentCampaign),400)
+    }
+  }catch(e){
+    if(btn){btn.disabled=false;btn.textContent='⟳ Repair Bodies'}
+    alert('Repair failed: '+e.message)
   }
 }
 
