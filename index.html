@@ -270,21 +270,36 @@ button{cursor:pointer;font-family:var(--font)}
     <button class="back-btn" id="back-btn" onclick="goHome()">← Campaigns</button>
     <div class="brand">
       <div class="brand-mark">
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <linearGradient id="lg" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stop-color="#B8901F"/>
-              <stop offset="45%" stop-color="#D4AE5A"/>
-              <stop offset="80%" stop-color="#EAD082"/>
-              <stop offset="100%" stop-color="#F5E9B8"/>
+            <linearGradient id="lgbg" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#8A6A12"/>
+              <stop offset="50%" stop-color="#C49A30"/>
+              <stop offset="100%" stop-color="#E8C96A"/>
+            </linearGradient>
+            <linearGradient id="lgmark" x1="7" y1="7" x2="29" y2="29" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#F5E9B8"/>
+              <stop offset="100%" stop-color="#D4AE5A"/>
             </linearGradient>
           </defs>
-          <rect x="1" y="1" width="30" height="30" rx="8" fill="url(#lg)" opacity="0.92"/>
-          <text x="16" y="22" text-anchor="middle" font-family="Montserrat,sans-serif" font-weight="900" font-size="15" fill="#06050C">L</text>
+          <!-- Background -->
+          <rect x="1" y="1" width="34" height="34" rx="9" fill="url(#lgbg)"/>
+          <rect x="1" y="1" width="34" height="34" rx="9" fill="rgba(0,0,0,0.18)"/>
+          <!-- Book spine -->
+          <rect x="10" y="8" width="4" height="20" rx="1.5" fill="url(#lgmark)" opacity="0.95"/>
+          <!-- Book pages stack -->
+          <rect x="14" y="9" width="12" height="18" rx="1" fill="url(#lgmark)" opacity="0.25"/>
+          <rect x="14.5" y="9.5" width="11" height="17" rx="0.8" fill="url(#lgmark)" opacity="0.55"/>
+          <!-- Page lines -->
+          <line x1="17" y1="14" x2="24" y2="14" stroke="#06050C" stroke-width="1.1" stroke-linecap="round" opacity="0.5"/>
+          <line x1="17" y1="17" x2="24" y2="17" stroke="#06050C" stroke-width="1.1" stroke-linecap="round" opacity="0.5"/>
+          <line x1="17" y1="20" x2="21" y2="20" stroke="#06050C" stroke-width="1.1" stroke-linecap="round" opacity="0.5"/>
+          <!-- Spine highlight -->
+          <rect x="10.5" y="8.5" width="1" height="19" rx="0.5" fill="rgba(255,255,255,0.25)"/>
         </svg>
       </div>
       <div class="brand-text">
-        <div class="brand-name">Ledger</div>
+        <div class="brand-name">LEDGER</div>
         <div class="brand-sub">by Emerson North</div>
       </div>
     </div>
