@@ -3,1075 +3,928 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Ledger — Oak Street Capital</title>
+<title>Ledger by Emerson North</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --gold:#D4AE5A;--gold2:#EAD082;--gold3:#F5E9B8;
-  --gd:linear-gradient(135deg,#C9A030 0%,#D4AE5A 40%,#EAD082 75%,#F5E9B8 100%);
-  --bg:#0B0C14;--s1:#111219;--s2:#161721;--s3:#1B1C28;--s4:#202135;
-  --bd:rgba(255,255,255,0.07);--bd2:rgba(255,255,255,0.14);--bd3:rgba(255,255,255,0.22);
-  --gb:rgba(212,174,90,0.08);--gb2:rgba(212,174,90,0.18);--gb3:rgba(212,174,90,0.30);
-  --text:#EDE9E1;--t2:#ABA59E;--t3:#6B6560;--t4:#3E3B38;
-  --green:#5BC285;--red:#E06A6A;--blue:#7FA0E8;--warn:#E09B3A;--purple:#A67BE8;
-  --font:'Montserrat',system-ui,sans-serif;
-  --sw:232px;--th:56px;--r:10px;--r2:14px;
+  --gd:linear-gradient(135deg,#B8901F 0%,#D4AE5A 45%,#EAD082 75%,#F5E9B8 100%);
+  --bg:#09090F;--s1:#0E0F18;--s2:#131420;--s3:#181926;--s4:#1D1E2E;
+  --bd:rgba(255,255,255,0.07);--bd2:rgba(255,255,255,0.13);--bd3:rgba(255,255,255,0.22);
+  --gb:rgba(212,174,90,0.08);--gb2:rgba(212,174,90,0.17);--gb3:rgba(212,174,90,0.30);
+  --text:#ECE8E0;--t2:#ABA49C;--t3:#66605A;--t4:#3A3733;
+  --green:#52BE7C;--red:#D96060;--blue:#7A9DE3;--warn:#D99234;--purple:#9B72D8;
+  --r:10px;--r2:14px;--font:'Montserrat',system-ui,sans-serif;
 }
 html,body{height:100%;overflow:hidden;font-family:var(--font);-webkit-font-smoothing:antialiased;background:var(--bg);color:var(--text)}
-#shell{position:fixed;inset:0;display:flex;overflow:hidden}
+#shell{position:fixed;inset:0;display:flex;flex-direction:column;overflow:hidden}
+button{cursor:pointer;font-family:var(--font)}
 
-/* ─── SIDEBAR ─────────────────────────────────────────── */
-#sb{width:var(--sw);flex-shrink:0;display:flex;flex-direction:column;background:linear-gradient(180deg,#0A0B14 0%,#080910 100%);border-right:1px solid var(--bd);position:relative;z-index:10}
-#sb::after{content:'';position:absolute;top:0;right:-1px;width:1px;height:100%;background:linear-gradient(180deg,transparent 0%,rgba(212,174,90,0.45) 40%,rgba(212,174,90,0.15) 75%,transparent 100%)}
-.sb-brand{padding:22px 18px 18px;border-bottom:1px solid var(--bd)}
-.sb-row{display:flex;align-items:center;gap:10px;margin-bottom:4px}
-.sb-icon{width:32px;height:32px;border-radius:8px;flex-shrink:0;background:var(--gd);display:flex;align-items:center;justify-content:center;font:800 13px/1 var(--font);color:#06050C;box-shadow:0 0 22px rgba(212,174,90,0.40)}
-.sb-name{font-size:16px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;background:var(--gd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.sb-client{font-size:9px;font-weight:600;color:var(--t3);letter-spacing:.14em;text-transform:uppercase}
-.sb-nav{flex:1;padding:12px 10px;overflow-y:auto;scrollbar-width:none}
-.sb-nav::-webkit-scrollbar{display:none}
-.nb-lbl{font-size:8px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--t4);padding:16px 10px 5px;user-select:none}
-.ni{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:7px;margin:1px 0;font-size:12px;font-weight:500;color:var(--t3);cursor:pointer;transition:all .12s;position:relative;user-select:none}
-.ni:hover{color:var(--t2);background:rgba(255,255,255,0.035)}
-.ni.on{color:var(--gold2);background:var(--gb)}
-.ni.on::before{content:'';position:absolute;left:0;top:20%;bottom:20%;width:2.5px;background:var(--gd);border-radius:2px}
-.ni-ic{width:16px;text-align:center;font-size:12px;flex-shrink:0}
-.ni-badge{margin-left:auto;background:rgba(212,174,90,0.15);color:var(--gold);border:1px solid rgba(212,174,90,0.3);border-radius:10px;font-size:9px;font-weight:700;padding:1px 7px}
-.sb-foot{padding:13px 16px;border-top:1px solid var(--bd);display:flex;align-items:center;gap:8px}
-.ldot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0;animation:lpulse 2.6s infinite}
-@keyframes lpulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(91,194,133,.4)}50%{opacity:.5;box-shadow:0 0 0 4px rgba(91,194,133,0)}}
-#ts{font-size:9px;color:var(--t3);letter-spacing:.02em}
+/* ═══ HEADER ═══════════════════════════════════════════ */
+#hdr{height:56px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 24px;background:rgba(9,9,15,0.95);border-bottom:1px solid var(--bd);backdrop-filter:blur(20px);z-index:100;position:relative}
+#hdr::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 0%,rgba(212,174,90,0.3) 30%,rgba(212,174,90,0.15) 60%,transparent 100%);pointer-events:none}
+.hdr-l{display:flex;align-items:center;gap:14px}
+.back-btn{display:none;align-items:center;gap:6px;padding:5px 11px;border-radius:7px;background:rgba(255,255,255,0.04);border:1px solid var(--bd);color:var(--t2);font:600 10px var(--font);letter-spacing:.06em;transition:all .12s}
+.back-btn:hover{background:rgba(255,255,255,0.08);color:var(--text)}
+.back-btn.vis{display:flex}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-mark svg{display:block}
+.brand-text{display:flex;flex-direction:column;gap:1px}
+.brand-name{font-size:15px;font-weight:900;letter-spacing:.22em;text-transform:uppercase;background:var(--gd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.brand-sub{font-size:6.5px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--t3)}
+.hdr-c{flex:1;display:flex;align-items:center;justify-content:center;gap:16px;min-width:0}
+.hdr-camp-name{font-size:14px;font-weight:700;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:300px}
+.hdr-mini-stats{display:flex;gap:10px;flex-shrink:0}
+.hms{display:flex;align-items:center;gap:4px;font-size:10px;font-weight:600;padding:3px 9px;border-radius:6px;background:var(--s3);border:1px solid var(--bd)}
+.hms-v{color:var(--text)}.hms-l{color:var(--t3);margin-left:2px}
+.hms.hi .hms-v{color:var(--gold2)}
+.hdr-r{display:flex;align-items:center;gap:8px}
+.status-dot{display:flex;align-items:center;gap:5px;font-size:9px;font-weight:600;color:var(--t3);letter-spacing:.05em}
+.dot-g{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2.5s infinite}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(82,190,124,.4)}50%{opacity:.6;box-shadow:0 0 0 5px rgba(82,190,124,0)}}
+.hdr-btn{padding:5px 12px;border-radius:7px;border:1px solid var(--bd);background:rgba(255,255,255,0.03);color:var(--t2);font:600 9.5px var(--font);transition:all .12s}
+.hdr-btn:hover{background:rgba(255,255,255,0.07);color:var(--text)}
 
-/* ─── MAIN ─────────────────────────────────────────────── */
-#main{flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden;background:radial-gradient(ellipse 70% 50% at 60% -5%,rgba(212,174,90,0.04) 0%,transparent 60%),var(--bg)}
-#topbar{height:var(--th);flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 26px;background:rgba(11,12,20,0.92);border-bottom:1px solid var(--bd);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);z-index:20}
-.tb-crumb{font-size:11px;color:var(--t3);display:flex;align-items:center;gap:7px}
-.tb-crumb b{color:var(--t2);font-weight:600}
-.tb-sep{opacity:.3}
-.tb-right{display:flex;gap:8px;align-items:center}
-.tb-status{display:flex;align-items:center;gap:6px;font-size:9.5px;color:var(--t3);padding:4px 10px;border-radius:6px;background:rgba(91,194,133,0.06);border:1px solid rgba(91,194,133,0.15)}
-.btn{padding:6px 15px;border-radius:7px;border:none;cursor:pointer;font:600 9.5px/1 var(--font);letter-spacing:.08em;text-transform:uppercase;transition:all .12s}
-.btn-o{background:rgba(255,255,255,0.04);color:var(--t2);border:1px solid var(--bd)}.btn-o:hover{background:rgba(255,255,255,0.08);color:var(--text)}
-.btn-g{background:var(--gd);color:#06050C;box-shadow:0 0 14px rgba(212,174,90,0.20)}.btn-g:hover{box-shadow:0 0 22px rgba(212,174,90,0.38);transform:translateY(-1px)}
-.btn-sm{padding:4px 11px;font-size:9px}
-#scroll{flex:1;overflow-y:auto;padding:24px 24px 52px;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,0.05) transparent}
-#scroll::-webkit-scrollbar{width:3px}
-#scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.06);border-radius:3px}
-.view{display:none}.view.on{display:block}
+/* ═══ BODY ═════════════════════════════════════════════ */
+#body{flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden}
 
-/* ─── PAGE HEADER ─────────────────────────────────────── */
-.ph{margin-bottom:20px}.ph h1{font-size:22px;font-weight:800;letter-spacing:-.025em;line-height:1.1}.ph p{font-size:11.5px;color:var(--t3);margin-top:4px}
-.back-btn{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--t3);cursor:pointer;margin-bottom:16px;transition:color .12s;letter-spacing:.02em;padding:5px 0}
-.back-btn:hover{color:var(--gold)}.back-btn::before{content:'←';margin-right:1px}
+/* ═══ HOME VIEW ════════════════════════════════════════ */
+#v-home{flex:1;overflow-y:auto;padding:32px 28px 60px;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,0.04) transparent;background:radial-gradient(ellipse 80% 50% at 50% -5%,rgba(212,174,90,0.04) 0%,transparent 60%)}
+.home-head{margin-bottom:28px}
+.home-title{font-size:26px;font-weight:800;letter-spacing:-.03em}
+.home-sub{font-size:12px;color:var(--t3);margin-top:5px}
+.camp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:16px}
 
-/* ─── METRICS ─────────────────────────────────────────── */
-.mg{display:grid;gap:12px;margin-bottom:20px}
-.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}.g5{grid-template-columns:repeat(5,1fr)}.g6{grid-template-columns:repeat(6,1fr)}
-.mc{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);padding:16px 18px;position:relative;overflow:hidden;transition:border-color .15s}
-.mc:hover{border-color:var(--bd2)}
-.mc.hi{border-color:var(--gb2);background:linear-gradient(135deg,rgba(212,174,90,0.07) 0%,rgba(212,174,90,0.02) 60%,var(--s1) 100%)}
-.mc.hi::after{content:'';position:absolute;top:0;left:0;right:0;height:1.5px;background:linear-gradient(90deg,transparent 0%,rgba(212,174,90,0.55) 50%,transparent 100%)}
-.mc-l{font-size:8.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--t3);margin-bottom:7px}
-.mc-v{font-size:26px;font-weight:800;letter-spacing:-.03em;line-height:1;color:var(--text)}
-.mc.hi .mc-v{background:var(--gd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.mc-s{font-size:9.5px;color:var(--t3);margin-top:4px}
-
-/* ─── SECTION HEADERS ─────────────────────────────────── */
-.sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.sh-t{font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--t2);display:flex;align-items:center;gap:8px}
-.sh-t::before{content:'';display:inline-block;width:3px;height:12px;background:var(--gd);border-radius:2px}
-.sh-tag{padding:2px 8px;border-radius:20px;background:var(--gb);border:1px solid var(--gb2);font-size:8.5px;font-weight:700;letter-spacing:.06em;color:var(--gold)}
-
-/* ─── CAMPAIGN CARDS (overview/pipeline) ──────────────── */
-.camp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:14px}
-.camp-card{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);padding:0;position:relative;overflow:hidden;cursor:pointer;transition:all .18s;display:flex;flex-direction:column}
-.camp-card:hover{border-color:var(--bd2);transform:translateY(-2px);box-shadow:0 16px 48px rgba(0,0,0,0.55)}
-.camp-card.active{border-color:var(--gb2)}
-.camp-card.active .cc-top-bar{background:linear-gradient(90deg,rgba(212,174,90,0.12) 0%,transparent 100%)}
-.cc-top-bar{height:1.5px;background:transparent;transition:background .2s}
-.camp-card.active .cc-top-bar{background:linear-gradient(90deg,rgba(212,174,90,0.7) 0%,rgba(212,174,90,0.2) 60%,transparent 100%)}
-.cc-body{padding:18px 20px;flex:1;display:flex;flex-direction:column;gap:12px}
-.cc-head{display:flex;justify-content:space-between;align-items:flex-start}
-.cc-name{font-size:14px;font-weight:700;letter-spacing:-.01em;line-height:1.3;flex:1;min-width:0;padding-right:10px}
-.cc-type{font-size:9.5px;color:var(--t3);margin-top:3px;font-weight:500}
-.cc-subject{font-size:12.5px;color:var(--t2);font-style:italic;line-height:1.45;padding:10px 14px;background:rgba(255,255,255,0.025);border-radius:7px;border-left:2px solid var(--gb3);position:relative}
-.cc-subject::before{content:'"';position:absolute;top:-4px;left:9px;font-size:20px;color:var(--gold);font-style:normal;opacity:.4;line-height:1}
-.cc-funnel{display:flex;flex-direction:column;gap:5px}
+/* ═══ CAMPAIGN CARDS ═══════════════════════════════════ */
+.ccard{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);overflow:hidden;cursor:pointer;transition:all .18s;position:relative;display:flex;flex-direction:column}
+.ccard:hover{border-color:var(--bd2);transform:translateY(-3px);box-shadow:0 20px 56px rgba(0,0,0,0.6)}
+.ccard.live{border-color:var(--gb2)}
+.cc-accent{height:2px;background:transparent;transition:background .2s}
+.ccard.live .cc-accent{background:linear-gradient(90deg,var(--gold) 0%,rgba(212,174,90,0.3) 50%,transparent 100%)}
+.cc-body{padding:20px 22px;flex:1;display:flex;flex-direction:column;gap:14px}
+.cc-row1{display:flex;justify-content:space-between;align-items:flex-start}
+.cc-title{font-size:15px;font-weight:700;letter-spacing:-.02em;line-height:1.25;flex:1;padding-right:12px}
+.cc-type{font-size:9px;color:var(--t3);margin-top:3px;font-weight:500;letter-spacing:.04em}
+.cc-subject{font-size:12px;color:var(--t2);font-style:italic;line-height:1.5;padding:10px 14px 10px 16px;background:rgba(255,255,255,0.025);border-radius:8px;border-left:2px solid var(--gb3);position:relative;overflow:hidden}
+.cc-subject-quote{position:absolute;top:4px;left:10px;font-size:22px;color:var(--gold);font-style:normal;opacity:.35;line-height:1;font-family:Georgia,serif}
+.cc-funnel{display:flex;flex-direction:column;gap:6px}
 .cf-row{display:flex;align-items:center;gap:10px}
-.cf-label{font-size:8.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);width:60px;flex-shrink:0;text-align:right}
-.cf-bar-bg{flex:1;height:5px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden}
-.cf-bar-fill{height:100%;border-radius:3px;transition:width .5s}
-.cf-sent .cf-bar-fill{background:rgba(127,160,232,0.5)}
-.cf-clk .cf-bar-fill{background:var(--gd)}
-.cf-n{font-size:10px;font-weight:600;color:var(--t2);width:46px;flex-shrink:0;text-align:right}
-.cf-pct{font-size:9px;color:var(--t3);width:34px;flex-shrink:0}
-.cc-foot{display:flex;align-items:center;justify-content:space-between;padding:11px 20px;border-top:1px solid var(--bd);background:rgba(255,255,255,0.01)}
-.cc-chips{display:flex;gap:6px}
-.cc-arrow{font-size:11px;color:var(--t3);opacity:0;transition:opacity .15s;font-weight:600}
-.camp-card:hover .cc-arrow{opacity:1;color:var(--gold)}
+.cf-lbl{font-size:8px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);width:52px;flex-shrink:0;text-align:right}
+.cf-bg{flex:1;height:4px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden}
+.cf-fill{height:100%;border-radius:3px}
+.cf-sent .cf-fill{background:rgba(122,157,227,0.6)}
+.cf-clk .cf-fill{background:var(--gd)}
+.cf-num{font-size:10px;font-weight:700;color:var(--t2);width:42px;flex-shrink:0;text-align:right}
+.cf-pct{font-size:9px;color:var(--t3);width:34px}
+.cc-footer{display:flex;align-items:center;justify-content:space-between;padding:12px 22px;border-top:1px solid var(--bd);background:rgba(255,255,255,0.01)}
+.cc-chips{display:flex;gap:6px;flex-wrap:wrap}
+.cc-cta{font-size:10px;font-weight:700;color:var(--t3);letter-spacing:.04em;opacity:0;transition:all .15s;display:flex;align-items:center;gap:4px}
+.ccard:hover .cc-cta{opacity:1;color:var(--gold)}
 
-/* ─── BADGES ─────────────────────────────────────────── */
-.badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:8.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;white-space:nowrap}
+/* ═══ BADGES ═══════════════════════════════════════════ */
+.badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:8px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;white-space:nowrap}
 .bg{background:var(--gb);color:var(--gold);border:1px solid var(--gb2)}
-.bgreen{background:rgba(91,194,133,.1);color:var(--green);border:1px solid rgba(91,194,133,.22)}
-.bred{background:rgba(224,106,106,.1);color:var(--red);border:1px solid rgba(224,106,106,.22)}
-.bblue{background:rgba(127,160,232,.1);color:var(--blue);border:1px solid rgba(127,160,232,.22)}
-.bwarn{background:rgba(224,155,58,.1);color:var(--warn);border:1px solid rgba(224,155,58,.22)}
+.bgreen{background:rgba(82,190,124,.1);color:var(--green);border:1px solid rgba(82,190,124,.22)}
+.bred{background:rgba(217,96,96,.1);color:var(--red);border:1px solid rgba(217,96,96,.2)}
+.bblue{background:rgba(122,157,227,.1);color:var(--blue);border:1px solid rgba(122,157,227,.22)}
 .bm{background:rgba(255,255,255,.04);color:var(--t3);border:1px solid var(--bd)}
-.bpurp{background:rgba(166,123,232,.1);color:var(--purple);border:1px solid rgba(166,123,232,.22)}
 
-/* ─── EMAIL CARDS (campaign detail) ──────────────────── */
-.email-card{background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r2);overflow:hidden;transition:border-color .15s;margin-bottom:12px}
-.email-card:hover{border-color:var(--bd3)}
-.ec-header{padding:14px 16px 12px;border-bottom:1px solid var(--bd)}
-.ec-num{font-size:8.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:5px}
-.ec-subject{font-size:14px;font-weight:700;line-height:1.4;color:var(--text);letter-spacing:-.01em}
-.ec-date{font-size:9.5px;color:var(--t3);margin-top:3px}
-.ec-stats{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--bd)}
-.ec-stat{padding:11px 14px;text-align:center;border-right:1px solid var(--bd)}
-.ec-stat:last-child{border-right:none}
-.ec-sv{font-size:20px;font-weight:800;letter-spacing:-.02em;line-height:1;margin-bottom:3px}
-.ec-sl{font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--t3)}
-.ec-stat.hi .ec-sv{background:var(--gd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.ec-bar-row{padding:12px 16px;display:flex;align-items:center;gap:10px}
-.ec-bar-bg{flex:1;height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden}
-.ec-bar-fill{height:100%;border-radius:3px;background:var(--gd);transition:width .6s}
-.ec-bar-label{font-size:10px;font-weight:700;color:var(--gold2);min-width:48px;text-align:right}
+/* ═══ CAMPAIGN DETAIL ══════════════════════════════════ */
+#v-campaign{flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden;display:none}
+#v-campaign.vis{display:flex}
 
-/* ─── SPLIT PANEL (campaign detail) ──────────────────── */
-.split-panel{display:grid;grid-template-columns:42% 1fr;gap:18px;align-items:start;margin-bottom:20px}
-.panel-box{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);overflow:hidden}
-.panel-head{padding:13px 16px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;background:var(--s2)}
-.panel-head-t{font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t2);display:flex;align-items:center;gap:7px}
-.panel-head-t::before{content:'';display:inline-block;width:2px;height:10px;background:var(--gd);border-radius:2px}
-.panel-body{padding:14px}
+/* TAB BAR */
+#cd-tabbar{flex-shrink:0;display:flex;align-items:flex-end;gap:0;padding:0 24px;background:var(--s1);border-bottom:1px solid var(--bd);height:44px}
+.cd-tab{padding:0 18px;height:44px;display:flex;align-items:center;font-size:11.5px;font-weight:600;color:var(--t3);border-bottom:2px solid transparent;transition:all .13s;letter-spacing:.02em;background:none;border-left:none;border-right:none;border-top:none;margin-bottom:-1px;cursor:pointer}
+.cd-tab:hover{color:var(--t2)}
+.cd-tab.on{color:var(--gold2);border-bottom-color:var(--gold)}
+.tabpane{display:none;flex:1;overflow-y:auto;padding:28px 28px 60px;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,0.05) transparent}
+.tabpane::-webkit-scrollbar{width:3px}
+.tabpane::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.06);border-radius:3px}
+.tabpane.on{display:block}
 
-/* ─── CONTACTS TABLE ──────────────────────────────────── */
-.contacts-wrap{overflow:hidden}
-.tier-pills{display:flex;gap:5px;flex-wrap:wrap;padding:10px 12px;border-bottom:1px solid var(--bd);background:rgba(255,255,255,0.01)}
-.tier-pill{padding:3px 9px;border-radius:20px;font-size:9px;font-weight:700;letter-spacing:.05em;cursor:pointer;border:1px solid transparent;transition:all .12s;color:var(--t3);background:rgba(255,255,255,0.03);border-color:var(--bd)}
-.tier-pill:hover{color:var(--t2)}
-.tier-pill.on{color:var(--gold2);background:var(--gb);border-color:var(--gb2)}
-.ct-table{width:100%;border-collapse:collapse}
-.ct-table thead th{padding:8px 12px;text-align:left;font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--t4);background:var(--s2);border-bottom:1px solid var(--bd);white-space:nowrap}
-.ct-table tbody tr{border-bottom:1px solid rgba(255,255,255,0.04)}
-.ct-table tbody tr:last-child{border-bottom:none}
-.ct-table tbody tr:hover{background:rgba(255,255,255,0.025)}
-.ct-table td{padding:9px 12px;font-size:12px;color:var(--text);vertical-align:middle}
-.iname{font-weight:600;font-size:12.5px}.iemail{font-size:10px;color:var(--t3);margin-top:1px}
-.co-count{font-size:10px;color:var(--t3);padding:6px 12px;border-top:1px solid var(--bd);text-align:right;background:var(--s2)}
+/* ═══ METRICS GRID ═════════════════════════════════════ */
+.metrics{display:grid;gap:12px;margin-bottom:24px}
+.g6{grid-template-columns:repeat(6,1fr)}.g4{grid-template-columns:repeat(4,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g2{grid-template-columns:repeat(2,1fr)}
+.mc{background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);padding:15px 16px;position:relative;overflow:hidden;transition:border-color .15s}
+.mc:hover{border-color:var(--bd2)}
+.mc.hi{border-color:var(--gb2);background:linear-gradient(140deg,rgba(212,174,90,0.08) 0%,rgba(212,174,90,0.02) 50%,var(--s2) 100%)}
+.mc.hi::after{content:'';position:absolute;top:0;left:0;right:0;height:1.5px;background:linear-gradient(90deg,transparent,rgba(212,174,90,0.55),transparent)}
+.mc-l{font-size:8px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--t3);margin-bottom:6px}
+.mc-v{font-size:24px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.mc.hi .mc-v{background:var(--gd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.mc-s{font-size:9px;color:var(--t3);margin-top:3px}
 
-/* ─── TIER BADGES ────────────────────────────────────── */
-.tier-hot{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;background:rgba(224,106,106,.1);border:1px solid rgba(224,106,106,.25);font-size:8.5px;font-weight:700;color:#E88080}
-.tier-clicked{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;background:var(--gb);border:1px solid var(--gb2);font-size:8.5px;font-weight:700;color:var(--gold)}
-.tier-replied{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;background:rgba(91,194,133,.1);border:1px solid rgba(91,194,133,.22);font-size:8.5px;font-weight:700;color:var(--green)}
-.tier-bounced{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;background:rgba(224,106,106,.06);border:1px solid rgba(224,106,106,.15);font-size:8.5px;font-weight:700;color:var(--red);opacity:.7}
-.tier-delivered{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;background:rgba(255,255,255,.04);border:1px solid var(--bd);font-size:8.5px;font-weight:700;color:var(--t3)}
+/* ═══ CHATBOT ══════════════════════════════════════════ */
+.chat-section{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);overflow:hidden}
+.chat-head{padding:14px 18px;border-bottom:1px solid var(--bd);background:var(--s2);display:flex;align-items:center;justify-content:space-between}
+.chat-head-title{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:8px}
+.chat-head-title::before{content:'✦';font-size:11px}
+.chat-head-sub{font-size:9px;color:var(--t3)}
+.chat-msgs{min-height:180px;max-height:340px;overflow-y:auto;padding:16px 18px;display:flex;flex-direction:column;gap:12px;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,0.04) transparent}
+.chat-msgs::-webkit-scrollbar{width:3px}
+.chat-msgs::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.06);border-radius:3px}
+.chat-empty{text-align:center;color:var(--t3);font-size:11.5px;padding:28px 0;letter-spacing:.02em}
+.msg{max-width:80%;display:flex;flex-direction:column;gap:4px}
+.msg.user{align-self:flex-end;align-items:flex-end}
+.msg.ai{align-self:flex-start;align-items:flex-start}
+.msg-bubble{padding:10px 14px;border-radius:12px;font-size:12.5px;line-height:1.65;white-space:pre-wrap;word-break:break-word}
+.msg.user .msg-bubble{background:var(--gb);border:1px solid var(--gb2);color:var(--text);border-bottom-right-radius:4px}
+.msg.ai .msg-bubble{background:var(--s3);border:1px solid var(--bd);color:var(--t2);border-bottom-left-radius:4px}
+.msg-typing{padding:10px 14px;background:var(--s3);border:1px solid var(--bd);border-radius:12px;border-bottom-left-radius:4px;display:flex;gap:4px;align-items:center}
+.typing-dot{width:5px;height:5px;border-radius:50%;background:var(--t3);animation:typedot 1.2s infinite}
+.typing-dot:nth-child(2){animation-delay:.2s}
+.typing-dot:nth-child(3){animation-delay:.4s}
+@keyframes typedot{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-4px)}}
+.chat-chips{display:flex;gap:6px;flex-wrap:wrap;padding:12px 18px;border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);background:rgba(255,255,255,0.01)}
+.chat-chip{padding:5px 12px;border-radius:20px;background:var(--s3);border:1px solid var(--bd);color:var(--t2);font:600 10px var(--font);transition:all .12s;letter-spacing:.02em}
+.chat-chip:hover{background:var(--gb);border-color:var(--gb2);color:var(--gold)}
+.chat-input-row{display:flex;gap:10px;padding:12px 16px;align-items:flex-end}
+.chat-input{flex:1;background:var(--s3);border:1px solid var(--bd2);border-radius:9px;padding:9px 14px;font:400 12.5px var(--font);color:var(--text);resize:none;outline:none;line-height:1.5;min-height:38px;max-height:100px;transition:border-color .13s;scrollbar-width:none}
+.chat-input:focus{border-color:var(--gold)}
+.chat-input::placeholder{color:var(--t3)}
+.chat-send{padding:9px 16px;border-radius:9px;background:var(--gd);border:none;color:#06050C;font:700 10px var(--font);letter-spacing:.08em;transition:all .13s;flex-shrink:0;white-space:nowrap}
+.chat-send:hover{box-shadow:0 0 18px rgba(212,174,90,0.35);transform:translateY(-1px)}
+.chat-send:disabled{opacity:.5;cursor:not-allowed;transform:none}
 
-/* ─── AI PANEL ──────────────────────────────────────── */
-.ai-panel{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);margin-bottom:20px;overflow:hidden}
-.ai-panel-head{padding:13px 18px;border-bottom:1px solid var(--bd);background:var(--s2);display:flex;align-items:center;justify-content:space-between}
-.ai-panel-title{font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:8px}
-.ai-panel-title::before{content:'✦';font-size:10px}
-.ai-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-bottom:1px solid var(--bd)}
-.ai-btn{padding:16px 18px;cursor:pointer;transition:all .13s;text-align:left;border-right:1px solid var(--bd);border-bottom:none;background:transparent}
-.ai-btn:last-child{border-right:none}
-.ai-btn:hover{background:linear-gradient(135deg,rgba(212,174,90,0.06) 0%,transparent 100%)}
-.ai-btn.loading{opacity:.5;pointer-events:none}
-.ai-btn-ic{font-size:16px;margin-bottom:8px}
-.ai-btn-title{font-size:12px;font-weight:700;color:var(--text);margin-bottom:3px}
-.ai-btn-desc{font-size:10px;color:var(--t3);line-height:1.5}
-.ai-result{padding:18px 20px;display:none;border-top:1px solid var(--bd)}
-.ai-result.on{display:block}
-.ai-result-hd{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
-.ai-result pre{font-family:var(--font);font-size:13px;line-height:1.85;color:var(--t2);white-space:pre-wrap;word-break:break-word}
-.ai-copy{padding:3px 10px;border-radius:5px;background:var(--gb);border:1px solid var(--gb2);color:var(--gold);font:700 8.5px var(--font);cursor:pointer;letter-spacing:.06em}
-.ai-copy:hover{background:var(--gb2)}
+/* ═══ SEQUENCES TAB ════════════════════════════════════ */
+.seq-section{margin-bottom:24px}
+.sec-head{font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--t2);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.sec-head::before{content:'';display:inline-block;width:3px;height:11px;background:var(--gd);border-radius:2px}
 
-/* ─── LINKS SECTION ──────────────────────────────────── */
-.links-section{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);overflow:hidden;margin-bottom:20px}
-.link-row{display:flex;align-items:center;gap:12px;padding:11px 16px;border-bottom:1px solid rgba(255,255,255,0.04)}
-.link-row:last-child{border-bottom:none}
-.link-url{font-size:12px;font-weight:500;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;color:var(--text)}
-.link-clicks-num{font-size:10.5px;color:var(--t2);white-space:nowrap}
-.link-edit-btn{padding:3px 10px;border-radius:6px;background:rgba(255,255,255,0.04);border:1px solid var(--bd);color:var(--t2);font:600 9px var(--font);cursor:pointer;transition:all .12s;white-space:nowrap;flex-shrink:0}
-.link-edit-btn:hover{background:rgba(255,255,255,0.08);color:var(--text)}
+/* Workflow selector / AB carousel */
+.workflow-selector{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.ws-nav{width:30px;height:30px;border-radius:50%;background:var(--s2);border:1px solid var(--bd);color:var(--t2);font-size:13px;display:flex;align-items:center;justify-content:center;transition:all .12s;flex-shrink:0}
+.ws-nav:hover:not(:disabled){background:var(--gb);border-color:var(--gb2);color:var(--gold)}
+.ws-nav:disabled{opacity:.25;cursor:default}
+.ws-dots{display:flex;gap:6px;align-items:center}
+.ws-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.15);transition:all .2s;cursor:pointer}
+.ws-dot.on{width:20px;border-radius:3px;background:var(--gold)}
 
-/* ─── SEQUENCE FLOW CARDS ───────────────────────────── */
-.seq-grid{display:flex;flex-direction:column;gap:14px}
-.seq-card{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);overflow:hidden}
-.seq-card-head{padding:14px 18px;border-bottom:1px solid var(--bd);background:var(--s2);display:flex;align-items:center;justify-content:space-between}
-.seq-card-name{font-size:14px;font-weight:700;letter-spacing:-.01em}
-.seq-card-meta{font-size:10.5px;color:var(--t3);margin-top:3px}
-.seq-flow-wrap{padding:20px 18px;overflow-x:auto}
-.seq-flow{display:flex;align-items:stretch;gap:0;min-width:min-content}
-.flow-node{min-width:160px;background:var(--s3);border:1px solid var(--bd);border-radius:10px;padding:14px 15px;position:relative;flex-shrink:0}
-.flow-node.active{border-color:var(--gb2);background:linear-gradient(135deg,rgba(212,174,90,0.07) 0%,var(--s3) 100%)}
-.flow-node.active::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:10px 10px 0 0}
-.fn-step{font-size:8px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--t3);margin-bottom:6px}
-.fn-icon{font-size:18px;margin-bottom:8px}
-.fn-title{font-size:12px;font-weight:700;color:var(--text);margin-bottom:6px;line-height:1.3}
-.fn-count{font-size:18px;font-weight:800;letter-spacing:-.02em;line-height:1;margin-bottom:4px}
-.flow-node.active .fn-count{background:var(--gd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.fn-status{font-size:8.5px;font-weight:700;letter-spacing:.06em;display:flex;align-items:center;gap:4px}
-.fn-status.on{color:var(--green)}.fn-status.pend{color:var(--t3)}.fn-status.done{color:var(--blue)}
-.flow-conn{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 12px;flex-shrink:0;gap:3px}
-.flow-conn-line{width:28px;height:1px;background:linear-gradient(90deg,rgba(212,174,90,0.3),rgba(212,174,90,0.15))}
-.flow-conn-arrow{font-size:10px;color:var(--gold);opacity:.5}
-.flow-conn-delay{font-size:8px;font-weight:700;color:var(--t3);letter-spacing:.05em;white-space:nowrap}
-.seq-enroll-bar{padding:12px 18px 16px;display:flex;align-items:center;gap:12px;border-top:1px solid var(--bd)}
-.seb-label{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);min-width:80px}
-.seb-bar-bg{flex:1;height:7px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden}
-.seb-bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--gold),var(--gold2))}
-.seb-pct{font-size:10px;font-weight:700;color:var(--gold2);min-width:40px;text-align:right}
+/* Flow visualization */
+.flow-viewport{overflow:hidden;position:relative}
+.flow-track{display:flex;align-items:stretch;gap:0;transition:transform .35s cubic-bezier(0.4,0,0.2,1);will-change:transform}
+.flow-slide{flex-shrink:0;width:100%;padding:4px 0}
+.flow-row{display:flex;align-items:stretch;gap:0;overflow-x:auto;padding-bottom:6px;scrollbar-width:none}
+.flow-row::-webkit-scrollbar{display:none}
+.fnode{min-width:168px;max-width:200px;background:var(--s2);border:1px solid var(--bd);border-radius:12px;padding:16px 15px;cursor:pointer;transition:all .18s;position:relative;flex-shrink:0}
+.fnode:hover{border-color:var(--bd2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.4)}
+.fnode.selected{border-color:var(--gold);box-shadow:0 0 0 1px rgba(212,174,90,0.3),0 8px 28px rgba(0,0,0,0.4)}
+.fnode.selected::after{content:'';position:absolute;bottom:-1px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-top:7px solid var(--gold)}
+.fn-step{font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);margin-bottom:8px}
+.fn-icon{font-size:20px;margin-bottom:8px;line-height:1}
+.fn-title{font-size:12px;font-weight:700;line-height:1.3;margin-bottom:8px}
+.fn-stat{font-size:20px;font-weight:800;letter-spacing:-.02em;line-height:1;margin-bottom:3px;background:var(--gd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.fn-stat-l{font-size:8.5px;color:var(--t3);font-weight:600}
+.fnode.selected .fn-title{color:var(--gold2)}
+.fconn{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 10px;flex-shrink:0;gap:2px}
+.fconn-line{flex:1;width:1px;background:linear-gradient(180deg,transparent,rgba(212,174,90,0.3),transparent);min-height:20px;writing-mode:horizontal-tb}
+.fconn-arr{font-size:11px;color:rgba(212,174,90,0.45)}
+.fconn-delay{font-size:7.5px;font-weight:700;color:var(--t3);white-space:nowrap;letter-spacing:.04em;padding:2px 6px;background:var(--s3);border:1px solid var(--bd);border-radius:4px}
 
-/* ─── HOT LEADS GRID ─────────────────────────────────── */
-.leads-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
-.lead-card{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);padding:18px 16px;display:flex;flex-direction:column;gap:10px;transition:all .15s;position:relative;overflow:hidden}
-.lead-card:hover{border-color:var(--bd2);transform:translateY(-1px);box-shadow:0 10px 32px rgba(0,0,0,0.4)}
-.lead-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(212,174,90,0.2),transparent);opacity:0;transition:opacity .15s}
-.lead-card:hover::before{opacity:1}
-.lc-top{display:flex;align-items:flex-start;gap:12px}
-.lc-avatar{width:40px;height:40px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font:800 14px/1 var(--font);color:#06050C;background:var(--gd);box-shadow:0 0 14px rgba(212,174,90,0.25)}
-.lc-info{flex:1;min-width:0}
-.lc-name{font-size:13px;font-weight:700;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.lc-company{font-size:10px;color:var(--t3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.lc-clicks{display:flex;align-items:center;gap:6px}
-.lc-click-val{font-size:22px;font-weight:800;letter-spacing:-.03em;background:var(--gd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
-.lc-click-lbl{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t3)}
-.lc-bar-bg{height:5px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden}
-.lc-bar-fill{height:100%;background:var(--gd);border-radius:3px;transition:width .5s}
-.lc-foot{display:flex;align-items:center;justify-content:space-between;padding-top:2px}
-.lc-campaign{font-size:9px;color:var(--t3);letter-spacing:.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:120px}
-.lc-draft-btn{padding:4px 11px;border-radius:6px;background:var(--gb);border:1px solid var(--gb2);color:var(--gold);font:700 9px var(--font);cursor:pointer;transition:all .12s;white-space:nowrap}
-.lc-draft-btn:hover{background:var(--gb2);box-shadow:0 0 10px rgba(212,174,90,0.2)}
-.lc-time{font-size:9px;color:var(--t4)}
+/* Email reveal panel */
+.email-reveal{background:var(--s2);border:1px solid var(--gold);border-radius:var(--r2);overflow:hidden;margin-top:14px;animation:revealIn .22s ease}
+@keyframes revealIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+.er-head{padding:16px 20px;border-bottom:1px solid var(--bd);background:linear-gradient(135deg,rgba(212,174,90,0.08) 0%,transparent 100%);display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.er-step-label{font-size:8px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:5px}
+.er-subject{font-size:16px;font-weight:700;letter-spacing:-.02em;line-height:1.3}
+.er-stats{display:flex;gap:20px;padding:14px 20px;border-bottom:1px solid var(--bd)}
+.er-stat{display:flex;flex-direction:column;gap:2px}
+.er-sv{font-size:20px;font-weight:800;letter-spacing:-.02em}
+.er-sl{font-size:8px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t3)}
+.er-sv.gold{background:var(--gd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.er-actions{padding:12px 20px;display:flex;gap:10px;align-items:center}
+.er-preview-btn{padding:6px 16px;border-radius:7px;background:var(--gb);border:1px solid var(--gb2);color:var(--gold2);font:700 10px var(--font);letter-spacing:.07em;transition:all .13s}
+.er-preview-btn:hover{background:var(--gb2);box-shadow:0 0 12px rgba(212,174,90,0.2)}
+.er-bar-row{padding:10px 20px 14px;display:flex;align-items:center;gap:10px}
+.er-bar-bg{flex:1;height:6px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden}
+.er-bar-fill{height:100%;background:var(--gd);border-radius:4px;transition:width .6s}
+.er-bar-pct{font-size:10.5px;font-weight:700;color:var(--gold2);min-width:44px;text-align:right}
 
-/* ─── ACTIVITY FEED ──────────────────────────────────── */
-.ov-layout{display:grid;grid-template-columns:1fr 300px;gap:18px;align-items:start}
-.act-card{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);overflow:hidden}
-.act-card-head{padding:12px 14px;border-bottom:1px solid var(--bd);background:var(--s2);display:flex;align-items:center;justify-content:space-between}
-.act-card-title{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--t2)}
-.act-feed{max-height:520px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,0.04) transparent}
-.act-item{display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:1px solid rgba(255,255,255,0.035);transition:background .1s}
-.act-item:last-child{border-bottom:none}
-.act-item:hover{background:rgba(255,255,255,0.02)}
-.act-ic{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0}
-.act-ic.click{background:rgba(212,174,90,0.12);color:var(--gold)}
-.act-ic.send{background:rgba(127,160,232,0.10);color:var(--blue)}
-.act-ic.reply{background:rgba(91,194,133,0.10);color:var(--green)}
-.act-ic.delivered{background:rgba(91,194,133,0.06);color:var(--green);opacity:.7}
-.act-body{flex:1;min-width:0}
-.act-who{font-size:11px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.act-what{font-size:9.5px;color:var(--t3);margin-top:1px}
-.act-time{font-size:9px;color:var(--t4);flex-shrink:0}
+/* ═══ CONTACTS TAB ═════════════════════════════════════ */
+.crm-toolbar{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.crm-search{flex:1;min-width:200px;background:var(--s2);border:1px solid var(--bd2);border-radius:9px;padding:8px 14px 8px 36px;font:400 12.5px var(--font);color:var(--text);outline:none;transition:border-color .13s;background-image:url("data:image/svg+xml,%3Csvg width='14' height='14' viewBox='0 0 14 14' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='6' cy='6' r='4.5' stroke='%2366605A' stroke-width='1.5'/%3E%3Cpath d='M9.5 9.5L12 12' stroke='%2366605A' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:12px center}
+.crm-search:focus{border-color:var(--gold)}
+.crm-search::placeholder{color:var(--t3)}
+.tier-filters{display:flex;gap:6px;flex-wrap:wrap}
+.tf{padding:5px 11px;border-radius:20px;background:rgba(255,255,255,0.03);border:1px solid var(--bd);color:var(--t3);font:600 9.5px var(--font);transition:all .12s;letter-spacing:.03em}
+.tf:hover{color:var(--t2);border-color:var(--bd2)}
+.tf.on{background:var(--gb);border-color:var(--gb2);color:var(--gold2)}
+.crm-table-wrap{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);overflow:hidden}
+.crm-table{width:100%;border-collapse:collapse}
+.crm-table thead th{padding:9px 14px;text-align:left;font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--t4);background:var(--s2);border-bottom:1px solid var(--bd);white-space:nowrap;cursor:pointer;user-select:none;transition:color .12s}
+.crm-table thead th:hover{color:var(--t2)}
+.crm-table thead th.sort-on{color:var(--gold2)}
+.crm-table tbody tr{border-bottom:1px solid rgba(255,255,255,0.04);transition:background .1s}
+.crm-table tbody tr:last-child{border-bottom:none}
+.crm-table tbody tr:hover{background:rgba(255,255,255,0.025)}
+.crm-table td{padding:10px 14px;font-size:12px;color:var(--text);vertical-align:middle}
+.crm-av{width:30px;height:30px;border-radius:50%;background:var(--gd);display:flex;align-items:center;justify-content:center;font:800 11px/1 var(--font);color:#06050C;flex-shrink:0}
+.crm-name{font-weight:700;font-size:12.5px}.crm-email{font-size:10px;color:var(--t3);margin-top:1px}
+.crm-co{font-size:11.5px;color:var(--t2)}.crm-co-s{font-size:9.5px;color:var(--t3)}
+.tier-hot{display:inline-flex;padding:2px 8px;border-radius:20px;background:rgba(217,96,96,.1);border:1px solid rgba(217,96,96,.25);font-size:8px;font-weight:700;color:#E08080}
+.tier-clicked{display:inline-flex;padding:2px 8px;border-radius:20px;background:var(--gb);border:1px solid var(--gb2);font-size:8px;font-weight:700;color:var(--gold)}
+.tier-replied{display:inline-flex;padding:2px 8px;border-radius:20px;background:rgba(82,190,124,.1);border:1px solid rgba(82,190,124,.2);font-size:8px;font-weight:700;color:var(--green)}
+.tier-delivered{display:inline-flex;padding:2px 8px;border-radius:20px;background:rgba(255,255,255,.04);border:1px solid var(--bd);font-size:8px;font-weight:700;color:var(--t3)}
+.tier-bounced{display:inline-flex;padding:2px 8px;border-radius:20px;background:rgba(217,96,96,.06);border:1px solid rgba(217,96,96,.15);font-size:8px;font-weight:700;color:var(--red);opacity:.7}
+.crm-foot{padding:8px 14px;border-top:1px solid var(--bd);background:var(--s2);font-size:10px;color:var(--t3);display:flex;justify-content:space-between}
 
-/* ─── REPLIES VIEW ───────────────────────────────────── */
-.reply-card{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);padding:14px 16px;margin-bottom:10px;cursor:pointer;transition:all .13s}
-.reply-card:hover{border-color:var(--bd2);transform:translateY(-1px)}
-.rc-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px}
-.rc-from{font-size:13px;font-weight:700}
-.rc-meta{font-size:10px;color:var(--t3);margin-top:2px}
-.rc-subject{font-size:12px;font-weight:600;color:var(--t2);margin-bottom:6px}
-.rc-preview{font-size:11.5px;color:var(--t3);line-height:1.5;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
-
-/* ─── TABLE (base) ───────────────────────────────────── */
-.tw{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}
-table{width:100%;border-collapse:collapse}
-thead th{padding:9px 13px;text-align:left;font-size:8.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--t4);background:var(--s2);border-bottom:1px solid var(--bd);white-space:nowrap}
-tbody tr{border-bottom:1px solid rgba(255,255,255,0.04)}
-tbody tr:last-child{border-bottom:none}
-tbody tr:hover{background:rgba(255,255,255,0.025)}
-td{padding:10px 13px;font-size:12px;color:var(--text);vertical-align:middle}
-.d2{color:var(--t2)}.d3{color:var(--t3);font-size:11px}
-.cp{cursor:pointer}
-
-/* ─── PROGRESS BAR ───────────────────────────────────── */
-.pb-w{background:rgba(255,255,255,0.07);border-radius:4px;height:4px;flex:1;overflow:hidden}
-.pb{height:100%;border-radius:4px;background:var(--gd);transition:width .5s}
-
-/* ─── SKELETON / EMPTY ───────────────────────────────── */
-.empty{padding:44px 20px;text-align:center;color:var(--t3);font-size:11.5px;letter-spacing:.04em}
-.sk{background:linear-gradient(90deg,rgba(255,255,255,.03) 25%,rgba(255,255,255,.07) 50%,rgba(255,255,255,.03) 75%);background-size:300% 100%;animation:sh 1.8s infinite;border-radius:6px;display:block}
-@keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
-.spin{display:inline-block;animation:spin 0.9s linear infinite}
+/* ═══ MISC ══════════════════════════════════════════════ */
+.sk{background:linear-gradient(90deg,rgba(255,255,255,.03) 25%,rgba(255,255,255,.07) 50%,rgba(255,255,255,.03) 75%);background-size:300% 100%;animation:sk 1.8s infinite;border-radius:6px;display:block}
+@keyframes sk{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.empty{padding:44px 20px;text-align:center;color:var(--t3);font-size:12px;letter-spacing:.04em}
+.spin{display:inline-block;animation:spin .9s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* ─── MODALS ─────────────────────────────────────────── */
-.modal-bg{display:none;position:fixed;inset:0;z-index:998;background:rgba(0,0,0,0.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);align-items:center;justify-content:center}
-.modal-bg.on{display:flex}
-.modal-box{background:var(--s2);border:1px solid var(--bd2);border-radius:14px;box-shadow:0 30px 80px rgba(0,0,0,0.75);width:520px;max-width:92vw;padding:26px 28px}
-.modal-title{font-size:15px;font-weight:700;margin-bottom:5px}
-.modal-sub{font-size:11px;color:var(--t3);margin-bottom:18px;word-break:break-all}
-.modal-label{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);margin-bottom:6px}
-.modal-input{width:100%;background:var(--s3);border:1px solid var(--bd2);border-radius:7px;padding:10px 13px;font:400 13px var(--font);color:var(--text);outline:none;transition:border-color .13s}
-.modal-input:focus{border-color:var(--gold)}
-.modal-actions{display:flex;gap:9px;margin-top:18px;justify-content:flex-end}
-.modal-save{background:var(--gd);color:#06050C;border:none;border-radius:7px;padding:8px 18px;font:700 10.5px var(--font);cursor:pointer;letter-spacing:.06em}
-.modal-cancel{background:rgba(255,255,255,0.04);color:var(--t2);border:1px solid var(--bd);border-radius:7px;padding:8px 18px;font:600 10.5px var(--font);cursor:pointer}
-.modal-fb{font-size:11px;color:var(--green);margin-top:9px;display:none}
-.reply-modal-box{width:660px;max-width:93vw;max-height:82vh;padding:0;display:flex;flex-direction:column;overflow:hidden}
-.rm-head{padding:18px 22px 15px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:flex-start;background:var(--s3)}
-.rm-x{width:26px;height:26px;border-radius:6px;cursor:pointer;flex-shrink:0;background:rgba(255,255,255,0.05);border:1px solid var(--bd);color:var(--t3);font-size:12px;display:flex;align-items:center;justify-content:center}
-.rm-x:hover{background:rgba(255,255,255,.09);color:var(--text)}
-.rm-body{padding:20px 22px;overflow-y:auto;flex:1}
-.rm-body pre{font-family:var(--font);font-size:13px;line-height:1.9;color:var(--t2);white-space:pre-wrap;word-break:break-word}
+/* ═══ MODALS ════════════════════════════════════════════ */
+.mbg{display:none;position:fixed;inset:0;z-index:990;background:rgba(0,0,0,0.78);backdrop-filter:blur(12px);align-items:center;justify-content:center}
+.mbg.on{display:flex}
+/* Email preview modal */
+.ep-box{width:680px;max-width:94vw;height:82vh;display:flex;flex-direction:column;background:var(--s2);border:1px solid var(--bd2);border-radius:14px;overflow:hidden;box-shadow:0 36px 90px rgba(0,0,0,0.8)}
+.ep-head{padding:16px 20px;border-bottom:1px solid var(--bd);background:var(--s3);display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
+.ep-title{font-size:13px;font-weight:700}
+.ep-close{width:26px;height:26px;border-radius:6px;background:rgba(255,255,255,0.05);border:1px solid var(--bd);color:var(--t2);font-size:12px;display:flex;align-items:center;justify-content:center;transition:all .12s}
+.ep-close:hover{background:rgba(255,255,255,.09);color:var(--text)}
+.ep-frame{flex:1;border:none;background:#fff}
+/* Link edit modal */
+.lm-box{width:500px;max-width:92vw;background:var(--s2);border:1px solid var(--bd2);border-radius:14px;padding:24px 26px;box-shadow:0 28px 70px rgba(0,0,0,0.75)}
+.modal-title{font-size:15px;font-weight:700;margin-bottom:4px}
+.modal-sub{font-size:11px;color:var(--t3);margin-bottom:16px;word-break:break-all}
+.modal-lbl{font-size:8.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);margin-bottom:5px}
+.modal-inp{width:100%;background:var(--s3);border:1px solid var(--bd2);border-radius:7px;padding:9px 12px;font:400 13px var(--font);color:var(--text);outline:none;transition:border-color .13s}
+.modal-inp:focus{border-color:var(--gold)}
+.modal-acts{display:flex;gap:9px;margin-top:16px;justify-content:flex-end}
+.modal-save{background:var(--gd);color:#06050C;border:none;border-radius:7px;padding:8px 18px;font:700 10px var(--font);letter-spacing:.07em}
+.modal-cancel{background:rgba(255,255,255,0.04);color:var(--t2);border:1px solid var(--bd);border-radius:7px;padding:8px 18px;font:600 10px var(--font)}
+.modal-fb{font-size:11px;color:var(--green);margin-top:8px;display:none}
 </style>
 </head>
 <body>
 <div id="shell">
 
-<!-- ═══ SIDEBAR ═══════════════════════════════════════ -->
-<aside id="sb">
-  <div class="sb-brand">
-    <div class="sb-row"><div class="sb-icon">L</div><div class="sb-name">Ledger</div></div>
-    <div class="sb-client">Oak Street Capital</div>
-  </div>
-  <nav class="sb-nav">
-    <div class="nb-lbl">Intelligence</div>
-    <div class="ni on" data-v="overview"><span class="ni-ic">▦</span>Overview</div>
-    <div class="ni" data-v="campaigns"><span class="ni-ic">✉</span>Campaigns</div>
-    <div class="nb-lbl">Engagement</div>
-    <div class="ni" data-v="hotleads"><span class="ni-ic">⚡</span>Hot Leads<span class="ni-badge" id="nb-hot">—</span></div>
-    <div class="ni" data-v="replies"><span class="ni-ic">↩</span>Replies</div>
-    <div class="nb-lbl">Automation</div>
-    <div class="ni" data-v="sequences"><span class="ni-ic">⟳</span>Sequences<span class="ni-badge" id="nb-seq">—</span></div>
-  </nav>
-  <div class="sb-foot"><span class="ldot"></span><span id="ts">Connecting…</span></div>
-</aside>
-
-<!-- ═══ MAIN ═══════════════════════════════════════════ -->
-<div id="main">
-  <div id="topbar">
-    <div class="tb-crumb">Ledger <span class="tb-sep">/</span> <b id="vt">Overview</b></div>
-    <div class="tb-right">
-      <div class="tb-status"><span class="ldot" style="width:5px;height:5px"></span>Live</div>
-      <button class="btn btn-o btn-sm" onclick="load()">↻ Refresh</button>
+<!-- ═══ HEADER ═════════════════════════════════════════ -->
+<header id="hdr">
+  <div class="hdr-l">
+    <button class="back-btn" id="back-btn" onclick="goHome()">← Campaigns</button>
+    <div class="brand">
+      <div class="brand-mark">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="lg" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#B8901F"/>
+              <stop offset="45%" stop-color="#D4AE5A"/>
+              <stop offset="80%" stop-color="#EAD082"/>
+              <stop offset="100%" stop-color="#F5E9B8"/>
+            </linearGradient>
+          </defs>
+          <rect x="1" y="1" width="30" height="30" rx="8" fill="url(#lg)" opacity="0.92"/>
+          <text x="16" y="22" text-anchor="middle" font-family="Montserrat,sans-serif" font-weight="900" font-size="15" fill="#06050C">L</text>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <div class="brand-name">Ledger</div>
+        <div class="brand-sub">by Emerson North</div>
+      </div>
     </div>
   </div>
+  <div class="hdr-c">
+    <span class="hdr-camp-name" id="hdr-cname" style="display:none"></span>
+    <div class="hdr-mini-stats" id="hdr-stats" style="display:none">
+      <div class="hms"><span class="hms-v" id="hms-sent">—</span><span class="hms-l">Sent</span></div>
+      <div class="hms hi"><span class="hms-v" id="hms-ctr">—</span><span class="hms-l">CTR</span></div>
+      <div class="hms"><span class="hms-v" id="hms-hot">—</span><span class="hms-l">Hot</span></div>
+    </div>
+  </div>
+  <div class="hdr-r">
+    <div class="status-dot"><span class="dot-g"></span>Live</div>
+    <button class="hdr-btn" onclick="load()">↻ Refresh</button>
+  </div>
+</header>
 
-  <div id="scroll">
+<!-- ═══ BODY ═══════════════════════════════════════════ -->
+<div id="body">
 
-    <!-- ══ OVERVIEW ══════════════════════════════════════ -->
-    <div id="v-overview" class="view on">
-      <div class="ph"><h1>Command Center</h1><p>Live investor engagement across all campaigns</p></div>
-      <div class="mg g4" id="sg" style="margin-bottom:22px">
-        <div class="mc hi"><div class="sk" style="height:22px;width:80px;margin-top:8px"></div></div>
-        <div class="mc"><div class="sk" style="height:22px;width:80px;margin-top:8px"></div></div>
-        <div class="mc"><div class="sk" style="height:22px;width:80px;margin-top:8px"></div></div>
-        <div class="mc"><div class="sk" style="height:22px;width:80px;margin-top:8px"></div></div>
+  <!-- ══ HOME: Campaign Cards ═══════════════════════════ -->
+  <div id="v-home">
+    <div class="home-head">
+      <h1 class="home-title">All Campaigns</h1>
+      <p class="home-sub">Select a campaign to view performance, sequences, and investor data</p>
+    </div>
+    <div class="camp-grid" id="home-camps">
+      <div class="ccard"><div class="cc-body"><div class="sk" style="height:160px"></div></div></div>
+    </div>
+  </div>
+
+  <!-- ══ CAMPAIGN DETAIL ════════════════════════════════ -->
+  <div id="v-campaign">
+    <div id="cd-tabbar">
+      <button class="cd-tab on" data-tab="overview">Overview</button>
+      <button class="cd-tab" data-tab="sequences">Sequences</button>
+      <button class="cd-tab" data-tab="contacts">Contacts</button>
+    </div>
+
+    <!-- OVERVIEW TAB -->
+    <div id="tab-overview" class="tabpane on">
+      <div class="metrics g6" id="cd-metrics">
+        <div class="mc hi"><div class="mc-l">Sent</div><div class="mc-v sk" style="height:24px;width:60px;margin-top:6px"></div></div>
+        <div class="mc"><div class="mc-l">Delivered</div><div class="mc-v sk" style="height:24px;width:60px;margin-top:6px"></div></div>
+        <div class="mc"><div class="mc-l">Clicked</div><div class="mc-v sk" style="height:24px;width:60px;margin-top:6px"></div></div>
+        <div class="mc hi"><div class="mc-l">Click Rate</div><div class="mc-v sk" style="height:24px;width:60px;margin-top:6px"></div></div>
+        <div class="mc"><div class="mc-l">Replies</div><div class="mc-v sk" style="height:24px;width:60px;margin-top:6px"></div></div>
+        <div class="mc"><div class="mc-l">Bounced</div><div class="mc-v sk" style="height:24px;width:60px;margin-top:6px"></div></div>
       </div>
-      <div class="ov-layout">
-        <div>
-          <div class="sh"><div class="sh-t">Campaigns</div><span class="sh-tag">Click to drill in</span></div>
-          <div class="camp-grid" id="ov-cg"><div class="camp-card"><div class="cc-body"><div class="sk" style="height:130px"></div></div></div></div>
+      <div class="chat-section">
+        <div class="chat-head">
+          <span class="chat-head-title">Campaign Assistant</span>
+          <span class="chat-head-sub">Ask anything about this campaign</span>
         </div>
-        <div>
-          <div class="sh"><div class="sh-t">Activity Feed</div></div>
-          <div class="act-card">
-            <div class="act-card-head"><span class="act-card-title">Recent Events</span><span id="act-count" style="font-size:9px;color:var(--t3)"></span></div>
-            <div class="act-feed" id="act-feed"><div class="empty" style="padding:24px">Loading…</div></div>
-          </div>
-          <div style="margin-top:14px">
-            <div class="sh"><div class="sh-t">Sequences</div></div>
-            <div class="mc hi" style="margin-bottom:10px">
-              <div class="mc-l">Enrolled</div><div class="mc-v" id="ov-sqn">—</div><div class="mc-s">active in sequences</div>
+        <div class="chat-msgs" id="chat-msgs">
+          <div class="chat-empty" id="chat-empty">Ask a question or tap a suggestion below to get started</div>
+        </div>
+        <div class="chat-chips">
+          <button class="chat-chip" onclick="quickChat('Who are my hottest leads?')">Who are my hottest leads?</button>
+          <button class="chat-chip" onclick="quickChat('What should my next move be?')">What should my next move be?</button>
+          <button class="chat-chip" onclick="quickChat('Write a follow-up email for investors who clicked')">Draft a follow-up email</button>
+          <button class="chat-chip" onclick="quickChat('What is my campaign performance summary?')">Performance summary</button>
+          <button class="chat-chip" onclick="quickChat('Who has not engaged yet and how should I re-engage them?')">Re-engage non-openers</button>
+        </div>
+        <div class="chat-input-row">
+          <textarea class="chat-input" id="chat-input" placeholder="Ask about performance, leads, email strategy..." rows="1" onkeydown="chatKeydown(event)"></textarea>
+          <button class="chat-send" id="chat-send-btn" onclick="sendChat()">Send →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEQUENCES TAB -->
+    <div id="tab-sequences" class="tabpane">
+      <div class="seq-section">
+        <div class="sec-head">Email Workflow</div>
+        <div class="workflow-selector" id="ws-bar" style="display:none">
+          <button class="ws-nav" id="ws-prev" onclick="prevVariant()" disabled>‹</button>
+          <div class="ws-dots" id="ws-dots"></div>
+          <button class="ws-nav" id="ws-next" onclick="nextVariant()">›</button>
+          <span style="font-size:10px;color:var(--t2);margin-left:6px" id="ws-label"></span>
+        </div>
+        <div class="flow-viewport" id="flow-viewport">
+          <div class="flow-track" id="flow-track">
+            <div class="flow-slide" id="flow-slide-0">
+              <div class="flow-row" id="flow-row"><div class="empty">Loading workflow…</div></div>
             </div>
-            <div class="mg g2" style="margin-bottom:0">
-              <div class="mc"><div class="mc-l">Due Today</div><div class="mc-v" id="ov-sqd">—</div></div>
-              <div class="mc"><div class="mc-l">Replied</div><div class="mc-v" id="ov-sqr">—</div></div>
-            </div>
           </div>
         </div>
+        <div id="email-reveal" style="display:none"></div>
+      </div>
+
+      <!-- Links section -->
+      <div class="seq-section">
+        <div class="sec-head">Tracking Links</div>
+        <div style="background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);overflow:hidden" id="seq-links">
+          <div class="empty" style="padding:20px">Loading…</div>
+        </div>
+        <p style="font-size:10.5px;color:var(--t3);margin-top:8px">Edit a URL to redirect all future clicks for this campaign.</p>
       </div>
     </div>
 
-    <!-- ══ CAMPAIGNS ═════════════════════════════════════ -->
-    <div id="v-campaigns" class="view">
-      <div class="ph"><h1>Campaigns</h1><p>All email campaigns — click any to view detail</p></div>
-      <div class="camp-grid" id="pg"><div class="empty">Loading…</div></div>
-    </div>
-
-    <!-- ══ CAMPAIGN DETAIL ════════════════════════════════ -->
-    <div id="v-campaign" class="view">
-      <div class="back-btn" onclick="closeCampaign()">Back to Campaigns</div>
-      <div class="ph">
-        <h1 id="cd-name">Campaign</h1>
-        <p id="cd-meta" style="color:var(--t3)"></p>
-      </div>
-      <div class="mg g6" style="margin-bottom:18px">
-        <div class="mc hi"><div class="mc-l">Sent</div><div class="mc-v" id="cd-sent">—</div></div>
-        <div class="mc"><div class="mc-l">Delivered</div><div class="mc-v" id="cd-del">—</div></div>
-        <div class="mc"><div class="mc-l">Clicked</div><div class="mc-v" id="cd-clk">—</div></div>
-        <div class="mc hi"><div class="mc-l">Click Rate</div><div class="mc-v" id="cd-rate">—</div></div>
-        <div class="mc"><div class="mc-l">Replies</div><div class="mc-v" id="cd-rep">—</div></div>
-        <div class="mc"><div class="mc-l">Bounced</div><div class="mc-v" id="cd-bnc">—</div></div>
-      </div>
-
-      <!-- Split: email cards + contacts -->
-      <div class="split-panel" id="cd-split">
-        <!-- Left: emails -->
-        <div>
-          <div class="sh"><div class="sh-t">Emails in This Campaign</div></div>
-          <div id="cd-email-cards"><div class="sk" style="height:200px;border-radius:12px"></div></div>
-        </div>
-        <!-- Right: contacts -->
-        <div class="panel-box">
-          <div class="panel-head">
-            <span class="panel-head-t">Investors</span>
-            <span id="cd-contact-count" style="font-size:9.5px;color:var(--t3)"></span>
-          </div>
-          <div class="tier-pills">
-            <span class="tier-pill on" data-tier="all" onclick="filterTier(this,'all')">All</span>
-            <span class="tier-pill" data-tier="hot" onclick="filterTier(this,'hot')">🔥 Hot</span>
-            <span class="tier-pill" data-tier="clicked" onclick="filterTier(this,'clicked')">👁 Clicked</span>
-            <span class="tier-pill" data-tier="replied" onclick="filterTier(this,'replied')">↩ Replied</span>
-            <span class="tier-pill" data-tier="delivered" onclick="filterTier(this,'delivered')">✉ Delivered</span>
-            <span class="tier-pill" data-tier="bounced" onclick="filterTier(this,'bounced')">✕ Bounced</span>
-          </div>
-          <div style="max-height:460px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,0.04) transparent">
-            <table class="ct-table">
-              <thead><tr><th>Investor</th><th>Company</th><th>Tier</th><th>Clicks</th></tr></thead>
-              <tbody id="cd-contacts"><tr><td colspan="4" class="empty">Loading…</td></tr></tbody>
-            </table>
-          </div>
-          <div class="co-count" id="cd-co-count"></div>
+    <!-- CONTACTS TAB -->
+    <div id="tab-contacts" class="tabpane">
+      <div class="crm-toolbar">
+        <input class="crm-search" id="crm-search" placeholder="Search investors…" oninput="renderCRM()">
+        <div class="tier-filters">
+          <button class="tf on" data-tier="all" onclick="setTier(this,'all')">All</button>
+          <button class="tf" data-tier="hot" onclick="setTier(this,'hot')">🔥 Hot</button>
+          <button class="tf" data-tier="clicked" onclick="setTier(this,'clicked')">👁 Clicked</button>
+          <button class="tf" data-tier="replied" onclick="setTier(this,'replied')">↩ Replied</button>
+          <button class="tf" data-tier="delivered" onclick="setTier(this,'delivered')">✉ Delivered</button>
+          <button class="tf" data-tier="bounced" onclick="setTier(this,'bounced')">✕ Bounced</button>
         </div>
       </div>
-
-      <!-- AI Actions -->
-      <div class="ai-panel">
-        <div class="ai-panel-head">
-          <span class="ai-panel-title">AI Actions</span>
-          <span style="font-size:9px;color:var(--t3)">Powered by GPT-4o-mini</span>
-        </div>
-        <div class="ai-actions">
-          <div class="ai-btn" onclick="runAI('followup')">
-            <div class="ai-btn-ic">✉</div>
-            <div class="ai-btn-title">Write Follow-Up</div>
-            <div class="ai-btn-desc">Draft a warm follow-up for investors who clicked but haven't profiled yet</div>
-          </div>
-          <div class="ai-btn" onclick="runAI('reengagement')">
-            <div class="ai-btn-ic">⟳</div>
-            <div class="ai-btn-title">Re-Engagement</div>
-            <div class="ai-btn-desc">New angle email for investors who haven't opened or engaged yet</div>
-          </div>
-          <div class="ai-btn" onclick="runAI('analysis')">
-            <div class="ai-btn-ic">◈</div>
-            <div class="ai-btn-title">Analyze &amp; Advise</div>
-            <div class="ai-btn-desc">3 specific recommendations to improve this campaign's results</div>
-          </div>
-        </div>
-        <div class="ai-result" id="ai-result">
-          <div class="ai-result-hd">
-            <span id="ai-result-label">AI Output</span>
-            <button class="ai-copy" onclick="copyAI()">Copy</button>
-          </div>
-          <pre id="ai-result-text"></pre>
-        </div>
-      </div>
-
-      <!-- Tracking Links -->
-      <div class="links-section" id="cd-links-wrap">
-        <div class="panel-head">
-          <span class="panel-head-t">Tracking Links</span>
-          <span style="font-size:9px;color:var(--t3)">Edit URL to redirect all future clicks</span>
-        </div>
-        <div id="cd-links-list"><div class="empty" style="padding:20px">Loading…</div></div>
+      <div class="crm-table-wrap">
+        <table class="crm-table">
+          <thead>
+            <tr>
+              <th colspan="2" onclick="sortCRM('name')">Investor</th>
+              <th onclick="sortCRM('company')">Company</th>
+              <th onclick="sortCRM('tier')">Status</th>
+              <th onclick="sortCRM('click_count')">Clicks ↕</th>
+              <th>Sent</th>
+            </tr>
+          </thead>
+          <tbody id="crm-body"><tr><td colspan="6" class="empty">Loading…</td></tr></tbody>
+        </table>
+        <div class="crm-foot"><span id="crm-count">0 contacts</span><span id="crm-sort-info" style="color:var(--t4)">Sorted by clicks</span></div>
       </div>
     </div>
+  </div>
 
-    <!-- ══ HOT LEADS ══════════════════════════════════════ -->
-    <div id="v-hotleads" class="view">
-      <div class="ph"><h1>Hot Leads</h1><p>Investors who clicked your links — sorted by engagement</p></div>
-      <div class="mg g3" style="margin-bottom:22px;max-width:580px">
-        <div class="mc hi"><div class="mc-l">Total Hot Leads</div><div class="mc-v" id="hl-n">—</div><div class="mc-s">engaged investors</div></div>
-        <div class="mc"><div class="mc-l">Avg Clicks</div><div class="mc-v" id="hl-a">—</div><div class="mc-s">per investor</div></div>
-        <div class="mc"><div class="mc-l">Top Clicks</div><div class="mc-v" id="hl-t">—</div><div class="mc-s">most engaged</div></div>
-      </div>
-      <div class="leads-grid" id="leads-grid"><div class="empty">Loading…</div></div>
-    </div>
-
-    <!-- ══ REPLIES ════════════════════════════════════════ -->
-    <div id="v-replies" class="view">
-      <div class="ph"><h1>Investor Replies</h1><p>Inbound messages — click to read in full</p></div>
-      <div id="replies-list"><div class="empty">Loading…</div></div>
-    </div>
-
-    <!-- ══ SEQUENCES ══════════════════════════════════════ -->
-    <div id="v-sequences" class="view">
-      <div class="ph"><h1>Sequences</h1><p>Multi-touch nurture automation and enrollment tracking</p></div>
-      <div class="mg g3" style="margin-bottom:22px;max-width:580px">
-        <div class="mc hi"><div class="mc-l">Total Enrolled</div><div class="mc-v" id="sq-n">—</div><div class="mc-s">in active sequences</div></div>
-        <div class="mc"><div class="mc-l">Due Today</div><div class="mc-v" id="sq-d">—</div><div class="mc-s">pending sends</div></div>
-        <div class="mc"><div class="mc-l">Replied</div><div class="mc-v" id="sq-r">—</div><div class="mc-s">paused — replied</div></div>
-      </div>
-      <div class="seq-grid" id="seq-grid"><div class="empty">Loading…</div></div>
-    </div>
-
-  </div><!-- /scroll -->
-</div><!-- /main -->
+</div><!-- /body -->
 </div><!-- /shell -->
 
-<!-- ═══ LINK EDIT MODAL ════════════════════════════════ -->
-<div class="modal-bg" id="link-modal">
-  <div class="modal-box">
+<!-- Email Preview Modal -->
+<div class="mbg" id="ep-modal">
+  <div class="ep-box">
+    <div class="ep-head">
+      <span class="ep-title" id="ep-title">Email Preview</span>
+      <button class="ep-close" onclick="closePreview()">✕</button>
+    </div>
+    <iframe class="ep-frame" id="ep-frame" src="about:blank"></iframe>
+  </div>
+</div>
+
+<!-- Link Edit Modal -->
+<div class="mbg" id="lm-modal">
+  <div class="lm-box">
     <div class="modal-title">Update Tracking Link</div>
     <div class="modal-sub" id="lm-old"></div>
-    <div class="modal-label">New Destination URL</div>
-    <input class="modal-input" id="lm-input" type="url" placeholder="https://" />
+    <div class="modal-lbl">New Destination URL</div>
+    <input class="modal-inp" id="lm-inp" type="url" placeholder="https://">
     <div class="modal-fb" id="lm-fb"></div>
-    <div class="modal-actions">
+    <div class="modal-acts">
       <button class="modal-cancel" onclick="closeLinkModal()">Cancel</button>
       <button class="modal-save" onclick="saveLink()">Save URL</button>
     </div>
   </div>
 </div>
 
-<!-- ═══ REPLY MODAL ════════════════════════════════════ -->
-<div class="modal-bg" id="reply-modal">
-  <div class="modal-box reply-modal-box">
-    <div class="rm-head">
-      <div><div style="font-size:14px;font-weight:700" id="rm-ti"></div><div style="font-size:10.5px;color:var(--t3);margin-top:3px" id="rm-su"></div></div>
-      <button class="rm-x" onclick="closeReply()">✕</button>
-    </div>
-    <div class="rm-body"><pre id="rm-bo"></pre></div>
-  </div>
-</div>
-
 <script>
 // ── STATE ────────────────────────────────────────────────
-let S=null, hotleads=[], seqs=null, replyList=[]
-let currentCampaign=null, cdContacts=[], currentTier='all'
+let S=null, hotleads=[], seqs=null
+let currentCampaign=null, cdContacts=[], cdLinks=[], cdEmailStats=[]
+let crmTier='all', crmSort='click_count', crmQuery=''
 let linkEditData=null
-
-const VL={overview:'Overview',campaigns:'Campaigns',campaign:'Campaign Detail',hotleads:'Hot Leads',replies:'Replies',sequences:'Sequences'}
-
-// ── NAVIGATION ────────────────────────────────────────────
-document.querySelectorAll('.ni').forEach(el=>{
-  el.addEventListener('click',()=>{
-    if(el.dataset.v) goView(el.dataset.v)
-  })
-})
-
-function goView(v){
-  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'))
-  document.querySelectorAll('.view').forEach(x=>x.classList.remove('on'))
-  const ni=document.querySelector(`.ni[data-v="${v}"]`)
-  if(ni) ni.classList.add('on')
-  const view=document.getElementById('v-'+v)
-  if(view) view.classList.add('on')
-  document.getElementById('vt').textContent=VL[v]||v
-}
-
-// ── FETCH ─────────────────────────────────────────────────
-async function get(u){
-  const r=await fetch(u,{cache:'no-store'})
-  if(!r.ok) throw new Error(r.status)
-  return r.json()
-}
-
-async function load(){
-  await Promise.all([
-    get('/api/stats').then(d=>{S=d}).catch(()=>{}),
-    get('/api/hotleads').then(d=>{hotleads=d.leads||[]}).catch(()=>{}),
-    get('/api/sequences').then(d=>{seqs=d}).catch(()=>{}),
-    get('/api/leads?limit=200').then(d=>{replyList=[...(d.replies||[])].sort((a,b)=>b.received_at>a.received_at?1:-1)}).catch(()=>{}),
-  ])
-  get('/api/activity?limit=30').then(d=>renderActivity(d.events||[])).catch(()=>{})
-  render()
-  document.getElementById('ts').textContent='Updated '+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})
-}
+let chatHistory=[] // {role,content}
+let selectedStep=null
+let variantIdx=0, variants=[]
 
 // ── HELPERS ───────────────────────────────────────────────
 function N(v){return(+(v||0)).toLocaleString()}
 function P(v){return(v??0)+'%'}
 function E(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
-function initials(name){if(!name||name==='—')return '?';const p=name.trim().split(/\s+/);return p.length>1?p[0][0]+p[p.length-1][0]:p[0].slice(0,2)}
+function initials(n){if(!n||n==='—')return'?';const p=n.trim().split(/\s+/);return(p.length>1?p[0][0]+p[p.length-1][0]:p[0].slice(0,2)).toUpperCase()}
 
-// ── RENDER ALL ────────────────────────────────────────────
-function render(){
-  rStats()
-  rCampGrid('ov-cg')
-  rCampGrid('pg')
-  rHotLeads()
-  rReplies()
-  rSequences()
-  rSeqsOv()
-  // update nav badges
-  if(hotleads.length) document.getElementById('nb-hot').textContent=hotleads.length
-  if(seqs) document.getElementById('nb-seq').textContent=seqs.total_enrolled||0
+async function get(u){const r=await fetch(u,{cache:'no-store'});if(!r.ok)throw new Error(r.status);return r.json()}
+
+// ── NAVIGATION ────────────────────────────────────────────
+function goHome(){
+  document.getElementById('v-home').style.display=''
+  document.getElementById('v-campaign').classList.remove('vis')
+  document.getElementById('back-btn').classList.remove('vis')
+  document.getElementById('hdr-cname').style.display='none'
+  document.getElementById('hdr-stats').style.display='none'
+  currentCampaign=null
+  chatHistory=[]
 }
 
-// ── STATS ROW ─────────────────────────────────────────────
-function rStats(){
+function goToCampaign(){
+  document.getElementById('v-home').style.display='none'
+  document.getElementById('v-campaign').classList.add('vis')
+  document.getElementById('back-btn').classList.add('vis')
+  document.getElementById('hdr-cname').style.display=''
+  document.getElementById('hdr-stats').style.display=''
+}
+
+// Tab switching
+document.querySelectorAll('.cd-tab').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.cd-tab').forEach(x=>x.classList.remove('on'))
+    document.querySelectorAll('.tabpane').forEach(x=>x.classList.remove('on'))
+    t.classList.add('on')
+    document.getElementById('tab-'+t.dataset.tab).classList.add('on')
+  })
+})
+
+// ── DATA LOAD ─────────────────────────────────────────────
+async function load(){
+  await Promise.all([
+    get('/api/stats').then(d=>{S=d}).catch(()=>{}),
+    get('/api/hotleads').then(d=>{hotleads=d.leads||[]}).catch(()=>{}),
+    get('/api/sequences').then(d=>{seqs=d}).catch(()=>{}),
+  ])
+  renderHome()
+  document.getElementById('body').style.opacity='1'
+}
+
+// ── HOME RENDER ───────────────────────────────────────────
+function renderHome(){
   if(!S) return
   const deals=S.deals||[]
-  const sent=deals.reduce((a,d)=>a+(d.emails_sent||0),0)
-  const clk=deals.reduce((a,d)=>a+(d.unique_clickers||0),0)
-  const rate=sent>0?Math.round(clk/sent*100):0
-  document.getElementById('sg').innerHTML=`
-    <div class="mc hi"><div class="mc-l">Investor Database</div><div class="mc-v">${N(S.total_contacts)}</div><div class="mc-s">in CRM</div></div>
-    <div class="mc"><div class="mc-l">Emails Sent</div><div class="mc-v">${N(sent)}</div><div class="mc-s">all campaigns</div></div>
-    <div class="mc"><div class="mc-l">Engagement Rate</div><div class="mc-v">${P(rate)}</div><div class="mc-s">${N(clk)} unique clickers</div></div>
-    <div class="mc ${hotleads.length>0?'hi':''}"><div class="mc-l">Hot Leads</div><div class="mc-v">${N(hotleads.length)}</div><div class="mc-s">clicked, not converted</div></div>
-  `
-}
-
-// ── CAMPAIGN CARDS ────────────────────────────────────────
-function buildCampCard(d){
-  const active=d.status==='active'||d.emails_sent>0
-  const lbl=d.campaign_type==='nurture'?'Nurture Campaign':(d.asset_type||'Deal Campaign')
-  const sent=d.emails_sent||0
-  const clk=d.unique_clickers||0
-  const sentPct=100
-  const clkPct=sent>0?Math.round(clk/sent*100*10)/10:0
-  const subj=d.latest_subject||''
-  const subjHtml=subj?`<div class="cc-subject">${E(subj)}</div>`:''
-  const statusBadge=active?'<span class="badge bgreen">Active</span>':'<span class="badge bm">Pending</span>'
-  const hotN=hotleads.filter(h=>h.campaign===d.slug).length
-  return`<div class="camp-card ${active?'active':''}" onclick="openCampaign('${d.slug}','${E(d.name)}','${E(lbl)}')">
-    <div class="cc-top-bar"></div>
-    <div class="cc-body">
-      <div class="cc-head">
-        <div><div class="cc-name">${E(d.name)}</div><div class="cc-type">${E(lbl)}${d.last_activity?' · Last send '+d.last_activity:''}</div></div>
-        ${statusBadge}
-      </div>
-      ${subjHtml}
-      <div class="cc-funnel">
-        <div class="cf-row cf-sent">
-          <span class="cf-label">Sent</span>
-          <div class="cf-bar-bg"><div class="cf-bar-fill" style="width:100%"></div></div>
-          <span class="cf-n">${N(sent)}</span>
-          <span class="cf-pct"></span>
-        </div>
-        <div class="cf-row cf-clk">
-          <span class="cf-label">Clicked</span>
-          <div class="cf-bar-bg"><div class="cf-bar-fill" style="width:${Math.min(clkPct*10,100)}%"></div></div>
-          <span class="cf-n">${N(clk)}</span>
-          <span class="cf-pct">${P(d.click_rate)}</span>
-        </div>
-      </div>
-    </div>
-    <div class="cc-foot">
-      <div class="cc-chips">
-        ${hotN>0?`<span class="badge bg">🔥 ${hotN} hot</span>`:''}
-        ${d.unique_clickers>0?`<span class="badge bblue">${N(d.unique_clickers)} clickers</span>`:''}
-      </div>
-      <span class="cc-arrow">Open →</span>
-    </div>
-  </div>`
-}
-
-function rCampGrid(id){
-  if(!S) return
-  const el=document.getElementById(id);if(!el)return
-  const deals=S.deals||[]
+  const el=document.getElementById('home-camps')
   if(!deals.length){el.innerHTML='<div class="empty">No campaigns yet</div>';return}
-  el.innerHTML=deals.map(buildCampCard).join('')
-}
-
-// ── CAMPAIGN DETAIL ───────────────────────────────────────
-async function openCampaign(slug,name,meta){
-  currentCampaign={slug,name,meta,subjects:[],stats:{},email_stats:[]}
-  goView('campaign')
-  document.getElementById('cd-name').textContent=name
-  document.getElementById('cd-meta').textContent=meta
-  ;['cd-sent','cd-del','cd-clk','cd-rate','cd-rep','cd-bnc'].forEach(id=>document.getElementById(id).textContent='…')
-  document.getElementById('cd-email-cards').innerHTML='<div class="sk" style="height:200px;border-radius:12px"></div>'
-  document.getElementById('cd-contacts').innerHTML='<tr><td colspan="4" class="empty">Loading…</td></tr>'
-  document.getElementById('cd-links-list').innerHTML='<div class="empty" style="padding:20px">Loading…</div>'
-  document.getElementById('ai-result').classList.remove('on')
-  document.querySelectorAll('.tier-pill').forEach(p=>p.classList.toggle('on',p.dataset.tier==='all'))
-  currentTier='all'
-
-  try{
-    const d=await get('/api/campaign?slug='+encodeURIComponent(slug))
-    currentCampaign.stats=d.stats||{}
-    currentCampaign.subjects=d.subjects||[]
-    currentCampaign.email_stats=d.email_stats||[]
-    const st=d.stats||{}
-    document.getElementById('cd-sent').textContent=N(st.sent)
-    document.getElementById('cd-del').textContent=N(st.delivered)
-    document.getElementById('cd-clk').textContent=N(st.unique_clickers)
-    document.getElementById('cd-rate').textContent=P(st.click_rate)
-    document.getElementById('cd-rep').textContent=N(st.replies)
-    document.getElementById('cd-bnc').textContent=N(st.bounced)
-    cdContacts=d.contacts||[]
-    renderContacts()
-    renderEmailCards(d.email_stats||[],d.subjects||[],st)
-    renderLinks(d.links||[],slug)
-  }catch(e){
-    document.getElementById('cd-email-cards').innerHTML=`<div class="empty">Error: ${E(e.message)}</div>`
-    document.getElementById('cd-contacts').innerHTML=`<tr><td colspan="4" class="empty">Error: ${E(e.message)}</td></tr>`
-  }
-}
-
-function closeCampaign(){goView('campaigns')}
-
-// ── EMAIL CARDS ───────────────────────────────────────────
-function renderEmailCards(emailStats,subjects,totalStats){
-  const el=document.getElementById('cd-email-cards')
-  const data=emailStats.length?emailStats:subjects.map((s,i)=>({
-    num:i+1,subject:s,sent:totalStats.sent||0,clickers:totalStats.unique_clickers||0,
-    click_rate:totalStats.click_rate||0,first_sent:''
-  }))
-  if(!data.length){
-    el.innerHTML='<div class="email-card"><div class="ec-header"><div class="ec-subject" style="color:var(--t3)">No email data available</div></div></div>'
-    return
-  }
-  el.innerHTML=data.map(e=>{
-    const barW=Math.min((e.click_rate||0)*6,100)
-    const dateStr=e.first_sent?`First sent ${e.first_sent}`:`All sends`
-    return`<div class="email-card">
-      <div class="ec-header">
-        <div class="ec-num">Email ${e.num} of ${data.length}</div>
-        <div class="ec-subject">${E(e.subject)}</div>
-        <div class="ec-date">${dateStr}</div>
+  el.innerHTML=deals.map(d=>{
+    const sent=d.emails_sent||0, clk=d.unique_clickers||0
+    const subj=d.latest_subject||''
+    const hotN=hotleads.filter(h=>h.campaign===d.slug).length
+    const live=d.status==='active'||sent>0
+    const lbl=d.campaign_type==='nurture'?'Nurture Campaign':(d.asset_type||'Deal Campaign')
+    const clkPct=sent>0?Math.round(clk/sent*1000)/10:0
+    return`<div class="ccard ${live?'live':''}" onclick="openCampaign('${d.slug}','${E(d.name)}')">
+      <div class="cc-accent"></div>
+      <div class="cc-body">
+        <div class="cc-row1">
+          <div><div class="cc-title">${E(d.name)}</div><div class="cc-type">${lbl}${d.last_activity?' · Last send '+d.last_activity:''}</div></div>
+          <span class="badge ${live?'bgreen':'bm'}">${live?'Active':'Pending'}</span>
+        </div>
+        ${subj?`<div class="cc-subject"><span class="cc-subject-quote">"</span>${E(subj)}</div>`:''}
+        <div class="cc-funnel">
+          <div class="cf-row cf-sent">
+            <span class="cf-lbl">Sent</span>
+            <div class="cf-bg"><div class="cf-fill" style="width:100%"></div></div>
+            <span class="cf-num">${N(sent)}</span><span class="cf-pct"></span>
+          </div>
+          <div class="cf-row cf-clk">
+            <span class="cf-lbl">Clicked</span>
+            <div class="cf-bg"><div class="cf-fill" style="width:${Math.min(clkPct*8,100)}%"></div></div>
+            <span class="cf-num">${N(clk)}</span><span class="cf-pct">${P(d.click_rate)}</span>
+          </div>
+        </div>
       </div>
-      <div class="ec-stats">
-        <div class="ec-stat"><div class="ec-sv">${N(e.sent)}</div><div class="ec-sl">Sent</div></div>
-        <div class="ec-stat"><div class="ec-sv">${N(e.clickers)}</div><div class="ec-sl">Clicked</div></div>
-        <div class="ec-stat hi"><div class="ec-sv">${P(e.click_rate)}</div><div class="ec-sl">Click Rate</div></div>
-        <div class="ec-stat"><div class="ec-sv">${e.sent>0?Math.round(e.clickers/e.sent*100*10)/10:0}%</div><div class="ec-sl">Eng. Rate</div></div>
-      </div>
-      <div class="ec-bar-row">
-        <div class="ec-bar-bg"><div class="ec-bar-fill" style="width:${barW}%"></div></div>
-        <span class="ec-bar-label">${P(e.click_rate)} CTR</span>
+      <div class="cc-footer">
+        <div class="cc-chips">
+          ${hotN>0?`<span class="badge bg">🔥 ${hotN} hot leads</span>`:''}
+          ${clk>0?`<span class="badge bblue">${N(clk)} clickers</span>`:''}
+        </div>
+        <span class="cc-cta">Open Campaign →</span>
       </div>
     </div>`
   }).join('')
 }
 
-// ── CONTACTS ─────────────────────────────────────────────
-function tierBadge(tier){
-  if(tier==='hot') return'<span class="tier-hot">🔥 Hot</span>'
-  if(tier==='clicked') return'<span class="tier-clicked">👁 Clicked</span>'
-  if(tier==='replied') return'<span class="tier-replied">↩ Replied</span>'
-  if(tier==='bounced') return'<span class="tier-bounced">✕ Bounced</span>'
-  return'<span class="tier-delivered">✉ Delivered</span>'
+// ── CAMPAIGN DETAIL ───────────────────────────────────────
+async function openCampaign(slug,name){
+  currentCampaign={slug,name,stats:{},subjects:[],email_stats:[]}
+  chatHistory=[]
+  goToCampaign()
+  document.getElementById('hdr-cname').textContent=name
+  // Reset tabs to Overview
+  document.querySelectorAll('.cd-tab').forEach(t=>t.classList.toggle('on',t.dataset.tab==='overview'))
+  document.querySelectorAll('.tabpane').forEach(p=>p.classList.toggle('on',p.id==='tab-overview'))
+  // Reset chat
+  document.getElementById('chat-msgs').innerHTML='<div class="chat-empty" id="chat-empty">Ask a question or tap a suggestion below</div>'
+  // Reset sequences
+  document.getElementById('flow-row').innerHTML='<div class="empty">Loading…</div>'
+  document.getElementById('email-reveal').style.display='none'
+  selectedStep=null
+  // Reset CRM
+  document.getElementById('crm-body').innerHTML='<tr><td colspan="6" class="empty">Loading…</td></tr>'
+  // Reset metrics
+  renderMetrics({})
+  try{
+    const d=await get('/api/campaign?slug='+encodeURIComponent(slug))
+    currentCampaign.stats=d.stats||{}
+    currentCampaign.subjects=d.subjects||[]
+    currentCampaign.email_stats=d.email_stats||[]
+    cdContacts=d.contacts||[]
+    cdLinks=d.links||[]
+    cdEmailStats=d.email_stats||[]
+    const st=d.stats||{}
+    renderMetrics(st)
+    // Header mini stats
+    document.getElementById('hms-sent').textContent=N(st.sent)
+    document.getElementById('hms-ctr').textContent=P(st.click_rate)
+    document.getElementById('hms-hot').textContent=N(hotleads.filter(h=>h.campaign===slug).length)
+    // Build workflow variants (A/B or single)
+    buildWorkflowVariants(d)
+    renderLinks(cdLinks,slug)
+    renderCRM()
+  }catch(e){
+    renderMetrics({})
+  }
 }
 
-function filterTier(el,tier){
-  document.querySelectorAll('.tier-pill').forEach(p=>p.classList.remove('on'))
-  el.classList.add('on')
-  currentTier=tier
-  renderContacts()
+// ── METRICS ───────────────────────────────────────────────
+function renderMetrics(st){
+  document.getElementById('cd-metrics').innerHTML=`
+    <div class="mc hi"><div class="mc-l">Sent</div><div class="mc-v">${N(st.sent)}</div></div>
+    <div class="mc"><div class="mc-l">Delivered</div><div class="mc-v">${N(st.delivered)}</div></div>
+    <div class="mc"><div class="mc-l">Clicked</div><div class="mc-v">${N(st.unique_clickers)}</div></div>
+    <div class="mc hi"><div class="mc-l">Click Rate</div><div class="mc-v">${P(st.click_rate)}</div></div>
+    <div class="mc"><div class="mc-l">Replies</div><div class="mc-v">${N(st.replies)}</div></div>
+    <div class="mc"><div class="mc-l">Bounced</div><div class="mc-v">${N(st.bounced)}</div></div>
+  `
 }
 
-function renderContacts(){
-  const tbody=document.getElementById('cd-contacts')
-  let rows=cdContacts
-  if(currentTier!=='all') rows=rows.filter(c=>c.tier===currentTier)
-  document.getElementById('cd-co-count').textContent=rows.length+' investors'
-  if(!rows.length){tbody.innerHTML='<tr><td colspan="4" class="empty">No contacts in this filter</td></tr>';return}
-  tbody.innerHTML=''
-  rows.forEach(c=>{
-    const tr=document.createElement('tr')
-    tr.innerHTML=`
-      <td><div class="iname">${E(c.name||c.email)}</div><div class="iemail">${E(c.email)}</div></td>
-      <td class="d2" style="font-size:11px">${E(c.company||'—')}</td>
-      <td>${tierBadge(c.tier)}</td>
-      <td>${c.click_count>0?`<b style="color:var(--gold);font-size:13px">${c.click_count}</b>`:'<span class="d3">0</span>'}</td>
-    `
-    tbody.appendChild(tr)
+// ── WORKFLOW / SEQUENCES ──────────────────────────────────
+function buildWorkflowVariants(d){
+  const st=d.stats||{}
+  const ab=d.ab_stats||{}
+  const emailStats=d.email_stats||[]
+  const subjects=d.subjects||[]
+
+  // Build variants array — each variant is a list of steps
+  variants=[]
+  if(ab.A&&ab.B){
+    // A/B test: two variants, each with their subject
+    variants=[
+      {label:'Variant A',steps:[{subject:subjects[0]||'Variant A',sent:ab.A.sent,clickers:ab.A.clicks,click_rate:ab.A.click_rate,num:1}]},
+      {label:'Variant B',steps:[{subject:subjects[1]||subjects[0]||'Variant B',sent:ab.B.sent,clickers:ab.B.clicks,click_rate:ab.B.click_rate,num:1}]},
+    ]
+  } else if(emailStats.length){
+    variants=[{label:'Sequence',steps:emailStats}]
+  } else if(subjects.length){
+    variants=[{label:'Sequence',steps:subjects.map((s,i)=>({subject:s,sent:st.sent||0,clickers:st.unique_clickers||0,click_rate:st.click_rate||0,num:i+1}))}]
+  } else {
+    variants=[{label:'Sequence',steps:[{subject:'Email',sent:st.sent||0,clickers:st.unique_clickers||0,click_rate:st.click_rate||0,num:1}]}]
+  }
+
+  variantIdx=0
+  const wsBar=document.getElementById('ws-bar')
+  if(variants.length>1){
+    wsBar.style.display='flex'
+    buildWsDots()
+    renderVariantSlide()
+  } else {
+    wsBar.style.display='none'
+    renderVariantSlide()
+  }
+}
+
+function buildWsDots(){
+  document.getElementById('ws-dots').innerHTML=variants.map((_,i)=>`<span class="ws-dot ${i===variantIdx?'on':''}" onclick="gotoVariant(${i})"></span>`).join('')
+  document.getElementById('ws-label').textContent=variants[variantIdx]?.label||''
+  document.getElementById('ws-prev').disabled=variantIdx===0
+  document.getElementById('ws-next').disabled=variantIdx===variants.length-1
+}
+
+function gotoVariant(idx,dir){
+  if(idx===variantIdx) return
+  const direction=idx>variantIdx?'next':'prev'
+  variantIdx=idx
+  animateSlide(direction)
+  buildWsDots()
+}
+function nextVariant(){if(variantIdx<variants.length-1) gotoVariant(variantIdx+1,'next')}
+function prevVariant(){if(variantIdx>0) gotoVariant(variantIdx-1,'prev')}
+
+function animateSlide(dir){
+  const track=document.getElementById('flow-track')
+  track.style.transition='none'
+  track.style.transform=dir==='next'?'translateX(60px)':'translateX(-60px)'
+  track.style.opacity='0'
+  requestAnimationFrame(()=>{
+    requestAnimationFrame(()=>{
+      track.style.transition='transform .32s cubic-bezier(0.4,0,0.2,1), opacity .22s'
+      track.style.transform='translateX(0)'
+      track.style.opacity='1'
+      renderVariantSlide()
+    })
   })
-  document.getElementById('cd-contact-count').textContent=rows.length+' investors'
+}
+
+function renderVariantSlide(){
+  const v=variants[variantIdx]
+  if(!v) return
+  const steps=v.steps||[]
+  const totalSteps=Math.max(steps.length,3)
+  const delays=['','3 days','7 days','14 days','21 days']
+
+  // Build the standard 3-step flow with real data for step 1
+  const stepDefs=[
+    {title:'Initial Outreach',icon:'✉'},
+    {title:'Follow-Up',icon:'↩'},
+    {title:'Re-Engagement',icon:'⚡'},
+  ]
+
+  let html=''
+  for(let i=0;i<3;i++){
+    const real=steps[i]||null
+    const sd=stepDefs[i]
+    const count=real?real.sent:(i===0?(steps[0]?.sent||0):0)
+    const isActive=i===0
+    const isSelected=selectedStep===i
+    if(i>0) html+=`<div class="fconn"><div class="fconn-arr">→</div><div class="fconn-delay">${delays[i]}</div></div>`
+    html+=`<div class="fnode ${isActive?'active':''} ${isSelected?'selected':''}" id="fnode-${i}" onclick="selectStep(${i})">
+      <div class="fn-step">Step ${i+1}</div>
+      <div class="fn-icon">${sd.icon}</div>
+      <div class="fn-title">${sd.title}</div>
+      <div class="fn-stat">${i===0?N(count):i===1?'~'+N(Math.round(count*.6)):'Pending'}</div>
+      <div class="fn-stat-l">${isActive?'enrolled':'queued'}</div>
+    </div>`
+  }
+  document.getElementById('flow-row').innerHTML=html
+}
+
+function selectStep(idx){
+  if(selectedStep===idx){
+    selectedStep=null
+    document.querySelectorAll('.fnode').forEach(n=>n.classList.remove('selected'))
+    document.getElementById('email-reveal').style.display='none'
+    return
+  }
+  selectedStep=idx
+  document.querySelectorAll('.fnode').forEach((n,i)=>n.classList.toggle('selected',i===idx))
+  renderEmailReveal(idx)
+}
+
+function renderEmailReveal(idx){
+  const v=variants[variantIdx]
+  const step=v?.steps?.[idx]
+  const slug=currentCampaign?.slug
+  const st=currentCampaign?.stats||{}
+  const er=document.getElementById('email-reveal')
+
+  const subject=step?.subject||`Step ${idx+1} Email`
+  const sent=step?.sent||st.sent||0
+  const clickers=step?.clickers||st.unique_clickers||0
+  const rate=step?.click_rate||st.click_rate||0
+  const barW=Math.min(rate*8,100)
+  const hasPreview=idx===0&&slug
+
+  er.style.display='block'
+  er.innerHTML=`<div class="email-reveal">
+    <div class="er-head">
+      <div>
+        <div class="er-step-label">Step ${idx+1} · ${variants[variantIdx]?.label||'Email'}</div>
+        <div class="er-subject">${E(subject)}</div>
+      </div>
+    </div>
+    <div class="er-stats">
+      <div class="er-stat"><div class="er-sv">${N(sent)}</div><div class="er-sl">Sent</div></div>
+      <div class="er-stat"><div class="er-sv">${N(clickers)}</div><div class="er-sl">Clicked</div></div>
+      <div class="er-stat"><div class="er-sv gold">${P(rate)}</div><div class="er-sl">Click Rate</div></div>
+      ${st.replies>0?`<div class="er-stat"><div class="er-sv">${N(st.replies)}</div><div class="er-sl">Replies</div></div>`:''}
+    </div>
+    <div class="er-bar-row">
+      <div class="er-bar-bg"><div class="er-bar-fill" style="width:${barW}%"></div></div>
+      <span class="er-bar-pct">${P(rate)} CTR</span>
+    </div>
+    ${hasPreview?`<div class="er-actions"><button class="er-preview-btn" onclick="openPreview('${E(slug)}','${E(subject)}')">View Full Email →</button></div>`:''}
+  </div>`
 }
 
 // ── LINKS ─────────────────────────────────────────────────
 function renderLinks(links,slug){
-  const el=document.getElementById('cd-links-list')
+  const el=document.getElementById('seq-links')
   if(!links.length){el.innerHTML='<div class="empty" style="padding:20px">No tracking links</div>';return}
-  el.innerHTML=''
-  links.forEach(lnk=>{
-    const row=document.createElement('div')
-    row.className='link-row'
-    row.innerHTML=`
-      <span class="link-url" title="${E(lnk.url)}">${E(lnk.url)}</span>
-      <span class="link-clicks-num">${N(lnk.clicks)} clicks</span>
-      <button class="link-edit-btn" onclick="openLinkEdit('${E(lnk.url)}','${E(slug)}')">Edit URL</button>
-    `
-    el.appendChild(row)
+  el.innerHTML=links.map(lnk=>`
+    <div style="display:flex;align-items:center;gap:12px;padding:11px 16px;border-bottom:1px solid rgba(255,255,255,0.04)">
+      <span style="font-size:12px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${E(lnk.url)}</span>
+      <span style="font-size:10.5px;color:var(--t2);white-space:nowrap">${N(lnk.clicks)} clicks</span>
+      <button style="padding:3px 10px;border-radius:6px;background:rgba(255,255,255,0.04);border:1px solid var(--bd);color:var(--t2);font:600 9px var(--font);cursor:pointer" onclick="openLinkEdit('${E(lnk.url)}','${E(slug)}')">Edit URL</button>
+    </div>
+  `).join('')
+}
+
+// ── CHATBOT ───────────────────────────────────────────────
+function buildChatContext(){
+  const st=currentCampaign?.stats||{}
+  const campHot=hotleads.filter(h=>h.campaign===currentCampaign?.slug)
+  const tiers={hot:0,clicked:0,replied:0,delivered:0,bounced:0}
+  cdContacts.forEach(c=>{if(tiers[c.tier]!==undefined)tiers[c.tier]++})
+  return{
+    name:currentCampaign?.name||'',
+    stats:st,
+    contacts_summary:`Hot (2+ clicks): ${tiers.hot} | Clicked once: ${tiers.clicked} | Replied: ${tiers.replied} | Delivered (no click): ${tiers.delivered} | Bounced: ${tiers.bounced}`,
+    hot_leads:campHot.slice(0,8),
+    subjects:currentCampaign?.subjects||[],
+  }
+}
+
+function renderChat(){
+  const el=document.getElementById('chat-msgs')
+  const empty=document.getElementById('chat-empty')
+  if(empty) empty.remove()
+  if(!chatHistory.length){
+    el.innerHTML='<div class="chat-empty" id="chat-empty">Ask a question or tap a suggestion below</div>'
+    return
+  }
+  el.innerHTML=chatHistory.map(m=>`
+    <div class="msg ${m.role==='user'?'user':'ai'}">
+      <div class="msg-bubble">${E(m.content)}</div>
+    </div>
+  `).join('')
+  el.scrollTop=el.scrollHeight
+}
+
+function quickChat(text){
+  document.getElementById('chat-input').value=text
+  sendChat()
+}
+
+async function sendChat(){
+  const inp=document.getElementById('chat-input')
+  const text=inp.value.trim()
+  if(!text) return
+  chatHistory.push({role:'user',content:text})
+  inp.value='';inp.style.height='auto'
+  const btn=document.getElementById('chat-send-btn')
+  btn.disabled=true
+  // Show typing
+  const msgs=document.getElementById('chat-msgs')
+  const empty=document.getElementById('chat-empty')
+  if(empty) empty.remove()
+  msgs.innerHTML=chatHistory.map(m=>`<div class="msg ${m.role==='user'?'user':'ai'}"><div class="msg-bubble">${E(m.content)}</div></div>`).join('')
+  msgs.innerHTML+=`<div class="msg ai" id="typing-ind"><div class="msg-typing"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div>`
+  msgs.scrollTop=msgs.scrollHeight
+  try{
+    const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:chatHistory,campaign_context:buildChatContext()})})
+    const d=await r.json()
+    chatHistory.push({role:'assistant',content:d.text||d.error||'Sorry, something went wrong.'})
+  }catch(e){
+    chatHistory.push({role:'assistant',content:'Connection error: '+e.message})
+  }
+  btn.disabled=false
+  renderChat()
+}
+
+function chatKeydown(e){
+  if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat()}
+  // Auto-resize
+  const ta=e.target;ta.style.height='auto';ta.style.height=Math.min(ta.scrollHeight,100)+'px'
+}
+
+// ── CRM / CONTACTS ────────────────────────────────────────
+function setTier(el,tier){
+  document.querySelectorAll('.tf').forEach(t=>t.classList.remove('on'))
+  el.classList.add('on')
+  crmTier=tier
+  renderCRM()
+}
+
+function sortCRM(col){
+  crmSort=col
+  document.querySelectorAll('.crm-table thead th').forEach(th=>{
+    th.classList.toggle('sort-on',th.getAttribute('onclick')===`sortCRM('${col}')`)
   })
+  renderCRM()
+}
+
+function renderCRM(){
+  crmQuery=(document.getElementById('crm-search')?.value||'').toLowerCase()
+  let rows=[...cdContacts]
+  if(crmTier!=='all') rows=rows.filter(c=>c.tier===crmTier)
+  if(crmQuery) rows=rows.filter(c=>(c.name+c.email+c.company).toLowerCase().includes(crmQuery))
+  // Sort
+  rows.sort((a,b)=>{
+    if(crmSort==='click_count') return (b.click_count||0)-(a.click_count||0)
+    if(crmSort==='name') return (a.name||'').localeCompare(b.name||'')
+    if(crmSort==='company') return (a.company||'').localeCompare(b.company||'')
+    if(crmSort==='tier'){const o={hot:0,clicked:1,replied:2,delivered:3,bounced:4};return(o[a.tier]||0)-(o[b.tier]||0)}
+    return 0
+  })
+  const tbody=document.getElementById('crm-body')
+  document.getElementById('crm-count').textContent=rows.length+' contacts'
+  if(!rows.length){tbody.innerHTML='<tr><td colspan="6" class="empty">No contacts match this filter</td></tr>';return}
+  tbody.innerHTML=''
+  rows.forEach(c=>{
+    const tr=document.createElement('tr')
+    const av=initials(c.name||c.email||'?')
+    const tierMap={hot:'<span class="tier-hot">🔥 Hot</span>',clicked:'<span class="tier-clicked">👁 Clicked</span>',replied:'<span class="tier-replied">↩ Replied</span>',delivered:'<span class="tier-delivered">✉ Delivered</span>',bounced:'<span class="tier-bounced">✕ Bounced</span>'}
+    tr.innerHTML=`
+      <td><div class="crm-av">${E(av)}</div></td>
+      <td><div class="crm-name">${E(c.name||'—')}</div><div class="crm-email">${E(c.email)}</div></td>
+      <td><div class="crm-co">${E(c.company||'—')}</div></td>
+      <td>${tierMap[c.tier]||''}</td>
+      <td><b style="font-size:14px;font-weight:800;${c.click_count>0?'color:var(--gold)':''}">${c.click_count||0}</b></td>
+      <td style="font-size:10.5px;color:var(--t3)">${c.sent_at||'—'}</td>
+    `
+    tbody.appendChild(tr)
+  })
+}
+
+// ── EMAIL PREVIEW MODAL ───────────────────────────────────
+function openPreview(slug,subject){
+  document.getElementById('ep-title').textContent=subject||'Email Preview'
+  document.getElementById('ep-frame').src='/api/preview?slug='+encodeURIComponent(slug)
+  document.getElementById('ep-modal').classList.add('on')
+}
+function closePreview(){
+  document.getElementById('ep-modal').classList.remove('on')
+  document.getElementById('ep-frame').src='about:blank'
 }
 
 // ── LINK EDIT MODAL ───────────────────────────────────────
 function openLinkEdit(url,slug){
   linkEditData={old_url:url,campaign_slug:slug}
   document.getElementById('lm-old').textContent='Current: '+url
-  document.getElementById('lm-input').value=url
+  document.getElementById('lm-inp').value=url
   document.getElementById('lm-fb').style.display='none'
-  document.getElementById('link-modal').classList.add('on')
-  setTimeout(()=>document.getElementById('lm-input').focus(),50)
+  document.getElementById('lm-modal').classList.add('on')
+  setTimeout(()=>document.getElementById('lm-inp').focus(),50)
 }
-function closeLinkModal(){document.getElementById('link-modal').classList.remove('on')}
-
+function closeLinkModal(){document.getElementById('lm-modal').classList.remove('on')}
 async function saveLink(){
-  const newUrl=document.getElementById('lm-input').value.trim()
-  if(!newUrl||!newUrl.startsWith('http')){alert('Enter a valid URL');return}
-  const fb=document.getElementById('lm-fb')
-  fb.style.display='none'
+  const newUrl=document.getElementById('lm-inp').value.trim()
+  if(!newUrl.startsWith('http')){alert('Enter a valid URL');return}
+  const fb=document.getElementById('lm-fb');fb.style.display='none'
   try{
     const r=await fetch('/api/link-update',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({old_url:linkEditData.old_url,new_url:newUrl,campaign_slug:linkEditData.campaign_slug})})
     const d=await r.json()
     if(d.error) throw new Error(d.error)
-    fb.textContent=`✓ Updated ${d.updated_tokens} tracking tokens`
-    fb.style.display='block'
-    setTimeout(()=>{closeLinkModal();if(currentCampaign) openCampaign(currentCampaign.slug,currentCampaign.name,currentCampaign.meta)},1400)
-  }catch(e){
-    fb.style.color='var(--red)';fb.textContent='Error: '+e.message;fb.style.display='block'
-  }
+    fb.textContent=`✓ Updated ${d.updated_tokens} tracking tokens`;fb.style.display='block'
+    setTimeout(()=>{closeLinkModal();openCampaign(currentCampaign.slug,currentCampaign.name)},1300)
+  }catch(e){fb.style.color='var(--red)';fb.textContent='Error: '+e.message;fb.style.display='block'}
 }
 
-// ── AI ACTIONS ────────────────────────────────────────────
-const AI_LABELS={followup:'Follow-Up Email Draft',reengagement:'Re-Engagement Email Draft',analysis:'Campaign Analysis & Recommendations'}
-
-async function runAI(action){
-  const btns=document.querySelectorAll('.ai-btn')
-  btns.forEach(b=>b.classList.add('loading'))
-  const result=document.getElementById('ai-result')
-  const txt=document.getElementById('ai-result-text')
-  result.classList.add('on')
-  document.getElementById('ai-result-label').textContent=AI_LABELS[action]||action
-  txt.innerHTML='<span class="spin">⟳</span>'
-
-  try{
-    const r=await fetch('/api/ai-draft',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
-      campaign_name:currentCampaign?.name||'',
-      campaign_type:currentCampaign?.meta||'',
-      stats:currentCampaign?.stats||{},
-      subjects:currentCampaign?.subjects||[],
-      hot_leads:hotleads.filter(h=>h.campaign===currentCampaign?.slug).length,
-      action
-    })})
-    const d=await r.json()
-    if(d.error) throw new Error(d.error)
-    txt.textContent=d.text||'(no output)'
-  }catch(e){
-    txt.textContent='Error: '+e.message
-  }finally{
-    btns.forEach(b=>b.classList.remove('loading'))
-  }
-}
-
-function copyAI(){
-  navigator.clipboard.writeText(document.getElementById('ai-result-text').textContent).then(()=>{
-    const btn=document.querySelector('.ai-copy')
-    btn.textContent='Copied!'
-    setTimeout(()=>btn.textContent='Copy',1500)
-  })
-}
-
-// ── HOT LEADS ─────────────────────────────────────────────
-function rHotLeads(){
-  const grid=document.getElementById('leads-grid')
-  if(!hotleads.length){
-    grid.innerHTML='<div class="empty">No hot leads detected yet</div>'
-    ;['hl-n','hl-a','hl-t'].forEach(id=>document.getElementById(id).textContent='0')
-    return
-  }
-  const tot=hotleads.length
-  document.getElementById('hl-n').textContent=N(tot)
-  const avgClicks=Math.round(hotleads.reduce((s,l)=>s+(l.click_count||0),0)/tot)
-  document.getElementById('hl-a').textContent=avgClicks
-  const maxClicks=Math.max(...hotleads.map(l=>l.click_count||0))
-  document.getElementById('hl-t').textContent=maxClicks
-
-  grid.innerHTML=''
-  hotleads.forEach(l=>{
-    const pct=maxClicks>0?Math.round(l.click_count/maxClicks*100):0
-    const ini=initials(l.name||l.email||'?').toUpperCase()
-    const card=document.createElement('div')
-    card.className='lead-card'
-    card.innerHTML=`
-      <div class="lc-top">
-        <div class="lc-avatar">${E(ini)}</div>
-        <div class="lc-info">
-          <div class="lc-name">${E(l.name||'—')}</div>
-          <div class="lc-company">${E(l.company||'—')}</div>
-        </div>
-      </div>
-      <div class="lc-clicks">
-        <div class="lc-click-val">${l.click_count}</div>
-        <div class="lc-click-lbl">link clicks</div>
-      </div>
-      <div class="lc-bar-bg"><div class="lc-bar-fill" style="width:${pct}%"></div></div>
-      <div class="lc-foot">
-        <span class="lc-campaign">${E(l.campaign||'—')}</span>
-        <button class="lc-draft-btn" onclick="draftForLead(${JSON.stringify(l).replace(/"/g,'&quot;')})">✦ Draft</button>
-      </div>
-    `
-    grid.appendChild(card)
-  })
-}
-
-function draftForLead(lead){
-  // Open campaign detail for this lead's campaign and pre-select AI tab
-  if(lead.campaign && S){
-    const deal=S.deals.find(d=>d.slug===lead.campaign)
-    if(deal){
-      openCampaign(deal.slug,deal.name,deal.campaign_type||'')
-      setTimeout(()=>runAI('followup'),2000)
-    }
-  }
-}
-
-// ── REPLIES ───────────────────────────────────────────────
-function rReplies(){
-  const el=document.getElementById('replies-list')
-  if(!replyList.length){el.innerHTML='<div class="empty">No replies yet</div>';return}
-  el.innerHTML=''
-  replyList.forEach(r=>{
-    const card=document.createElement('div')
-    card.className='reply-card'
-    const ts=r.received_at?new Date(r.received_at).toLocaleDateString([],{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}):'—'
-    card.innerHTML=`
-      <div class="rc-head">
-        <div><div class="rc-from">${E(r.contact_name||r.contact_email||'—')}</div><div class="rc-meta">${E(r.contact_email||'')} · ${ts} · ${E(r.campaign_slug||'—')}</div></div>
-        <span class="badge bgreen">Reply</span>
-      </div>
-      <div class="rc-subject">${E(r.subject||'(no subject)')}</div>
-      <div class="rc-preview">${E((r.body_plain||r.body_preview||'').slice(0,200))}</div>
-    `
-    card.onclick=()=>openReply(r)
-    el.appendChild(card)
-  })
-}
-
-// ── SEQUENCES ─────────────────────────────────────────────
-function rSequences(){
-  if(!seqs) return
-  const templates=seqs.templates||[]
-  const replied=templates.reduce((s,t)=>s+(t.replied||0),0)
-  document.getElementById('sq-n').textContent=N(seqs.total_enrolled)
-  document.getElementById('sq-d').textContent=N(seqs.due_now)
-  document.getElementById('sq-r').textContent=N(replied)
-
-  const grid=document.getElementById('seq-grid')
-  if(!templates.length){grid.innerHTML='<div class="empty">No sequences active</div>';return}
-  grid.innerHTML=''
-
-  templates.forEach(tmpl=>{
-    const active=tmpl.active||0
-    const completed=tmpl.completed||0
-    const repliedN=tmpl.replied||0
-    const total=active+completed+repliedN
-    const completePct=total>0?Math.round((completed+repliedN)/total*100):0
-    const name=formatSeqName(tmpl.template_slug)
-
-    // Build the flow nodes based on known sequence patterns
-    const nodes=buildSeqNodes(tmpl)
-
-    const card=document.createElement('div')
-    card.className='seq-card'
-    card.innerHTML=`
-      <div class="seq-card-head">
-        <div>
-          <div class="seq-card-name">${E(name)}</div>
-          <div class="seq-card-meta">${N(total)} total enrolled · ${N(active)} active · ${N(completed)} completed</div>
-        </div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end">
-          <span class="badge bg">${N(active)} Active</span>
-          ${completed>0?`<span class="badge bgreen">${N(completed)} Done</span>`:''}
-          ${repliedN>0?`<span class="badge bblue">${N(repliedN)} Replied</span>`:''}
-        </div>
-      </div>
-      <div class="seq-flow-wrap">
-        <div class="seq-flow">${nodes}</div>
-      </div>
-      <div class="seq-enroll-bar">
-        <span class="seb-label">Progress</span>
-        <div class="seb-bar-bg"><div class="seb-bar-fill" style="width:${completePct}%"></div></div>
-        <span class="seb-pct">${completePct}%</span>
-      </div>
-    `
-    grid.appendChild(card)
-  })
-}
-
-function formatSeqName(slug){
-  if(slug==='standard_nurture') return 'Standard Investor Nurture'
-  return slug.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase())
-}
-
-function buildSeqNodes(tmpl){
-  const active=tmpl.active||0
-  const total=(tmpl.active||0)+(tmpl.completed||0)+(tmpl.replied||0)
-  // Standard 3-step nurture structure
-  const steps=[
-    {label:'Step 1',icon:'✉',title:'Initial Outreach',desc:'First contact with investors'},
-    {label:'Step 2',icon:'✉',title:'Follow-Up',desc:'For non-responders'},
-    {label:'Step 3',icon:'✉',title:'Re-Engagement',desc:'Final touch'},
-  ]
-  const delays=['','3 days','7 days']
-
-  return steps.map((s,i)=>{
-    const isActive=i===0
-    const count=i===0?active:(i===1?Math.round(active*.6):Math.round(active*.25))
-    const countLabel=i===0?N(active):(active>0?`~${N(count)}`:'—')
-    const statusClass=isActive?'on':'pend'
-    const statusText=isActive?'● Active':'◌ Queued'
-    const connector=i>0?`<div class="flow-conn"><div class="flow-conn-line"></div><div class="flow-conn-arrow">→</div><div class="flow-conn-delay">${delays[i]}</div></div>`:''
-    return connector+`<div class="flow-node ${isActive?'active':''}">
-      <div class="fn-step">${s.label}</div>
-      <div class="fn-icon">${s.icon}</div>
-      <div class="fn-title">${s.title}</div>
-      <div class="fn-count">${countLabel}</div>
-      <div class="fn-status ${statusClass}">${statusText}</div>
-    </div>`
-  }).join('')
-}
-
-function rSeqsOv(){
-  if(!seqs) return
-  const templates=seqs.templates||[]
-  const replied=templates.reduce((s,t)=>s+(t.replied||0),0)
-  document.getElementById('ov-sqn').textContent=N(seqs.total_enrolled)
-  document.getElementById('ov-sqd').textContent=N(seqs.due_now)
-  document.getElementById('ov-sqr').textContent=N(replied)
-}
-
-// ── ACTIVITY FEED ─────────────────────────────────────────
-function renderActivity(events){
-  const el=document.getElementById('act-feed')
-  document.getElementById('act-count').textContent=events.length+' events'
-  if(!events.length){el.innerHTML='<div class="empty" style="padding:20px">No activity yet</div>';return}
-  el.innerHTML=events.slice(0,20).map(e=>{
-    const typeMap={link_click:{ic:'⚡',cls:'click',lbl:'clicked link'},delivered:{ic:'✓',cls:'delivered',lbl:'delivered'},send:{ic:'→',cls:'send',lbl:'sent'},reply:{ic:'↩',cls:'reply',lbl:'replied'},replied:{ic:'↩',cls:'reply',lbl:'replied'}}
-    const t=typeMap[e.type]||{ic:'·',cls:'send',lbl:e.type||'event'}
-    const who=E(e.contact_name||e.contact_email||'Investor')
-    const ts=e.timestamp?new Date(e.timestamp).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}):''
-    return`<div class="act-item">
-      <div class="act-ic ${t.cls}">${t.ic}</div>
-      <div class="act-body">
-        <div class="act-who">${who}</div>
-        <div class="act-what">${t.lbl}${e.campaign?' · '+E(e.campaign):''}</div>
-      </div>
-      <div class="act-time">${ts}</div>
-    </div>`
-  }).join('')
-}
-
-// ── REPLY MODAL ───────────────────────────────────────────
-function openReply(r){
-  const ts=r.received_at?new Date(r.received_at).toLocaleDateString([],{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}):''
-  document.getElementById('rm-ti').textContent=r.subject||'(no subject)'
-  document.getElementById('rm-su').textContent=[r.contact_name||r.contact_email,ts,r.campaign_slug].filter(Boolean).join(' · ')
-  document.getElementById('rm-bo').textContent=r.body_plain||r.body_preview||'(no content)'
-  document.getElementById('reply-modal').classList.add('on')
-}
-function closeReply(){document.getElementById('reply-modal').classList.remove('on')}
-
-// ── CLOSE HANDLERS ────────────────────────────────────────
-document.getElementById('reply-modal').addEventListener('click',e=>{if(e.target===document.getElementById('reply-modal'))closeReply()})
-document.getElementById('link-modal').addEventListener('click',e=>{if(e.target===document.getElementById('link-modal'))closeLinkModal()})
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeReply();closeLinkModal()}})
+// ── MODAL CLOSE HANDLERS ──────────────────────────────────
+document.getElementById('ep-modal').addEventListener('click',e=>{if(e.target===document.getElementById('ep-modal'))closePreview()})
+document.getElementById('lm-modal').addEventListener('click',e=>{if(e.target===document.getElementById('lm-modal'))closeLinkModal()})
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closePreview();closeLinkModal()}})
 
 // ── BOOT ─────────────────────────────────────────────────
-load()
+document.getElementById('body').style.opacity='0'
+document.getElementById('body').style.transition='opacity .3s'
+load().then(()=>{document.getElementById('body').style.opacity='1'})
 setInterval(load,90000)
 </script>
 </body>
